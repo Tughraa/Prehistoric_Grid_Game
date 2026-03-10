@@ -110,7 +110,7 @@ public class BehaviourAdder : MonoBehaviour
     }
     public IStatusEffect RandomEffect(float givenDuration)
     {
-        int rand = allSystems.randomSystem.effectRNG.Next(0,9);
+        int rand = allSystems.randomSystem.effectRNG.Next(0,10);
         //rand = 2; //To test certain effects
         switch (rand)
         {
@@ -125,12 +125,14 @@ public class BehaviourAdder : MonoBehaviour
             case 4:
                 return (new TremorEffect(duration: givenDuration,strength: 1.5f,period: 0.3f));
             case 5:
-                return (new SpeedEffect(duration: givenDuration,strength: 3f));
+                return (new FloatEffect(duration: givenDuration,strength: 0.2f));
             case 6:
-                return (new JumpBoostEffect(duration: givenDuration,strength: 2f));
+                return (new SpeedEffect(duration: givenDuration,strength: 3f));
             case 7:
-                return (new HealingEffect(duration: givenDuration,strength: 0.5f,period: 0.75f));
+                return (new JumpBoostEffect(duration: givenDuration,strength: 2f));
             case 8:
+                return (new HealingEffect(duration: givenDuration,strength: 0.5f,period: 0.75f));
+            case 9:
                 return (new FlyEffect(duration: givenDuration,strength: 0.2f));
             default:
                 return (new SpeedEffect(duration: 1f,strength: 3f));

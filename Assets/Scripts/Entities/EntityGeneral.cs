@@ -49,6 +49,7 @@ public class EntityGeneral : MonoBehaviour
 
     public bool destroyOnDead = false;
     public bool interactable = false;
+    public bool currentInteract = false; //implement it's usage
     
     //[Header("New")]
     

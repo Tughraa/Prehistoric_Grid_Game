@@ -39,7 +39,7 @@ public class RandomSystem : MonoBehaviour
         }
         return hash;
     }
-    string RandomString(int size)
+    public string RandomString(int size)
     {
         string glyphs= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";//0123456789";
         string randomString = "";
