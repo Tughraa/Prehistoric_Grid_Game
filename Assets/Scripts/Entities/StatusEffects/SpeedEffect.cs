@@ -8,6 +8,7 @@ public class SpeedEffect : IStatusEffect
     public float effectStrength;
 
     public string GetMessage => ("You feel the urge to run");
+    public string GetName => ("speed");
     public Color GetColor => new Color(0.02f,0.6f,0.8f,0.85f);
     public bool hasParticles => true;
     public bool IsFinished => (effectDuration <= 0f);

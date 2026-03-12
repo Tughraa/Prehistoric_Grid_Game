@@ -9,6 +9,7 @@ public class TremorEffect : IStatusEffect
 
     public Color GetColor => new Color(0.75f,0.45f,0.28f,0.85f);
     public string GetMessage => ("You are violently shaking!");
+    public string GetName => ("tremor");
     public bool hasParticles => true;
     public bool IsFinished => (effectDuration <= 0f);
     public float remainingDuraton => effectDuration;

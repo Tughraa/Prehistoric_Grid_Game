@@ -8,6 +8,7 @@ public class FreezeEffect : IStatusEffect
     public float effectStrength;
 
     public string GetMessage => ("It's numbingly cold.");
+    public string GetName => ("freezing");
     public Color GetColor => new Color(0.85f,0.89f,0.98f,0.85f);
     public bool hasParticles => true;
     public bool IsFinished => (effectDuration <= 0f);

@@ -8,6 +8,7 @@ public class JumpBoostEffect : IStatusEffect
     public float effectStrength;
 
     public string GetMessage => ("Your legs feel much stronger");
+    public string GetName => ("jumpBoost");
     public Color GetColor => new Color(0.02f,0.86f,0.25f,0.85f);
     public bool hasParticles => true;
     public bool IsFinished => (effectDuration <= 0f);

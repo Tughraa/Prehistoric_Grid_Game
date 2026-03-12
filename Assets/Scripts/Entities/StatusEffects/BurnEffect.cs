@@ -9,6 +9,7 @@ public class BurnEffect : IStatusEffect
 
     public Color GetColor => Color.red;
     public string GetMessage => ("You are burning!");
+    public string GetName => ("burning");
     public bool hasParticles => false;
     public bool IsFinished => (effectDuration <= 0f);
     public float remainingDuraton => effectDuration;

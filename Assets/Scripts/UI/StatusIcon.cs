@@ -16,7 +16,7 @@ public class StatusIcon : MonoBehaviour
         desiredPos = this.transform.position;
         foreach (NameAndIcon ic in behaviourAdder.statusIcons)
         {
-            if (ic.statusName == "burning") //instead of "burning" get it from a behaviour adder method
+            if (ic.statusName == effect.GetName) //Add a default state maybe
             {
                 transform.GetChild(0).gameObject.GetComponent<Image>().sprite = ic.statusIcon;
             }

@@ -13,5 +13,6 @@ public interface IStatusEffect
     bool hasParticles { get; }
     Color GetColor { get; }
     string GetMessage { get; }
+    string GetName { get; }
     public float remainingDuraton {get;}
 }

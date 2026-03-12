@@ -9,6 +9,7 @@ public class FlyEffect : IStatusEffect
 
     public Color GetColor => new Color(0.2f,0.79f,0.89f,0.65f);
     public string GetMessage => ("You feel liberated from the ground");
+    public string GetName => ("flying");
     public bool hasParticles => true;
     public bool IsFinished => (effectDuration <= 0f);
     public float remainingDuraton => effectDuration;

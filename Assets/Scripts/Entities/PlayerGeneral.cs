@@ -260,6 +260,7 @@ public class PlayerGeneral : MonoBehaviour
                 if (col.gameObject.GetComponent<EntityGeneral>() == false)
                 {
                     DisableCurrentInteract();
+                    //interactableInRange = false;
                     continue;
                 }
                 if (col.gameObject.GetComponent<EntityGeneral>().interactable)
@@ -389,7 +390,6 @@ public class PlayerGeneral : MonoBehaviour
         for (int i = 0; statusEffectIconsParent.childCount > i; i++) //iterate over children
         {
             Vector3 pos = statusEffectIconsParent.position + new Vector3(0f,i*offset,0f);
-            Debug.Log("update pos index: "+i);
             statusEffectIconsParent.GetChild(i).GetComponent<StatusIcon>().desiredPos = pos;
             //statusEffectIconsParent.GetChild(i).position = pos;
         }

@@ -8,6 +8,7 @@ public class StunEffect : IStatusEffect
     public float effectStrength;
 
     public string GetMessage => ("You can't feel your body");
+    public string GetName => ("stun");
     public Color GetColor => new Color(0.93f,0.74f,0.3f,0.85f);
     public bool hasParticles => true;
     public bool IsFinished => (effectDuration <= 0f);

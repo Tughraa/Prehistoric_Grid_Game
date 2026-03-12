@@ -10337,7 +10337,23 @@ MonoBehaviour:
   allSystems: {fileID: 476240912}
   statusIcons:
   - statusName: burning
-    statusIcon: {fileID: 21300000, guid: cdb6d1d7979290c4f89910ab81623a6d, type: 3}
+    statusIcon: {fileID: 21300000, guid: 2916d482bfad4cf4fa7c037aafc27bd0, type: 3}
+  - statusName: floating
+    statusIcon: {fileID: 21300000, guid: 832772d940c7c8a46a563dd6841874c2, type: 3}
+  - statusName: flying
+    statusIcon: {fileID: 21300000, guid: fa8e098a25b733b46a8d07de16fb71cf, type: 3}
+  - statusName: healing
+    statusIcon: {fileID: 21300000, guid: 104fe52797ad2124e8cd1ceaa073ee23, type: 3}
+  - statusName: jumpBoost
+    statusIcon: {fileID: 21300000, guid: 82673071759062d42aa904e0ef04e477, type: 3}
+  - statusName: poison
+    statusIcon: {fileID: 21300000, guid: 6b030903e70c231478fd935ad40233d4, type: 3}
+  - statusName: speed
+    statusIcon: {fileID: 21300000, guid: e4574a25ae63caa428866e0a66c24bdf, type: 3}
+  - statusName: stun
+    statusIcon: {fileID: 21300000, guid: 2345d9d73e5473d41a02861444951c40, type: 3}
+  - statusName: tremor
+    statusIcon: {fileID: 21300000, guid: 6fc0b1e94ece1dd419c150992fca6e2f, type: 3}
 --- !u!4 &991963406
 Transform:
   m_ObjectHideFlags: 0

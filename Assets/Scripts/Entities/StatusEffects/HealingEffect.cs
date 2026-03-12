@@ -9,6 +9,7 @@ public class HealingEffect : IStatusEffect
 
     public Color GetColor => new Color(0.8f,0.24f,0.15f,0.85f);
     public string GetMessage => ("You're feeling healthier");
+    public string GetName => ("healing");
     public bool hasParticles => true;
     public bool IsFinished => (effectDuration <= 0f);
     public float remainingDuraton => effectDuration;

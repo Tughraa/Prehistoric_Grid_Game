@@ -9,6 +9,7 @@ public class PoisonEffect : IStatusEffect
 
 
     public string GetMessage => ("You feel poisoned");
+    public string GetName => ("poison");
     public Color GetColor => new Color(0.3f,0.67f,0.0f,0.65f);
     public bool hasParticles => true;
     public bool IsFinished => (effectDuration <= 0f);

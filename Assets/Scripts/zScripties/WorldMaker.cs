@@ -150,6 +150,10 @@ public class WorldMaker : MonoBehaviour
     public Vector3Int RandomBlockPosition()
     {
         int randomIndex = randomSystem.worldPlacementRNG.Next(0,mapManager.allBlocks.Count);
+        while (mapManager.allBlocks.ElementAt(randomIndex).Key.x < xLimit.x)
+        {
+            randomIndex = randomSystem.worldPlacementRNG.Next(0,mapManager.allBlocks.Count);
+        }
         return mapManager.allBlocks.ElementAt(randomIndex).Key;
     }
     IEnumerator PlaceContent(float seconds)
