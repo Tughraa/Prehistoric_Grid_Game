@@ -73,7 +73,7 @@ public class WorldMaker : MonoBehaviour
     {
         for (int i = 0; i < howMany; i++)
         {
-            PlaceEntityByName(entityName,RandomAvailablePos(1));
+            PlaceEntityByName(entityName,RandomAvailablePos(1)+new Vector3(0f,0f,-0.5f));
         }
     }
     public void PlaceBlocksRandomly(string blockName, int howMany)

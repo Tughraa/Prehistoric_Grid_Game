@@ -109,6 +109,7 @@ MonoBehaviour:
   detectBoxDist: 0.02
   defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   hurtMaterial: {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
+  interactMaterial: {fileID: 2100000, guid: b6f1211aafc8aee4badcade864a9fd75, type: 2}
   rigid: {fileID: 4737845041656596789}
   entityStatusEffects: {fileID: 4004716715210189063}
   mapManager: {fileID: 0}
@@ -124,13 +125,13 @@ MonoBehaviour:
   health: 2
   dead: 0
   iFrameTime: 0.05
-  entitySpeed: 1
-  entityJumpBoost: 1
-  entityKBsensitivity: 1
   entityStopDecel: 0
   tags: []
   damageImmunities: []
   currentIFrames: 0
+  destroyOnDead: 0
+  interactable: 0
+  currentInteract: 0
 --- !u!114 &4004716715210189063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,6 +148,15 @@ MonoBehaviour:
   particleTimePeriod: 0.5
   burnEffectParticle: {fileID: 2653880219158662100, guid: 2aaaebcd0f26e9c43bbc3c72efbdf62a, type: 3}
   entityGeneral: {fileID: 8108935908592773378}
+  rigid: {fileID: 0}
+  speedBase: 1
+  speedMults: []
+  jumpForceBase: 1
+  jumpForceMults: []
+  kbSensBase: 1
+  kbSensMults: []
+  gravityScaleBase: 1
+  gravityScaleMults: []
 --- !u!50 &4737845041656596789
 Rigidbody2D:
   serializedVersion: 4

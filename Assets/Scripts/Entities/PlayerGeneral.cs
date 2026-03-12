@@ -36,6 +36,7 @@ public class PlayerGeneral : MonoBehaviour
     [SerializeField] Image mouseItemImage;
     private ItemSlotUI mouseItemOrigin;
 
+    public EntityGeneral currentInteractable;
     public Container currentOpenContainer = null;
 
     [SerializeField] GameObject playerItemThrowBar; //turn on when clicking chargable item
@@ -199,9 +200,11 @@ public class PlayerGeneral : MonoBehaviour
             itemNameUI.enabled = false;
         }
     }
+
     //Interactions
     public void CheckInteractions()
     {
+        CheckInteractions(this.transform.position,1f); //dynamically adjust for that 1
         if (Input.GetKeyDown(KeyCode.E))
         {
             //CheckItems
@@ -210,8 +213,14 @@ public class PlayerGeneral : MonoBehaviour
             {
                 currentOpenContainer.CloseInvCanvas();
             }
-            CheckInteractions(this.transform.position,1f);
-            
+            if (currentInteractable != null)
+            {
+                if (currentInteractable.GetComponent<Container>())
+                {
+                    Container interactCont = currentInteractable.GetComponent<Container>();
+                    interactCont.InteractedWith(this);
+                }
+            }
         }
     }
     public void CheckInteractions(Vector2 where, float searchRadius)
@@ -223,16 +232,48 @@ public class PlayerGeneral : MonoBehaviour
 
         if (results.Length > 0)
         {
-            Collider2D closest = FindClosestCollider(where, results);   
-            //Debug.Log(closest.gameObject.name+ " is interacted with"); 
-            if (closest.gameObject.GetComponent<Container>())
+            bool interactableInRange = false;
+            foreach (var col in results)
             {
-                Container interactCont = closest.gameObject.GetComponent<Container>();
-                interactCont.InteractedWith(this);
+                if (col.gameObject.GetComponent<EntityGeneral>() == false)
+                {
+                    DisableCurrentInteract();
+                    continue;
+                }
+                if (col.gameObject.GetComponent<EntityGeneral>().interactable)
+                {
+                    interactableInRange = true;
+                }
+            }
+            if (interactableInRange)
+            {
+                Collider2D closest = FindClosestInteractable(where, results); 
+                DisableCurrentInteract();
+
+                currentInteractable = closest.GetComponent<EntityGeneral>();
+                currentInteractable.currentInteract = true;
+                currentInteractable.ChangeMaterial(false);
+            }
+            else
+            {
+                DisableCurrentInteract();
             }
         }
+        else if (currentInteractable != null)
+        {
+            DisableCurrentInteract();
+        }
     }
-    public Collider2D FindClosestCollider(Vector2 origin, Collider2D[] colliders)
+    void DisableCurrentInteract()
+    {
+        if (currentInteractable != null)
+        {
+            currentInteractable.currentInteract = false;
+            currentInteractable.ChangeMaterial(false);
+            currentInteractable = null;
+        }
+    }
+    public Collider2D FindClosestInteractable(Vector2 origin, Collider2D[] colliders)
     {
         Collider2D colliderIte = colliders[0];
         foreach (var col in colliders)
@@ -241,9 +282,11 @@ public class PlayerGeneral : MonoBehaviour
             {
                 continue;
             }
-            if ((Vector2.Distance(origin,(Vector2)col.transform.position) < Vector2.Distance(origin,(Vector2)colliderIte.transform.position) 
-                || !colliderIte.gameObject.GetComponent<EntityGeneral>().interactable)
-                && col.gameObject.GetComponent<EntityGeneral>().interactable)
+            float currentDist = Vector2.Distance(origin,(Vector2)colliderIte.transform.position);
+            float iteDist = Vector2.Distance(origin,(Vector2)col.transform.position);
+            bool currentIsInteractable = colliderIte.gameObject.GetComponent<EntityGeneral>().interactable;
+            bool iteIsInteractable = col.gameObject.GetComponent<EntityGeneral>().interactable;
+            if (((iteDist < currentDist) || !currentIsInteractable) && iteIsInteractable)
             {
                 colliderIte = col;
             }

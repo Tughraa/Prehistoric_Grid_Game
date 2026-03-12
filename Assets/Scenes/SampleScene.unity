@@ -857,15 +857,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 80
+      value: 105
       objectReference: {fileID: 0}
     - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6495190579221552310, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: invPosition
@@ -1173,6 +1177,7 @@ MonoBehaviour:
   detectBoxDist: 0.5
   defaultMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   hurtMaterial: {fileID: 2100000, guid: 9875a245ac49007498213638a307faa1, type: 2}
+  interactMaterial: {fileID: 0}
   rigid: {fileID: 0}
   entityStatusEffects: {fileID: 0}
   mapManager: {fileID: 850553508}
@@ -1194,6 +1199,7 @@ MonoBehaviour:
   currentIFrames: 0
   destroyOnDead: 0
   interactable: 0
+  currentInteract: 0
 --- !u!212 &429455406
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10705,15 +10711,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 80
+      value: 105
       objectReference: {fileID: 0}
     - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6495190579221552310, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: invPosition
@@ -10972,15 +10982,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 80
+      value: 105
       objectReference: {fileID: 0}
     - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4932065468020066526, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: m_Enabled
@@ -11743,6 +11757,7 @@ MonoBehaviour:
   detectBoxDist: 0.5
   defaultMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   hurtMaterial: {fileID: 2100000, guid: 9875a245ac49007498213638a307faa1, type: 2}
+  interactMaterial: {fileID: 0}
   rigid: {fileID: 0}
   entityStatusEffects: {fileID: 0}
   mapManager: {fileID: 850553508}
@@ -11764,6 +11779,7 @@ MonoBehaviour:
   currentIFrames: 0
   destroyOnDead: 1
   interactable: 0
+  currentInteract: 0
 --- !u!212 &1477339587
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -12203,6 +12219,7 @@ MonoBehaviour:
   detectBoxDist: 0.5
   defaultMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   hurtMaterial: {fileID: 2100000, guid: 9875a245ac49007498213638a307faa1, type: 2}
+  interactMaterial: {fileID: 0}
   rigid: {fileID: 0}
   entityStatusEffects: {fileID: 0}
   mapManager: {fileID: 850553508}
@@ -12224,6 +12241,7 @@ MonoBehaviour:
   currentIFrames: 0
   destroyOnDead: 0
   interactable: 0
+  currentInteract: 0
 --- !u!114 &1731634682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12281,6 +12299,7 @@ MonoBehaviour:
   - {fileID: 1295847632}
   selectedSlotImage: {fileID: 12314772}
   mouseItemImage: {fileID: 1148171238}
+  currentInteractable: {fileID: 0}
   currentOpenContainer: {fileID: 0}
   playerItemThrowBar: {fileID: 145434374}
   playerItemCharge: {fileID: 1088293014}
@@ -12396,15 +12415,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 80
+      value: 105
       objectReference: {fileID: 0}
     - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6495190579221552310, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: myInventory
@@ -13290,6 +13313,7 @@ MonoBehaviour:
   detectBoxDist: 0.5
   defaultMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   hurtMaterial: {fileID: 2100000, guid: 9875a245ac49007498213638a307faa1, type: 2}
+  interactMaterial: {fileID: 0}
   rigid: {fileID: 0}
   entityStatusEffects: {fileID: 0}
   mapManager: {fileID: 850553508}
@@ -13311,6 +13335,7 @@ MonoBehaviour:
   currentIFrames: 0
   destroyOnDead: 0
   interactable: 0
+  currentInteract: 0
 --- !u!212 &2088059007
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -13557,15 +13582,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 80
+      value: 105
       objectReference: {fileID: 0}
     - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4357384402817431936, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6495190579221552310, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
       propertyPath: invPosition

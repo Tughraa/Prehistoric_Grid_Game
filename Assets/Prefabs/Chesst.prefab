@@ -109,6 +109,7 @@ MonoBehaviour:
   detectBoxDist: 0.5
   defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   hurtMaterial: {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
+  interactMaterial: {fileID: 2100000, guid: b6f1211aafc8aee4badcade864a9fd75, type: 2}
   rigid: {fileID: 0}
   entityStatusEffects: {fileID: 0}
   mapManager: {fileID: 0}
@@ -130,6 +131,7 @@ MonoBehaviour:
   currentIFrames: 0
   destroyOnDead: 1
   interactable: 1
+  currentInteract: 0
 --- !u!114 &7820637537079666162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,7 +220,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 1.25, y: 1.25}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

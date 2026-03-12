@@ -11,6 +11,7 @@ public class EntityGeneral : MonoBehaviour
     [SerializeField] float detectBoxDist = 0.5f;
     [SerializeField] Material defaultMaterial;
     [SerializeField] Material hurtMaterial;
+    [SerializeField] Material interactMaterial;
     RaycastHit2D[] results;
     public Rigidbody2D rigid;
     public EntityStatusEffects entityStatusEffects;
@@ -177,6 +178,10 @@ public class EntityGeneral : MonoBehaviour
         if (hurt)
         {
             spir.material = hurtMaterial;
+        }
+        else if (currentInteract)
+        {
+            spir.material = interactMaterial;
         }
         else
         {

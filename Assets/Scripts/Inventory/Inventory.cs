@@ -185,8 +185,10 @@ public class Inventory : MonoBehaviour
                     ItemPickUp itemObj = col.gameObject.GetComponent<ItemPickUp>();
                     if (itemObj.itemEntity || playerIsTrying)
                     {
-                        GiveItem(itemObj.storedItem);
-                        itemObj.GetPickedUp();
+                        if (GiveItem(itemObj.storedItem))
+                        {
+                            itemObj.GetPickedUp();
+                        }
                     }
                 }
             }

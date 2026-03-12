@@ -124,6 +124,7 @@ MonoBehaviour:
   detectBoxDist: 0.02
   defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   hurtMaterial: {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
+  interactMaterial: {fileID: 2100000, guid: b6f1211aafc8aee4badcade864a9fd75, type: 2}
   rigid: {fileID: 3899066519568894640}
   entityStatusEffects: {fileID: 8481909636893906490}
   mapManager: {fileID: 0}
@@ -145,6 +146,7 @@ MonoBehaviour:
   currentIFrames: 0
   destroyOnDead: 0
   interactable: 1
+  currentInteract: 0
 --- !u!114 &8481909636893906490
 MonoBehaviour:
   m_ObjectHideFlags: 0
