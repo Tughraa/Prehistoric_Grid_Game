@@ -11,6 +11,7 @@ public class SpeedEffect : IStatusEffect
     public Color GetColor => new Color(0.02f,0.6f,0.8f,0.85f);
     public bool hasParticles => true;
     public bool IsFinished => (effectDuration <= 0f);
+    public float remainingDuraton => effectDuration;
     
     public SpeedEffect(float duration, float strength)
     {

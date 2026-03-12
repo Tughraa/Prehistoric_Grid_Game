@@ -11,6 +11,7 @@ public class HealingEffect : IStatusEffect
     public string GetMessage => ("You're feeling healthier");
     public bool hasParticles => true;
     public bool IsFinished => (effectDuration <= 0f);
+    public float remainingDuraton => effectDuration;
 
     public float applyHealPeriod = 0.75f;
     public float healTimer = 0f;

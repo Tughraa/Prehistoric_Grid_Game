@@ -2,9 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class NameAndIcon
+{
+    public string statusName;
+    public Sprite statusIcon;
+}
 public class BehaviourAdder : MonoBehaviour
 {
     public AllSystems allSystems;
+    public NameAndIcon[] statusIcons;
 
     public void AddItemBehaviours(ItemState state)
     {

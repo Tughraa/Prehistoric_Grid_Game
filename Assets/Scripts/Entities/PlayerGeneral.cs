@@ -43,6 +43,9 @@ public class PlayerGeneral : MonoBehaviour
     [SerializeField] Image playerItemCharge;        //update based on item throwstuffs
 
     [SerializeField] GameObject fireStartIcon; 
+    
+    [SerializeField] Transform statusEffectIconsParent; 
+    [SerializeField] GameObject statusEffectIcon; 
 
     void Start()
     {
@@ -58,6 +61,7 @@ public class PlayerGeneral : MonoBehaviour
         CheckUseItems();
         UpdateInventoryVisual();
         HeldItemSpecifier();
+        OrderStatusIcons();
         if (mouseItem != null)
         {
             MouseHoldingItem();
@@ -311,6 +315,7 @@ public class PlayerGeneral : MonoBehaviour
         }
         return colliderIte;
     }
+
     //Mouse Item
     public void AssignMouseItem(ItemState itemToGet, ItemSlotUI originSlot)
     {
@@ -347,6 +352,7 @@ public class PlayerGeneral : MonoBehaviour
         mouseItemImage.transform.position += (FindMousePos()-mouseItemImage.transform.position)*Time.deltaTime*10f;
         mouseItemImage.transform.eulerAngles = new Vector3(0f,0f,FindMousePos().x-mouseItemImage.transform.position.x)*15f;
     }
+
     //Other UI Elements
     public void Announce(string inText, float totalTime, Color inColor)
     {
@@ -363,5 +369,29 @@ public class PlayerGeneral : MonoBehaviour
             timer -= Time.deltaTime;
         }
         announceBarUI.color = new Color(inColor.r, inColor.g, inColor.b, 0f);
+    }
+    //Status Icons
+    public void MakeStatusIcon(IStatusEffect effect)
+    {
+        float offset = -1.6f;
+        Vector3 pos = statusEffectIconsParent.position + new Vector3(4f,statusEffectIconsParent.childCount*offset,0f);
+        GameObject madeIcon = Instantiate(statusEffectIcon,pos,Quaternion.identity,statusEffectIconsParent);
+        madeIcon.GetComponent<StatusIcon>().effect = effect;
+        madeIcon.GetComponent<StatusIcon>().behaviourAdder = allSystems.behaviourAdder;
+    }
+    void OrderStatusIcons()
+    {
+        if (statusEffectIconsParent.childCount <= 0) //no children
+        {
+            return;
+        }
+        float offset = -1.6f;
+        for (int i = 0; statusEffectIconsParent.childCount > i; i++) //iterate over children
+        {
+            Vector3 pos = statusEffectIconsParent.position + new Vector3(0f,i*offset,0f);
+            Debug.Log("update pos index: "+i);
+            statusEffectIconsParent.GetChild(i).GetComponent<StatusIcon>().desiredPos = pos;
+            //statusEffectIconsParent.GetChild(i).position = pos;
+        }
     }
 }

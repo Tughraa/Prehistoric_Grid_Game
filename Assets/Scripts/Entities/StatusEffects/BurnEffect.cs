@@ -11,6 +11,7 @@ public class BurnEffect : IStatusEffect
     public string GetMessage => ("You are burning!");
     public bool hasParticles => false;
     public bool IsFinished => (effectDuration <= 0f);
+    public float remainingDuraton => effectDuration;
 
     public float applyDamagePeriod = 0.75f;
     float damageTimer = 0f;

@@ -11,6 +11,7 @@ public class FreezeEffect : IStatusEffect
     public Color GetColor => new Color(0.85f,0.89f,0.98f,0.85f);
     public bool hasParticles => true;
     public bool IsFinished => (effectDuration <= 0f);
+    public float remainingDuraton => effectDuration;
     
     public FreezeEffect(float duration, float strength)
     {

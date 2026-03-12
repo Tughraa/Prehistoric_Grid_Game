@@ -11,6 +11,7 @@ public class StunEffect : IStatusEffect
     public Color GetColor => new Color(0.93f,0.74f,0.3f,0.85f);
     public bool hasParticles => true;
     public bool IsFinished => (effectDuration <= 0f);
+    public float remainingDuraton => effectDuration;
     
     public StunEffect(float duration, float strength)
     {

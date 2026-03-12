@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
 public class EntityStatusEffects : MonoBehaviour
@@ -58,7 +59,7 @@ public class EntityStatusEffects : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Y) && entityGeneral.entityType == "player")
         {
-            this.AddEffect(new FloatEffect(duration: 5f,strength: 0.125f));
+            this.AddEffect(new FlyEffect(duration: 10f,strength: 1f));
         }
         if (Input.GetKeyDown(KeyCode.M) && entityGeneral.entityType == "player")
         {
@@ -83,7 +84,10 @@ public class EntityStatusEffects : MonoBehaviour
         //Add specifier here
         if (entityGeneral.entityType == "player")
         {
-            entityGeneral.GetComponent<PlayerGeneral>().Announce(effect.GetMessage,3.5f,effect.GetColor);
+            PlayerGeneral player = entityGeneral.GetComponent<PlayerGeneral>(); 
+            player.Announce(effect.GetMessage,3.5f,effect.GetColor);
+            //Make status icons
+            player.MakeStatusIcon(effect);
         }
         effect.OnApply(entityGeneral);
         effects.Add(effect);
@@ -205,4 +209,5 @@ public class EntityStatusEffects : MonoBehaviour
         }
         return currentGrav;
     }
+    //UI related, maybe move this to the player side
 }

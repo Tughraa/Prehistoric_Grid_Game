@@ -11,6 +11,7 @@ public class FlyEffect : IStatusEffect
     public string GetMessage => ("You feel liberated from the ground");
     public bool hasParticles => true;
     public bool IsFinished => (effectDuration <= 0f);
+    public float remainingDuraton => effectDuration;
     
     public FlyEffect(float duration, float strength)
     {

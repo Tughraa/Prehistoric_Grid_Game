@@ -11,6 +11,7 @@ public class FloatEffect : IStatusEffect
     public string GetMessage => ("You feel lighter than a feather...");
     public bool hasParticles => true;
     public bool IsFinished => (effectDuration <= 0f);
+    public float remainingDuraton => effectDuration;
     
     public FloatEffect(float duration, float strength)
     {

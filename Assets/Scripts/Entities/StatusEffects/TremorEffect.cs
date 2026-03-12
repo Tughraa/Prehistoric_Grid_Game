@@ -11,6 +11,7 @@ public class TremorEffect : IStatusEffect
     public string GetMessage => ("You are violently shaking!");
     public bool hasParticles => true;
     public bool IsFinished => (effectDuration <= 0f);
+    public float remainingDuraton => effectDuration;
 
     public float applyBreakPeriod = 0.75f;
     float breakTimer = 0f;

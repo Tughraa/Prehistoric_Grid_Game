@@ -12,6 +12,7 @@ public class PoisonEffect : IStatusEffect
     public Color GetColor => new Color(0.3f,0.67f,0.0f,0.65f);
     public bool hasParticles => true;
     public bool IsFinished => (effectDuration <= 0f);
+    public float remainingDuraton => effectDuration;
 
     public float applyDamagePeriod = 0.75f;
     float damageTimer = 0f;

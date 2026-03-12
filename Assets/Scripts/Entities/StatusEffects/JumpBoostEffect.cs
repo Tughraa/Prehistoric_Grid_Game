@@ -11,6 +11,7 @@ public class JumpBoostEffect : IStatusEffect
     public Color GetColor => new Color(0.02f,0.86f,0.25f,0.85f);
     public bool hasParticles => true;
     public bool IsFinished => (effectDuration <= 0f);
+    public float remainingDuraton => effectDuration;
     
     public JumpBoostEffect(float duration, float strength)
     {
