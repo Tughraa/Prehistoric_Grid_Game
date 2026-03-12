@@ -40,4 +40,18 @@ public class BlockPlacerBehaviour : IItemBehaviour
         
         //Debug.Log("stopped holding: "+state.itemData.id);
     }
+    public bool CanFireStart(Vector3Int blockPos, AllSystems allSystems)
+    {
+        FireSystem fireSystem = allSystems.fireSystem;
+        MapManager mapManager = allSystems.mapManager;
+        if (mapManager.HasBlock(blockPos) == false) //if there's no block
+        {
+            return true;
+        }
+        else if (fireSystem.BlockFireInteractable(mapManager.GetBlock(blockPos).blockData))
+        {
+            return true;
+        }
+        return false;
+    }
 }

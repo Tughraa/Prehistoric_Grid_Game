@@ -42,6 +42,8 @@ public class PlayerGeneral : MonoBehaviour
     [SerializeField] GameObject playerItemThrowBar; //turn on when clicking chargable item
     [SerializeField] Image playerItemCharge;        //update based on item throwstuffs
 
+    [SerializeField] GameObject fireStartIcon; 
+
     void Start()
     {
         playerMovement = this.GetComponent<PlayerMovement>();
@@ -71,6 +73,20 @@ public class PlayerGeneral : MonoBehaviour
             playerEntity.Damage(10f,"void");
         }
         playerHealthAnim.fillAmount += (playerHealthBar.fillAmount-playerHealthAnim.fillAmount)/10f;
+        if (playerInventory.HeldItem() != null)
+        {
+            if (playerInventory.HeldItem().itemData.id == "fire_starter") //make this more general
+            {
+                Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector3Int mouseIntPos = allSystems.mapManager.FloatToGridPos(mousePos);
+                if (playerInventory.HeldItem().GetBehaviour<BlockPlacerBehaviour>().CanFireStart(mouseIntPos,allSystems))
+                {
+                    //inst the thing
+                    Debug.Log("do the fire");
+                    Instantiate(fireStartIcon,mouseIntPos+new Vector3(0f,0f,-1f),Quaternion.identity);
+                }
+            }
+        }
     }
     
     //Health
@@ -118,6 +134,8 @@ public class PlayerGeneral : MonoBehaviour
         }
     }
 
+    /*------All About UI-------*/
+    /*-Move This Somewhere Else*/
 
     //Inventory
     public void ChangeSlots()
@@ -185,7 +203,7 @@ public class PlayerGeneral : MonoBehaviour
         }
         for (int i = 0; i < playerInventory.items.Length; i++)
         {
-            inventorySlotImages[i].UpdateViusal();
+            inventorySlotImages[i].UpdateVisual();
         }
     }
     public void HeldItemSpecifier()

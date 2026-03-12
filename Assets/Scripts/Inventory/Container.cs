@@ -139,7 +139,7 @@ public class Container : MonoBehaviour
         GameObject createdSlot = Instantiate(slotUIfab,slotParent.transform.position+instOffset,Quaternion.identity,slotParent.transform); 
         ItemSlotUI slotUI = createdSlot.GetComponent<ItemSlotUI>();
         slotUI.AssignAttributes(this,inventory,orderPos);
-        slotUI.UpdateViusal();
+        slotUI.UpdateVisual();
     }
     public void CloseInvCanvas()
     {

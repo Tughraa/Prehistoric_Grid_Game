@@ -28,7 +28,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         myInventory = inv;
         invPosition = pos;
     }
-    public void UpdateViusal()
+    public void UpdateVisual()
     {
         if (myInventory.SlotHasItem(invPosition))
         {
@@ -52,7 +52,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             StoppedClickingOn();
         }
-        UpdateViusal(); //May not be the best solution, but will work for now.
+        UpdateVisual(); //May not be the best solution, but will work for now.
     }
     public void ClickedOn()
     {
@@ -66,7 +66,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             CurrentPlayer().AssignMouseItem(myInventory.GetSlotItem(invPosition), this);
             RemoveItemThisSlot(); //Taking and removing may not be right, think about the way we moved blocks instead
         }
-        UpdateViusal();
+        UpdateVisual();
     }
     public void StoppedClickingOn()
     {
@@ -92,17 +92,17 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             ReplaceItemThisSlot(player.GetMouseItem());
             player.RemoveMouseItem();
         }
-        UpdateViusal();
+        UpdateVisual();
     }
     public void ReplaceItemThisSlot(ItemState itemToReplace)
     {
         myInventory.ReplaceItem(invPosition,itemToReplace);
-        UpdateViusal();
+        UpdateVisual();
     }
     public void RemoveItemThisSlot()
     {
         myInventory.ClearItemSlot(invPosition);
-        UpdateViusal();
+        UpdateVisual();
     }
     public PlayerGeneral CurrentPlayer()
     {

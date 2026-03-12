@@ -12303,6 +12303,7 @@ MonoBehaviour:
   currentOpenContainer: {fileID: 0}
   playerItemThrowBar: {fileID: 145434374}
   playerItemCharge: {fileID: 1088293014}
+  fireStartIcon: {fileID: 5071157536665496311, guid: 9d1bbc383361a184cb0b8fe9d06198cc, type: 3}
 --- !u!114 &1731634684
 MonoBehaviour:
   m_ObjectHideFlags: 0
