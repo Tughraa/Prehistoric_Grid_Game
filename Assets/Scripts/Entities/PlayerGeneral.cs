@@ -94,7 +94,16 @@ public class PlayerGeneral : MonoBehaviour
     }
     
     //Health
-    public void GetHurt(string damageType)
+    void OnEnable()
+    {
+        playerEntity.EntityDamaged += GetHurt; //Subscribe and start to listen
+    }
+
+    void OnDisable()
+    {
+        playerEntity.EntityDamaged -= GetHurt; //stop listening
+    }
+    public void GetHurt(EntityGeneral entity, float amount, string damageType)
     {
         UpdateHealthBar();
         if (playerEntity.health <= 0f) //Dead
@@ -226,11 +235,11 @@ public class PlayerGeneral : MonoBehaviour
     //Interactions
     public void CheckInteractions()
     {
-        CheckInteractions(this.transform.position,1f); //dynamically adjust for that 1
+        CheckInteractions(this.transform.position,playerEntity.entityReach); //dynamically adjust for that 1
         if (Input.GetKeyDown(KeyCode.E))
         {
             //CheckItems
-            playerInventory.TryItemPickUp(this.transform.position,1f,true); //dynamicaly adjust for playerSize
+            playerInventory.TryItemPickUp(this.transform.position,playerEntity.entityReach,true); //dynamicaly adjust for playerSize
             if (currentOpenContainer != null)
             {
                 currentOpenContainer.CloseInvCanvas();

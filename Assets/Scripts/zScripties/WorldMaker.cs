@@ -10,6 +10,7 @@ public class WorldMaker : MonoBehaviour
     public AllSystems allSystems;
     public RandomSystem randomSystem;
     public BlockData defaultBlock;
+    public BlockData defaultLightBlock;
     public Vector2Int xLimit;
     public Vector2Int yLimit;
     public float perlinThreshold = 0.4f;
@@ -25,12 +26,44 @@ public class WorldMaker : MonoBehaviour
         //MapClear();
         mapManager.ReadMapBlocks();
         PutBlocks(xLimit,yLimit);
+        PutSurface(xLimit,yLimit.y+2,20);
         StartCoroutine(PlaceContent(0.5f));
         StartCoroutine(ScanTheWorld(0.7f));
     }
     void MapClear()
     {
         mapManager.blockLayer.ClearAllTiles();
+    }
+    void PutSurface(Vector2Int xRange, int yLower, int thickness)
+    {
+        for (int ix = xLimit.x; ix <= xLimit.y; ix++)
+        {
+            float upperPerlin = (OneDimPerlinEval(ix,perlinConst*5f,0.05f)*3f + OneDimPerlinEval(ix,perlinConst*3f,0.01f)*7f)/10f;
+            float middlePerlin = (upperPerlin /1.5f)-OneDimPerlinEval(ix,perlinConst*90f,0.08f)/4f;
+            float lowerPerlin = (upperPerlin /2f)-OneDimPerlinEval(ix,perlinConst*10f,0.05f)/3f;
+            
+            for (int iy = 0; iy <= thickness; iy++)
+            {
+                Vector3Int checkPos = new Vector3Int(ix,iy+yLower,0);
+                float yRatio = (float)iy/(float)thickness;
+                bool over = (upperPerlin > yRatio) ? true : false;
+                bool under = (lowerPerlin < yRatio) ? true : false;
+                Debug.Log("ratio is: "+yRatio+"\nperlin is: "+upperPerlin+over);
+                if (over && under && mapManager.HasBlock(checkPos) == false)
+                {
+                    if (middlePerlin < yRatio)
+                    {
+                        mapManager.PlaceBlock(checkPos,defaultLightBlock);
+                    }
+                    else
+                    {
+                        mapManager.PlaceBlock(checkPos,defaultBlock);
+                        //mapManager.blockLayer.SetColor(checkPos,new Color(0.8f,0.5f,0.4f,1f));
+                    }
+                }
+            }
+
+        }
     }
     void PutBlocks(Vector2Int xRange, Vector2Int yRange)
     {
@@ -39,18 +72,25 @@ public class WorldMaker : MonoBehaviour
             for (int iy = yLimit.x; iy <= yLimit.y; iy++)
             {
                 //Debug.Log(ix+" "+iy+" "+ Mathf.PerlinNoise((float)ix,(float)iy));
-                if (PerlinEval(ix,iy) && mapManager.HasBlock(new Vector3Int(ix,iy,0)) == false)
+                if (PerlinEval(ix,iy,perlinThreshold) && mapManager.HasBlock(new Vector3Int(ix,iy,0)) == false)
                 {
-                    mapManager.PlaceBlock(new Vector3Int(ix,iy,0),defaultBlock);
+                    if (PerlinEval(ix,iy,perlinThreshold*1.4f))
+                    {
+                        mapManager.PlaceBlock(new Vector3Int(ix,iy,0),defaultLightBlock);
+                    }
+                    else
+                    {
+                        mapManager.PlaceBlock(new Vector3Int(ix,iy,0),defaultBlock);
+                    }
                 }
             }
         }
     }
-    bool PerlinEval(float xP, float yP)
+    bool PerlinEval(float xP, float yP,float threshold)
     {
         float perlinVal = Mathf.PerlinNoise(xP*perlinMultX+perlinConst,yP*perlinMultY+perlinConst);
         //Debug.Log(perlinVal);
-        if (perlinVal >= perlinThreshold)
+        if (perlinVal >= threshold)
         {
             return true;
         }
@@ -59,21 +99,26 @@ public class WorldMaker : MonoBehaviour
             return false;
         }
     }
+    float OneDimPerlinEval(float xPos, float constant, float strech)
+    {
+        return Mathf.PerlinNoise(xPos*strech+constant,perlinConst); 
+    }
     //Placing other other things
     void PlaceMapThings()
     {
         PlaceVines(75);
         PlaceBlocksRandomly("explosive",40);
-        PlaceEntitiesRandomly("chest",50); //it was 50 before
-        PlaceEntitiesRandomly("shooter_enemy",AmountOfShooters);
+        PlaceEntitiesRandomly("chest",50,1); //it was 50 before
+        PlaceEntitiesRandomly("shooter_enemy",AmountOfShooters,1);
+        PlaceEntitiesRandomly("stalagmite",50,-1); //adjust
         PlaceBlockClumpsRandomly(7); //normally 7
         allSystems.explosionSystem.ExplodeSimple(new Vector2(-46,-3),6f,2f,null);
     }
-    public void PlaceEntitiesRandomly(string entityName, int howMany)
+    public void PlaceEntitiesRandomly(string entityName, int howMany, int dir)
     {
         for (int i = 0; i < howMany; i++)
         {
-            PlaceEntityByName(entityName,RandomAvailablePos(1)+new Vector3(0f,0f,-0.5f));
+            PlaceEntityByName(entityName,RandomAvailablePos(dir)+new Vector3(0f,0f,-0.5f));
         }
     }
     public void PlaceBlocksRandomly(string blockName, int howMany)

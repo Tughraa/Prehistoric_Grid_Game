@@ -12,6 +12,7 @@ public class MapManager : MonoBehaviour
     public Dictionary<Vector3Int, BlockState> allBlocks = new Dictionary<Vector3Int, BlockState>();
 
     public event Action<Vector3Int, BlockData> BlockPlaced;
+    public event Action<Vector3Int, BlockData> BlockRemoved;
 
     public BlockData blockToPlace;
     public BlockData blockToReadDef;
@@ -24,12 +25,12 @@ public class MapManager : MonoBehaviour
 
     void Awake()
     {
-        //ReadMapBlocks();
+        ReadMapBlocks();
     }
 
     void Start()
     {
-        ReadMapBlocks();
+        //ReadMapBlocks();
     }
     void Update()
     {
@@ -81,6 +82,7 @@ public class MapManager : MonoBehaviour
         {
             blockLayer.SetTile(pos, null); //Remove from tiles
             breakLayer.SetTile(pos, null); //Remove the break thing
+            BlockRemoved?.Invoke(pos, allBlocks[pos].blockData); //notify the listeners
 
             
             blocksToTick.Remove(allBlocks[pos]); //Remove from blocksToTick
@@ -138,6 +140,10 @@ public class MapManager : MonoBehaviour
             {continue;}
 
             //BlockType type = tileToBlockMap[tile];
+            if (allBlocks.ContainsKey(pos))
+            {
+                continue;
+            }
             blockLayer.SetTile(pos, null); 
             PlaceBlock(pos, blockToPlace); //only places this block for now, we can update with a secondary dictionary
         }

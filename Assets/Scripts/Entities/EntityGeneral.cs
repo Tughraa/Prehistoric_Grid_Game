@@ -33,6 +33,8 @@ public class EntityGeneral : MonoBehaviour
     public float health = 10f;
     public bool dead = false;
     public float iFrameTime = 0.05f;
+
+    public float entityReach = 1f;
     
     /*
     public float entitySpeed = 1f;
@@ -51,6 +53,8 @@ public class EntityGeneral : MonoBehaviour
     public bool destroyOnDead = false;
     public bool interactable = false;
     public bool currentInteract = false; //implement it's usage
+
+    public event Action<EntityGeneral,float,string> EntityDamaged;
     
     //[Header("New")]
     
@@ -97,8 +101,9 @@ public class EntityGeneral : MonoBehaviour
         ChangeMaterial(true);
         currentIFrames = iFrameTime;
         health -= amount;
-        if (entityType == "player")
-        {playerGeneral.GetHurt(damageType);}
+        EntityDamaged?.Invoke(this, amount, damageType);
+        /*if (entityType == "player")
+        {playerGeneral.GetHurt(damageType);}*/
         if (health <= 0f)
         {
             Death();
@@ -142,7 +147,7 @@ public class EntityGeneral : MonoBehaviour
     public bool OnGround()
     {
         Vector2 originPos = this.transform.position;
-        results = Physics2D.BoxCastAll(originPos,detectBoxSize,0f,new Vector3(0f,-1f,0f),detectBoxDist,groundLayer);
+        results = Physics2D.BoxCastAll(originPos,detectBoxSize,0f,new Vector3(0f,-entityReach,0f),detectBoxDist,groundLayer);
         if (results.Length > 1)
         {
             return true;
@@ -166,7 +171,7 @@ public class EntityGeneral : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireCube(this.transform.position -transform.up*0.5f, detectBoxSize); //GroundColDetect
+        Gizmos.DrawWireCube(this.transform.position -transform.up*0.5f*entityReach, detectBoxSize); //GroundColDetect
     }
     public Vector3Int GetGridPos()
     {

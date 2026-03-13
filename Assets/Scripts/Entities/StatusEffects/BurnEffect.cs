@@ -58,7 +58,7 @@ public class BurnEffect : IStatusEffect
         }
         effectDuration -= deltaTime;
 
-        SpreadToEntities(entity.transform.position,1.2f,entity.gameObject); //Adjust the size based on entitySize
+        SpreadToEntities(entity.transform.position,1.2f*entity.entityReach,entity.gameObject); //Adjust the size based on entitySize
         FireTouchedBlocks(entity.mapManager.allSystems.fireSystem, entity.transform.position);
         //If we want to fire up touched blocks:
         {
