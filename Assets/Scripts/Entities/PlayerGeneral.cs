@@ -24,6 +24,8 @@ public class PlayerGeneral : MonoBehaviour
 
     [SerializeField] TMP_Text announceBarUI;
     public TMP_Text itemNameUI;
+    public Transform heldItemAnchor;
+    private SpriteRenderer heldItemSprite;
 
     float heldDownTime = 0f;
 
@@ -53,6 +55,7 @@ public class PlayerGeneral : MonoBehaviour
         playerEntity = this.GetComponent<EntityGeneral>();
         playerInventory = this.GetComponent<Inventory>();
         playerItemThrowBar.SetActive(false);
+        heldItemSprite = heldItemAnchor.GetChild(0).GetComponent<SpriteRenderer>();
     }
     void Update()
     {
@@ -176,12 +179,13 @@ public class PlayerGeneral : MonoBehaviour
     {
         if (playerInventory.HeldItem() == null) //no items
         {
+            ResetItemThrowBar();
             return;
         }
-        if (Input.GetMouseButton(0))   //Wait until player lets go
+        if (Input.GetMouseButton(0) && canUseItems)   //Wait until player lets go
         {
             heldDownTime += Time.deltaTime;
-            if (playerInventory.HeldItem().itemData.tags.Contains("throwable")) //find held item see throwable tag
+            if (playerInventory.HeldItem().itemData.tags.Contains("charging")) //find held item see throwable tag
             {
                 playerItemThrowBar.SetActive(true);
                 //change fill
@@ -194,18 +198,25 @@ public class PlayerGeneral : MonoBehaviour
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             playerInventory.ItemUsing(mousePos,heldDownTime);
 
-            heldDownTime = 0f;
-            
-            playerItemThrowBar.SetActive(false);
+            ResetItemThrowBar();
         }
-        if (Input.GetMouseButtonUp(1) && canUseItems) //Now interact
+        if (Input.GetMouseButtonUp(1) && canUseItems) //Right Click for alternative item use
         {
             
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             playerInventory.ItemRightClick(mousePos,heldDownTime);
-
-            heldDownTime = 0f;
+            ResetItemThrowBar();
         }
+        if (canUseItems == false)
+        {
+            ResetItemThrowBar();
+        }
+    }
+    void ResetItemThrowBar() 
+    {
+        heldDownTime = 0f;
+        playerItemCharge.fillAmount = 0f;
+        playerItemThrowBar.SetActive(false);
     }
     public void UpdateInventoryVisual()
     {
@@ -225,10 +236,26 @@ public class PlayerGeneral : MonoBehaviour
         {
             itemNameUI.enabled = true;
             itemNameUI.text = playerInventory.HeldItem().itemData.itemName;
+            
+            heldItemSprite.enabled = true;
+            heldItemSprite.sprite = playerInventory.HeldItem().itemData.sprite;
+            if (playerInventory.HeldItem().itemData.tags.Contains("mouse_follow"))
+            {
+                Vector3 mouseDirVec = -(FindMousePos()-heldItemAnchor.position).normalized;
+                float mouseDirAngle = Mathf.Atan2(-mouseDirVec.x,mouseDirVec.y)* Mathf.Rad2Deg-90f;
+                //float transAngle = heldItemAnchor.eulerAngles.z+(mouseDirAngle-heldItemAnchor.eulerAngles.z)*Time.deltaTime;
+                heldItemAnchor.eulerAngles = new Vector3(0f,0f,mouseDirAngle);
+            }
+            else
+            {
+                float itemHoldAngle = -5.27f;
+                heldItemAnchor.eulerAngles = new Vector3(0f,0f,itemHoldAngle);
+            }
         }
         else
         {
             itemNameUI.enabled = false;
+            heldItemSprite.enabled = false;
         }
     }
 

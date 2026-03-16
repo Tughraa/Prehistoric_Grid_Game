@@ -45,6 +45,10 @@ public class BehaviourAdder : MonoBehaviour
                 state.AddBehaviour(new BlockPlacerBehaviour(fireBlock));
                 state.AddBehaviour(new ConsumableItemBehaviour());
                 break;
+            case "stick":
+                state.AddBehaviour(new PusherItemBehaviour(1f,600f));
+                //state.AddBehaviour(new ConsumableItemBehaviour());
+                break;
             default:
                 break;
         }

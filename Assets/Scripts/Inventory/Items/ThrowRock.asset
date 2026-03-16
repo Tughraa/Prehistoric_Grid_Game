@@ -18,3 +18,5 @@ MonoBehaviour:
   tags:
   - throwable
   - consumable
+  - mouse_follow
+  - charging

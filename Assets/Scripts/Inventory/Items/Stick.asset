@@ -10,13 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8433411e67438b5438ec37c5b839134c, type: 3}
-  m_Name: PlantSeed
+  m_Name: Stick
   m_EditorClassIdentifier: 
-  id: plant_seed
-  itemName: Pocket Plant
-  sprite: {fileID: 21300000, guid: 637c576682dc93545a804036252b1af0, type: 3}
+  id: stick
+  itemName: Stick
+  sprite: {fileID: 21300000, guid: 9d61727ba438efb4eaa88c16e487996d, type: 3}
   tags:
-  - throwable
-  - consumable
   - mouse_follow
   - charging

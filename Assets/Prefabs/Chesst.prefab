@@ -125,6 +125,7 @@ MonoBehaviour:
   health: 4
   dead: 0
   iFrameTime: 0.05
+  entityReach: 1
   entityStopDecel: 0
   tags: []
   damageImmunities: []
@@ -281,5 +282,6 @@ MonoBehaviour:
   - potion
   - block_bomb
   - fire_starter
+  - stick
   randomLoot: 1
   locked: 0

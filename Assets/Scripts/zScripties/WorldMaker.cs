@@ -106,12 +106,12 @@ public class WorldMaker : MonoBehaviour
     //Placing other other things
     void PlaceMapThings()
     {
-        PlaceVines(75);
+        PlaceVines(125); //normally 75
         PlaceBlocksRandomly("explosive",40);
         PlaceEntitiesRandomly("chest",50,1); //it was 50 before
         PlaceEntitiesRandomly("shooter_enemy",AmountOfShooters,1);
         PlaceEntitiesRandomly("stalagmite",50,-1); //adjust
-        PlaceBlockClumpsRandomly(7); //normally 7
+        PlaceBlockClumpsRandomly(12); //normally 7
         allSystems.explosionSystem.ExplodeSimple(new Vector2(-46,-3),6f,2f,null);
     }
     public void PlaceEntitiesRandomly(string entityName, int howMany, int dir)

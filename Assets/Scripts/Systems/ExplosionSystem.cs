@@ -6,8 +6,8 @@ public class ExplosionSystem : MonoBehaviour
 {
     public MapManager mapManager;
     public AllSystems allSystems;
-    public GameObject particle1Prefab;
-    public GameObject particle2Prefab;
+    public GameObject expDustParticle;
+    public GameObject expFlashParticle;
     public float explStr = 3f;
     Color debugColor;
 
@@ -32,8 +32,8 @@ public class ExplosionSystem : MonoBehaviour
         if (doParticles)
         {
             //Do Particles here:
-            Instantiate(particle1Prefab,originPos,Quaternion.identity); //Maybe take color from effectsToAdd too
-            GameObject particleInst = Instantiate(particle2Prefab,originPos,Quaternion.identity); //Maybe take color from effectsToAdd too
+            Instantiate(expFlashParticle,originPos,Quaternion.identity); //Maybe take color from effectsToAdd too
+            GameObject particleInst = Instantiate(expDustParticle,originPos,Quaternion.identity); //Maybe take color from effectsToAdd too
             ParticleSystem ps = particleInst.GetComponent<ParticleSystem>();
             ParticleSystem.MainModule ma = ps.main;
             ma.startSpeed = explodeDist*4f;
