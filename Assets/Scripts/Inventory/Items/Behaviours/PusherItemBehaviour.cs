@@ -6,10 +6,12 @@ public class PusherItemBehaviour : IItemBehaviour
 {
     float reachDist;
     float pushForce;
-    public PusherItemBehaviour(float inReachDist, float inPushForce)
+    float blockDamage;
+    public PusherItemBehaviour(float inReachDist, float inPushForce, float inBlockDamage)
     {
         reachDist = inReachDist;
         pushForce = inPushForce;
+        blockDamage = inBlockDamage;
     }
 
     public void Use(EntityGeneral owner, ItemState state, Vector3 mousePos, float heldFor, Inventory inventory, int slot)
@@ -28,7 +30,7 @@ public class PusherItemBehaviour : IItemBehaviour
             Debug.Log("nothing");
             return;
         }
-        if (hit.collider.GetComponent<EntityGeneral>())
+        if (hit.collider.GetComponent<EntityGeneral>()) //entity pushed
         {
             Debug.Log("entity");
             EntityGeneral hitEntity = hit.collider.GetComponent<EntityGeneral>();
@@ -36,8 +38,16 @@ public class PusherItemBehaviour : IItemBehaviour
             owner.Knockback(-pushDir,currentPushForce*(hitEntity.rigid.mass/totalMass));
             hitEntity.Knockback(pushDir,currentPushForce*(owner.rigid.mass/totalMass));
         }
-        else
+        else //non-entity pushed, see if block
         {
+            Vector3 checkPos = detectOrigin+pushDir*reachDist*0.65f; //BLOCK BREAKING
+            MapManager map = owner.allSystems.mapManager;
+            Vector3Int checkPosGrid = map.FloatToGridPos(checkPos);
+            if (map.HasBlock(checkPosGrid))
+            {
+                BlockState hitBlock = map.GetBlock(checkPosGrid);
+                hitBlock.BlockBreak(blockDamage*chargeMult,map);
+            }
             owner.Knockback(-pushDir,currentPushForce);
             Debug.Log("block");
         }

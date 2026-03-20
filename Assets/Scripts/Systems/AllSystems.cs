@@ -14,6 +14,7 @@ public class AllSystems : MonoBehaviour
     public EntitySummonSystem entitySummonSystem;
     public BlockLibrary blockLibrary;
     public RandomSystem randomSystem;
+    public TimeSystem timeSystem;
     public AstarPath astarPath;
     //public float worldTime = 1f;
 }

@@ -46,7 +46,7 @@ public class BehaviourAdder : MonoBehaviour
                 state.AddBehaviour(new ConsumableItemBehaviour());
                 break;
             case "stick":
-                state.AddBehaviour(new PusherItemBehaviour(1f,600f));
+                state.AddBehaviour(new PusherItemBehaviour(1f,600f,1f));
                 //state.AddBehaviour(new ConsumableItemBehaviour());
                 break;
             case "antidote":
@@ -131,7 +131,7 @@ public class BehaviourAdder : MonoBehaviour
             rand = allSystems.randomSystem.effectRNG.Next(0,16);
             if (rand>9)
             {
-                rand -= 16;
+                rand -= 7;
             }
         }
         //rand = 2; //To test certain effects

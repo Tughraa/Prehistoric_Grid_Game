@@ -218,7 +218,7 @@ MonoBehaviour:
   impulseThresh: 4
   damage: 0.19
   blockDamage: 0.1
-  ignoreColAt: 100
+  ignoreColAt: 2
 --- !u!60 &98990697619512002
 PolygonCollider2D:
   m_ObjectHideFlags: 0
