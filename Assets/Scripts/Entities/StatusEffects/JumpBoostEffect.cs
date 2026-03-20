@@ -43,6 +43,7 @@ public class JumpBoostEffect : IStatusEffect
     {
         entity.entityStatusEffects.jumpForceMults.Remove(effectStrength);
         //entity.rigid.velocity = new Vector2(entity.rigid.velocity.x/2f,entity.rigid.velocity.y);
+        effectDuration = -2f;
     }
     public void Tick(EntityGeneral entity, float deltaTime)
     {

@@ -283,5 +283,6 @@ MonoBehaviour:
   - block_bomb
   - fire_starter
   - stick
+  - antidote
   randomLoot: 1
   locked: 0

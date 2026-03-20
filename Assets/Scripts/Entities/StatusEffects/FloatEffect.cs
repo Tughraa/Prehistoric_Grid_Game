@@ -41,6 +41,7 @@ public class FloatEffect : IStatusEffect
     public void OnRemove(EntityGeneral entity)
     {
         entity.entityStatusEffects.gravityScaleMults.Remove(-effectStrength);
+        effectDuration = -2f;
     }
     public void Tick(EntityGeneral entity, float deltaTime)
     {

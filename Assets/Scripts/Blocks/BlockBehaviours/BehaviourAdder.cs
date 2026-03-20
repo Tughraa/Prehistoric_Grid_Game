@@ -32,7 +32,7 @@ public class BehaviourAdder : MonoBehaviour
                 state.AddBehaviour(new GodsHandsItemBehaviour());
                 break;
             case "potion":
-                state.AddBehaviour(new PotionBehaviour(RandomEffect(10f)));
+                state.AddBehaviour(new PotionBehaviour(RandomEffect(10f,true)));
                 state.AddBehaviour(new ConsumableItemBehaviour());
                 break;
             case "plant_seed":
@@ -48,6 +48,10 @@ public class BehaviourAdder : MonoBehaviour
             case "stick":
                 state.AddBehaviour(new PusherItemBehaviour(1f,600f));
                 //state.AddBehaviour(new ConsumableItemBehaviour());
+                break;
+            case "antidote":
+                state.AddBehaviour(new AntidoteBehaviour());
+                state.AddBehaviour(new ConsumableItemBehaviour());
                 break;
             default:
                 break;
@@ -91,7 +95,7 @@ public class BehaviourAdder : MonoBehaviour
         switch (state.blockData.tags[0])
         {
             case "randomEffect":
-                state.AddBehaviour(new EffectGasBehaviour(RandomEffect(6f)));
+                state.AddBehaviour(new EffectGasBehaviour(RandomEffect(6f,false)));
                 break;
             case "poison":
                 state.AddBehaviour(new EffectGasBehaviour(new PoisonEffect(duration: 10f,strength: 0.125f,period: 0.30f)));
@@ -115,13 +119,21 @@ public class BehaviourAdder : MonoBehaviour
                 state.AddBehaviour(new EffectGasBehaviour(new FlyEffect(duration: 10f,strength: 0.2f)));
                 break;
             default:
-                state.AddBehaviour(new EffectGasBehaviour(RandomEffect(6f)));
+                state.AddBehaviour(new EffectGasBehaviour(RandomEffect(6f,false)));
                 break;
         }
     }
-    public IStatusEffect RandomEffect(float givenDuration)
+    public IStatusEffect RandomEffect(float givenDuration, bool likelyGood)
     {
         int rand = allSystems.randomSystem.effectRNG.Next(0,10);
+        if (likelyGood)
+        {
+            rand = allSystems.randomSystem.effectRNG.Next(0,16);
+            if (rand>9)
+            {
+                rand -= 16;
+            }
+        }
         //rand = 2; //To test certain effects
         switch (rand)
         {

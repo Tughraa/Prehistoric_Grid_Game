@@ -218,6 +218,7 @@ MonoBehaviour:
   impulseThresh: 4
   damage: 0.19
   blockDamage: 0.1
+  ignoreColAt: 100
 --- !u!60 &98990697619512002
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -263,8 +264,8 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: -0.46372223, y: 0.4981861}
-      - {x: -0.13455963, y: -0.7566797}
-      - {x: 0.16936493, y: -0.7566797}
+      - {x: -0.24068451, y: -0.47912896}
+      - {x: 0.2754898, y: -0.47640777}
       - {x: 0.45646667, y: 0.5}
   m_UseDelaunayMesh: 0
 --- !u!1 &3567585316429909896

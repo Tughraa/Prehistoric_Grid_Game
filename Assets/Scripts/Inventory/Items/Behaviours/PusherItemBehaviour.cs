@@ -16,6 +16,8 @@ public class PusherItemBehaviour : IItemBehaviour
     {
         Vector3 pushDir = (mousePos-owner.transform.position).normalized;
         Vector3 detectOrigin = owner.transform.position+pushDir*owner.entityReach*0.5f;
+        float chargeMult = Mathf.Clamp(heldFor,0f,0.9f);
+        float currentPushForce = pushForce*chargeMult;
         
         RaycastHit2D hit = Physics2D.Raycast(detectOrigin, pushDir, reachDist);
         Debug.DrawLine(detectOrigin, detectOrigin+pushDir*reachDist, Color.green,2f);
@@ -31,12 +33,12 @@ public class PusherItemBehaviour : IItemBehaviour
             Debug.Log("entity");
             EntityGeneral hitEntity = hit.collider.GetComponent<EntityGeneral>();
             float totalMass = hitEntity.rigid.mass + owner.rigid.mass;
-            owner.Knockback(-pushDir,pushForce*(hitEntity.rigid.mass/totalMass));
-            hitEntity.Knockback(pushDir,pushForce*(owner.rigid.mass/totalMass));
+            owner.Knockback(-pushDir,currentPushForce*(hitEntity.rigid.mass/totalMass));
+            hitEntity.Knockback(pushDir,currentPushForce*(owner.rigid.mass/totalMass));
         }
         else
         {
-            owner.Knockback(-pushDir,pushForce);
+            owner.Knockback(-pushDir,currentPushForce);
             Debug.Log("block");
         }
     }

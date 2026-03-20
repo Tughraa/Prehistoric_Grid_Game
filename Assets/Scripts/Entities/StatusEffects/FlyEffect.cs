@@ -51,6 +51,7 @@ public class FlyEffect : IStatusEffect
         {
             entity.GetComponent<PlayerMovement>().flying = false;
         }
+        effectDuration = -2f;
     }
     public void Tick(EntityGeneral entity, float deltaTime)
     {

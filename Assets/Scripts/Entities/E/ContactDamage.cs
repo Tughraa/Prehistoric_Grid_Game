@@ -10,7 +10,9 @@ public class ContactDamage : MonoBehaviour
     public float impulseThresh = 4f;
     public float damage = 0.19f;
     public float blockDamage = 0.15f;
+    public int ignoreColAt = 2;
     int currentCols = 0;
+
     
     void Start()
     {
@@ -31,7 +33,7 @@ public class ContactDamage : MonoBehaviour
 
             Debug.Log("impulse is: "+impulse+"\ncollisions: "+currentCols);
             //instead of checking for the collisions, try on ground of some sorts?
-            if (impulse >impulseThresh && currentCols == 1) 
+            if (impulse >impulseThresh && currentCols < ignoreColAt) 
             {
                 hitEntity.KnockbackAtPos(col.contacts[0].normal, col.contacts[0].point, 300f);
                 hitEntity.Damage(damage*impulse,"smashing");

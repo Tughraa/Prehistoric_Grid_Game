@@ -47,6 +47,7 @@ public class BurnEffect : IStatusEffect
     public void OnRemove(EntityGeneral entity)
     {
         entity.burning = false;
+        effectDuration = -2f;
     }
     public void Tick(EntityGeneral entity, float deltaTime)
     {

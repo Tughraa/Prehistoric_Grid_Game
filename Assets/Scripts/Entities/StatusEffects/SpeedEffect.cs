@@ -45,6 +45,7 @@ public class SpeedEffect : IStatusEffect
         entity.rigid.velocity = new Vector2(entity.rigid.velocity.x/2f,entity.rigid.velocity.y);
 
         entity.entityStatusEffects.speedMults.Remove(effectStrength);
+        effectDuration = -2f;
     }
     public void Tick(EntityGeneral entity, float deltaTime)
     {

@@ -46,6 +46,7 @@ public class StunEffect : IStatusEffect
 
         entity.entityStatusEffects.speedMults.Remove(1f/effectStrength);
         entity.entityStatusEffects.jumpForceMults.Remove(3f/effectStrength);
+        effectDuration = -2f;
     }
     public void Tick(EntityGeneral entity, float deltaTime)
     {

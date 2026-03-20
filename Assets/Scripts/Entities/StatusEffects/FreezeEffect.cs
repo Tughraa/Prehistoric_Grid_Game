@@ -48,6 +48,7 @@ public class FreezeEffect : IStatusEffect
         entity.entityStatusEffects.speedMults.Remove(1f/effectStrength);
         entity.entityStatusEffects.jumpForceMults.Remove(0.8f);
         entity.damageImmunities.Remove("fire");
+        effectDuration = -2f;
     }
     public void Tick(EntityGeneral entity, float deltaTime)
     {

@@ -98,17 +98,28 @@ public class EntityStatusEffects : MonoBehaviour
         {
             if (effects[i].GetType() == effectType)
             {
-                effects[i].OnRemove(this.entityGeneral);
-                effects.RemoveAt(i);
+                RemoveEffectAtIndex(i);
             }
         }
+    }
+    public void RemoveAllEffects()
+    {
+        for (int i = effects.Count - 1; i >= 0; i--)
+        {
+            RemoveEffectAtIndex(i);
+        }
+    }
+    public void RemoveEffectAtIndex(int i) //the bug is that we remove it before
+    {
+        effects[i].OnRemove(this.entityGeneral);
+        effects.RemoveAt(i);
     }
     public void TransferEffects(EntityStatusEffects to)
     {
         for (int i = effects.Count - 1; i >= 0; i--)
         {
             to.AddEffect(effects[i].Clone());
-            //effects.RemoveAt(i); //maybe bool check this
+            //RemoveEffectAtIndex(i); //maybe add a bool parameter to the method, to do this
         }
     }
 
@@ -144,8 +155,7 @@ public class EntityStatusEffects : MonoBehaviour
 
             if (effects[i].IsFinished)
             {
-                effects[i].OnRemove(entityGeneral);
-                effects.RemoveAt(i);
+                RemoveEffectAtIndex(i);
             }
         }
     }

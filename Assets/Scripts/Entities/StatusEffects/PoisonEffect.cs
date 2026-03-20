@@ -48,6 +48,7 @@ public class PoisonEffect : IStatusEffect
     public void OnRemove(EntityGeneral entity)
     {
         
+        effectDuration = -2f;
     }
     public void Tick(EntityGeneral entity, float deltaTime)
     {
