@@ -34,7 +34,7 @@ public class ThrowableItemBehaviour : IItemBehaviour
         {
             sumonEnt.GetComponent<ItemPickUp>().storedItem = state.Clone(owner);
         }
-        state.GetBehaviour<ConsumableItemBehaviour>().ItemUsed(inventory,slot);
+        state.GetBehaviour<ConsumableItemBehaviour>().ItemUsed(owner,state,inventory,slot);
     }
     public void RightClick(EntityGeneral owner, ItemState state, Vector3 mousePos, float heldFor, Inventory inventory, int slot)
     {

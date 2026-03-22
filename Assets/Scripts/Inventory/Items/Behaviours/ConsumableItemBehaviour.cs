@@ -25,7 +25,7 @@ public class ConsumableItemBehaviour : IItemBehaviour //A problem with this appr
     {
 
     }
-    public void ItemUsed(Inventory inventory, int slot)
+    public void ItemUsed(EntityGeneral owner, ItemState state, Inventory inventory, int slot)
     {
         inventory.ClearItemSlot(slot);
     }

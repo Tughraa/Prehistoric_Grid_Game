@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyGeneral : MonoBehaviour
 {
@@ -8,11 +9,12 @@ public class EnemyGeneral : MonoBehaviour
     public bool meleeHitter = false;
     public float meleeRange = 2.5f;
     public float meleeDamage = 0.1f;
+    [SerializeField] Image enemyHealthBar;
+    
     void Start()
     {
         entityGeneral = this.GetComponent<EntityGeneral>();
     }
-
     void Update()
     {
         if (meleeHitter && !entityGeneral.dead)
@@ -21,6 +23,27 @@ public class EnemyGeneral : MonoBehaviour
         }        
     }
 
+    //Health
+    void OnEnable()
+    {
+        entityGeneral.EntityDamaged += GetHurt; //Subscribe and start to listen
+        entityGeneral.EntityHealed += GetHeal;
+    }
+    void OnDisable()
+    {
+        entityGeneral.EntityDamaged -= GetHurt; //stop listening
+        entityGeneral.EntityHealed -= GetHeal;
+    }
+    public void GetHurt(EntityGeneral entity, float amount, string damageType)
+    {UpdateHealthBar();}
+    public void GetHeal(EntityGeneral entity, float amount)
+    {UpdateHealthBar();}
+    public void UpdateHealthBar()
+    {
+        enemyHealthBar.fillAmount = entityGeneral.health/entityGeneral.maxHealth;
+    }
+
+    //Melee attacks
     private void MeleeAttackDetection()
     {
         Vector2 origin = transform.position;

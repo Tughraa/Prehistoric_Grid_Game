@@ -10,7 +10,9 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public int invPosition;
     public Image itemImage;
     bool isMouseOver = false;
+    [SerializeField] GameObject durabilityUI;
     [SerializeField] Color hoverColor = new Color(0.8f,0.8f,0.8f,1f);
+    GameObject durabilityBar;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -30,15 +32,28 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     }
     public void UpdateVisual()
     {
-        if (myInventory.SlotHasItem(invPosition))
+        if (myInventory.SlotHasItem(invPosition)) //if there is an item at all
         {
             itemImage.enabled = true;
             itemImage.sprite = myInventory.items[invPosition].itemData.sprite;
+            if (myInventory.items[invPosition].HasBehaviour<DurabilityBehaviour>()) //if it's an item w/ durability
+            {
+                DurabilityBehaviour durab = myInventory.items[invPosition].GetBehaviour<DurabilityBehaviour>();
+                if (durab.DurabilityFraction() < 1f && durabilityBar == null)
+                {
+                    durabilityBar = Instantiate(durabilityUI,this.transform.position,Quaternion.identity,this.transform);
+                }
+                if (durabilityBar != null)
+                {
+                    durabilityBar.transform.GetChild(1).GetComponent<Image>().fillAmount = durab.DurabilityFraction();
+                }
+            }
         }
         else
         {
             //remove sprites
             itemImage.enabled = false;
+            Destroy(durabilityBar);
         }
     }
     void Update()

@@ -18,13 +18,13 @@ public class BlockPlacerBehaviour : IItemBehaviour
         if (mapManager.HasBlock(blockPos) == false) //if there's no block
         {
             mapManager.PlaceBlock(blockPos,blockToPlace);
-            state.GetBehaviour<ConsumableItemBehaviour>().ItemUsed(inventory,slot);
+            state.GetBehaviour<ConsumableItemBehaviour>().ItemUsed(owner,state,inventory,slot);
         }
         //THIS MAKES IT WORK FOR FIRE BUT FIRE ONLY!!
         else if (fireSystem.BlockFireInteractable(mapManager.GetBlock(blockPos).blockData))
         {
             fireSystem.FireUpBlock(blockPos);
-            state.GetBehaviour<ConsumableItemBehaviour>().ItemUsed(inventory,slot);
+            state.GetBehaviour<ConsumableItemBehaviour>().ItemUsed(owner,state,inventory,slot);
         }
     }
     public void RightClick(EntityGeneral owner, ItemState state, Vector3 mousePos, float heldFor, Inventory inventory, int slot)

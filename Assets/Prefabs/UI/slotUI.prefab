@@ -167,4 +167,5 @@ MonoBehaviour:
   myInventory: {fileID: 0}
   invPosition: 0
   itemImage: {fileID: 4932065468020066526}
+  durabilityUI: {fileID: 4342867919824168870, guid: a040dcb912786e64ea51deda72bb039d, type: 3}
   hoverColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}

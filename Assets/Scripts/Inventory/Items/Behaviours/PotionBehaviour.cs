@@ -16,7 +16,7 @@ public class PotionBehaviour : IItemBehaviour
     public void Use(EntityGeneral owner, ItemState state, Vector3 mousePos, float heldFor, Inventory inventory, int slot)
     {
         owner.GetComponent<EntityStatusEffects>().AddEffect(currentEffect);
-        state.GetBehaviour<ConsumableItemBehaviour>().ItemUsed(inventory,slot);
+        state.GetBehaviour<ConsumableItemBehaviour>().ItemUsed(owner,state,inventory,slot);
     }
     public void RightClick(EntityGeneral owner, ItemState state, Vector3 mousePos, float heldFor, Inventory inventory, int slot)
     {

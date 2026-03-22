@@ -263,7 +263,7 @@ MonoBehaviour:
   inventory: {fileID: 2853496102738992032}
   invCanvas: {fileID: 8649023702009574056, guid: 2c664667e57e01045b043fcea76fb6ba, type: 3}
   containerEntity: {fileID: 0}
-  UIoffset: {x: 0, y: 1, z: -7}
+  UIoffset: {x: 1, y: -2.25, z: -7}
   slotParent: {fileID: 0}
   slotUIfab: {fileID: 2475350532669456309, guid: 442c3d1d22a62e74fb08c00c4cafd642, type: 3}
   temp_player: {fileID: 0}

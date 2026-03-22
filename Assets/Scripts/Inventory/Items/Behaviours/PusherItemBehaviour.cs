@@ -51,6 +51,7 @@ public class PusherItemBehaviour : IItemBehaviour
             owner.Knockback(-pushDir,currentPushForce);
             Debug.Log("block");
         }
+        state.GetBehaviour<DurabilityBehaviour>().ItemUsed(owner,state,inventory,slot,chargeMult);
     }
     public void RightClick(EntityGeneral owner, ItemState state, Vector3 mousePos, float heldFor, Inventory inventory, int slot)
     {

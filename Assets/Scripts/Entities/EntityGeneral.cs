@@ -55,6 +55,7 @@ public class EntityGeneral : MonoBehaviour
     public bool currentInteract = false; //implement it's usage
 
     public event Action<EntityGeneral,float,string> EntityDamaged;
+    public event Action<EntityGeneral,float> EntityHealed;
     
     //[Header("New")]
     
@@ -123,8 +124,7 @@ public class EntityGeneral : MonoBehaviour
     public void Heal(float amount)
     {
         health = Mathf.Min(health+amount,maxHealth);
-        if (entityType == "player")
-        {playerGeneral.GetHeal();}
+        EntityHealed?.Invoke(this, amount);
     }
 
     //Knockbacks are handled here

@@ -100,11 +100,13 @@ public class PlayerGeneral : MonoBehaviour
     void OnEnable()
     {
         playerEntity.EntityDamaged += GetHurt; //Subscribe and start to listen
+        playerEntity.EntityHealed += GetHeal;
     }
 
     void OnDisable()
     {
         playerEntity.EntityDamaged -= GetHurt; //stop listening
+        playerEntity.EntityHealed -= GetHeal;
     }
     public void GetHurt(EntityGeneral entity, float amount, string damageType)
     {
@@ -121,7 +123,7 @@ public class PlayerGeneral : MonoBehaviour
             playerCam.GetComponent<ScreenShake>().StartShaking(0.1f,0.32f);
         }
     }
-    public void GetHeal()
+    public void GetHeal(EntityGeneral entity, float amount)
     {
         UpdateHealthBar();
     }
