@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6196675968737880937
+--- !u!1 &3252551647932495181
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,43 +8,59 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6307293975564854270}
-  - component: {fileID: 2795734587119275800}
-  - component: {fileID: 8108935908592773378}
-  - component: {fileID: 4004716715210189063}
-  - component: {fileID: 4737845041656596789}
-  - component: {fileID: 4545365135608583030}
-  - component: {fileID: 7692980803937650948}
-  - component: {fileID: 3323136063763017394}
-  m_Layer: 0
-  m_Name: plant_seed
+  - component: {fileID: 8551117057051978466}
+  - component: {fileID: 2244174041553813588}
+  - component: {fileID: 7843963636847513941}
+  - component: {fileID: 8520115304121133413}
+  - component: {fileID: 8481909636893906490}
+  - component: {fileID: 3899066519568894640}
+  - component: {fileID: 4446433044133282049}
+  - component: {fileID: -2244126151555616060}
+  - component: {fileID: 2704263856437648137}
+  m_Layer: 3
+  m_Name: block_bomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6307293975564854270
+--- !u!4 &8551117057051978466
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6196675968737880937}
+  m_GameObject: {fileID: 3252551647932495181}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.6263638, y: 2.4934363, z: 0}
+  m_LocalPosition: {x: -3.4508126, y: 1.0392795, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &2795734587119275800
+--- !u!114 &2244174041553813588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3252551647932495181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63491c4a5dff40e47ba049a9a25e5a02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifeTime: 10
+  owner: {fileID: 0}
+  containedBlock: {fileID: 11400000, guid: e4a9106569c60014484294f450532156, type: 2}
+--- !u!212 &7843963636847513941
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6196675968737880937}
+  m_GameObject: {fileID: 3252551647932495181}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -79,7 +95,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 637c576682dc93545a804036252b1af0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6b3ac47b2dc449e41a0782f2411b07bd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -90,13 +106,13 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8108935908592773378
+--- !u!114 &8520115304121133413
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6196675968737880937}
+  m_GameObject: {fileID: 3252551647932495181}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be1560fde94b12646a26e919443c954e, type: 3}
@@ -110,12 +126,13 @@ MonoBehaviour:
   defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   hurtMaterial: {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
   interactMaterial: {fileID: 2100000, guid: b6f1211aafc8aee4badcade864a9fd75, type: 2}
-  rigid: {fileID: 4737845041656596789}
-  entityStatusEffects: {fileID: 4004716715210189063}
+  rigid: {fileID: 3899066519568894640}
+  entityStatusEffects: {fileID: 8481909636893906490}
   mapManager: {fileID: 0}
   allSystems: {fileID: 0}
   playerGeneral: {fileID: 0}
-  entityType: plant_seed
+  entityName: Block Bomb
+  entityType: block_bomb
   onGround: 0
   airTime: 0
   flammable: 1
@@ -125,20 +142,21 @@ MonoBehaviour:
   health: 2
   dead: 0
   iFrameTime: 0.05
+  entityReach: 1
   entityStopDecel: 0
   tags: []
   damageImmunities: []
   currentIFrames: 0
   destroyOnDead: 0
-  interactable: 0
+  interactable: 1
   currentInteract: 0
---- !u!114 &4004716715210189063
+--- !u!114 &8481909636893906490
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6196675968737880937}
+  m_GameObject: {fileID: 3252551647932495181}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8856aef7874b6a44181246acaff7e4d6, type: 3}
@@ -147,7 +165,7 @@ MonoBehaviour:
   generalEffectParticle: {fileID: 6164170727952307744, guid: 842471f0d4b8b4f44a6d5a40422a059e, type: 3}
   particleTimePeriod: 0.5
   burnEffectParticle: {fileID: 2653880219158662100, guid: 2aaaebcd0f26e9c43bbc3c72efbdf62a, type: 3}
-  entityGeneral: {fileID: 8108935908592773378}
+  entityGeneral: {fileID: 8520115304121133413}
   rigid: {fileID: 0}
   speedBase: 1
   speedMults: []
@@ -157,14 +175,14 @@ MonoBehaviour:
   kbSensMults: []
   gravityScaleBase: 1
   gravityScaleMults: []
---- !u!50 &4737845041656596789
+--- !u!50 &3899066519568894640
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6196675968737880937}
+  m_GameObject: {fileID: 3252551647932495181}
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
@@ -184,13 +202,13 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &4545365135608583030
+--- !u!58 &4446433044133282049
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6196675968737880937}
+  m_GameObject: {fileID: 3252551647932495181}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -216,36 +234,32 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.0016565323}
   serializedVersion: 2
-  m_Radius: 0.25
---- !u!114 &7692980803937650948
+  m_Radius: 0.38086522
+--- !u!114 &-2244126151555616060
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6196675968737880937}
+  m_GameObject: {fileID: 3252551647932495181}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71191b78a9129e54a83bf1de7d5e43aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemEntity: 0
---- !u!114 &3323136063763017394
+--- !u!114 &2704263856437648137
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6196675968737880937}
+  m_GameObject: {fileID: 3252551647932495181}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d20ea881f8fbc684e863e661a2e58648, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d75d73777e94684ebf891e9885f24e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  growth: 6
-  plantBlock: {fileID: 11400000, guid: 20e8b6ed788f54c4ea0a7c1bff13422c, type: 2}
-  allSystems: {fileID: 0}
-  stepSize: 0.5
-  impulseThresh: 4
+  entityGeneral: {fileID: 0}

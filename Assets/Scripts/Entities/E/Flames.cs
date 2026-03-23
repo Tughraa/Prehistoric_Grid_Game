@@ -12,7 +12,7 @@ public class Flames : MonoBehaviour
     int currentSpriteIndex = 0; 
     SpriteRenderer spriteRend;
     float lifeTimeCounter = 0f;
-    float lifeTime = 6f;
+    public float lifeTime = 6f;
     void Start()
     {
         fireSystem = allSystems.fireSystem;
@@ -48,10 +48,10 @@ public class Flames : MonoBehaviour
     public void Tick()
     {
         FireTouchedBlocks((Vector2)this.transform.position+new Vector2(0,0),0.9f);
-        FireTouchedBlocks((Vector2)this.transform.position+new Vector2(1,0),0.4f);
-        FireTouchedBlocks((Vector2)this.transform.position+new Vector2(-1,0),0.4f);
-        FireTouchedBlocks((Vector2)this.transform.position+new Vector2(0,1),0.4f);
-        FireTouchedBlocks((Vector2)this.transform.position+new Vector2(0,-1),0.4f);
+        FireTouchedBlocks((Vector2)this.transform.position+new Vector2(1,0),0.6f);
+        FireTouchedBlocks((Vector2)this.transform.position+new Vector2(-1,0),0.6f);
+        FireTouchedBlocks((Vector2)this.transform.position+new Vector2(0,1),0.6f);
+        FireTouchedBlocks((Vector2)this.transform.position+new Vector2(0,-1),0.6f);
     }
     void FireTouchedBlocks(Vector2 originPos, float fireChance)
     {

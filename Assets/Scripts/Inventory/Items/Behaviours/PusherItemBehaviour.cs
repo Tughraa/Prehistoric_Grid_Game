@@ -7,11 +7,13 @@ public class PusherItemBehaviour : IItemBehaviour
     float reachDist;
     float pushForce;
     float blockDamage;
-    public PusherItemBehaviour(float inReachDist, float inPushForce, float inBlockDamage)
+    float entityDamage;
+    public PusherItemBehaviour(float inReachDist, float inPushForce, float inBlockDamage, float inEntityDamage)
     {
         reachDist = inReachDist;
         pushForce = inPushForce;
         blockDamage = inBlockDamage;
+        entityDamage = inEntityDamage;
     }
 
     public void Use(EntityGeneral owner, ItemState state, Vector3 mousePos, float heldFor, Inventory inventory, int slot)
@@ -27,16 +29,15 @@ public class PusherItemBehaviour : IItemBehaviour
         if (hit.collider == null)
         {
             //uhmm, we didn't hit anything
-            Debug.Log("nothing");
             return;
         }
         if (hit.collider.GetComponent<EntityGeneral>()) //entity pushed
         {
-            Debug.Log("entity");
             EntityGeneral hitEntity = hit.collider.GetComponent<EntityGeneral>();
             float totalMass = hitEntity.rigid.mass + owner.rigid.mass;
-            owner.Knockback(-pushDir,currentPushForce*(hitEntity.rigid.mass/totalMass));
-            hitEntity.Knockback(pushDir,currentPushForce*(owner.rigid.mass/totalMass));
+            owner.Knockback(-pushDir,currentPushForce*(hitEntity.rigid.mass/totalMass)*1.6f);
+            hitEntity.Knockback(pushDir,currentPushForce*(owner.rigid.mass/totalMass)*1.6f);
+            hitEntity.Damage(entityDamage*chargeMult,"poking");
         }
         else //non-entity pushed, see if block
         {
@@ -49,7 +50,6 @@ public class PusherItemBehaviour : IItemBehaviour
                 hitBlock.BlockBreak(blockDamage*chargeMult,map);
             }
             owner.Knockback(-pushDir,currentPushForce);
-            Debug.Log("block");
         }
         state.GetBehaviour<DurabilityBehaviour>().ItemUsed(owner,state,inventory,slot,chargeMult);
     }

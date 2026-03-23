@@ -805,6 +805,10 @@ PrefabInstance:
       propertyPath: allSystems
       value: 
       objectReference: {fileID: 476240912}
+    - target: {fileID: 2518074783655538088, guid: 3240c606518a96741b8944b9e52fd42e, type: 3}
+      propertyPath: entityName
+      value: Chest
+      objectReference: {fileID: 0}
     - target: {fileID: 2853496102738992032, guid: 3240c606518a96741b8944b9e52fd42e, type: 3}
       propertyPath: allSystems
       value: 
@@ -1103,7 +1107,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c0fb68407bfbd8488f4b1a365e6832a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AmountOfShooters: 0
   mapManager: {fileID: 850553508}
   allSystems: {fileID: 476240912}
   randomSystem: {fileID: 0}
@@ -1116,6 +1119,12 @@ MonoBehaviour:
   perlinMultY: 0.4
   perlinConst: 100
   tempFlamGas: {fileID: 11400000, guid: 81857982bd5f8d847b035344da666e2c, type: 2}
+  vineCount: 125
+  explosiveCount: 40
+  chestCount: 75
+  shooterCount: 0
+  stalagmiteCount: 50
+  flamGasCount: 12
 --- !u!4 &367443327
 Transform:
   m_ObjectHideFlags: 0
@@ -1306,6 +1315,7 @@ MonoBehaviour:
   mapManager: {fileID: 850553508}
   allSystems: {fileID: 476240912}
   playerGeneral: {fileID: 0}
+  entityName: undef
   entityType: randomBox
   onGround: 0
   airTime: 0
@@ -1429,6 +1439,7 @@ MonoBehaviour:
   - {fileID: 1317525243506023985, guid: 8dc69e211cf04a849bd8fc9ab9223538, type: 3}
   - {fileID: 44248418448615536, guid: 4c0c8cbb1555ee440b1349565357e890, type: 3}
   - {fileID: 3482975376620363349, guid: e3ba26f6cba91ce44901d2a4f9e6ba14, type: 3}
+  - {fileID: 5468070873263167760, guid: 11776e8f9ab4e434aaa6f3500b170719, type: 3}
 --- !u!4 &446455026
 Transform:
   m_ObjectHideFlags: 0
@@ -12408,6 +12419,7 @@ MonoBehaviour:
   mapManager: {fileID: 850553508}
   allSystems: {fileID: 476240912}
   playerGeneral: {fileID: 1731634683}
+  entityName: Player 1
   entityType: player
   onGround: 0
   airTime: 0
@@ -12468,6 +12480,7 @@ MonoBehaviour:
   playerEntity: {fileID: 1731634681}
   playerInventory: {fileID: 1731634684}
   playerCam: {fileID: 519420028}
+  canUseItems: 1
   playerCanvas: {fileID: 2131539901}
   playerHealthBar: {fileID: 1963721069}
   playerHealthAnim: {fileID: 1427582323}
@@ -12475,7 +12488,6 @@ MonoBehaviour:
   announceBarUI: {fileID: 2060815419}
   itemNameUI: {fileID: 2130908216}
   heldItemAnchor: {fileID: 424388479}
-  canUseItems: 1
   inventorySlotImages:
   - {fileID: 1840046876}
   - {fileID: 1211244980}
@@ -12508,6 +12520,7 @@ MonoBehaviour:
   canUseItem: 1
   allSystems: {fileID: 476240912}
   itemSystem: {fileID: 174710268}
+  dropOnDeath: 0
   giveDevKit: 0
 --- !u!1 &1740796566
 GameObject:
@@ -13498,6 +13511,7 @@ MonoBehaviour:
   mapManager: {fileID: 850553508}
   allSystems: {fileID: 476240912}
   playerGeneral: {fileID: 0}
+  entityName: Red Circle Guy
   entityType: testEnemy
   onGround: 0
   airTime: 0
@@ -13505,7 +13519,7 @@ MonoBehaviour:
   burning: 0
   immortal: 0
   maxHealth: 17
-  health: 17
+  health: 2
   dead: 0
   iFrameTime: 0.05
   entityReach: 1
@@ -13585,6 +13599,7 @@ MonoBehaviour:
   canUseItem: 1
   allSystems: {fileID: 476240912}
   itemSystem: {fileID: 174710268}
+  dropOnDeath: 1
   giveDevKit: 0
 --- !u!4 &2088059010
 Transform:
@@ -14438,6 +14453,71 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 842471f0d4b8b4f44a6d5a40422a059e, type: 3}
+--- !u!1001 &2765580747594220961
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1196007865188019673, guid: 11776e8f9ab4e434aaa6f3500b170719, type: 3}
+      propertyPath: allSystems
+      value: 
+      objectReference: {fileID: 476240912}
+    - target: {fileID: 5468070873263167760, guid: 11776e8f9ab4e434aaa6f3500b170719, type: 3}
+      propertyPath: m_Name
+      value: item_entity
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468070873263167760, guid: 11776e8f9ab4e434aaa6f3500b170719, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613316085162270564, guid: 11776e8f9ab4e434aaa6f3500b170719, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -77
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613316085162270564, guid: 11776e8f9ab4e434aaa6f3500b170719, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613316085162270564, guid: 11776e8f9ab4e434aaa6f3500b170719, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613316085162270564, guid: 11776e8f9ab4e434aaa6f3500b170719, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613316085162270564, guid: 11776e8f9ab4e434aaa6f3500b170719, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613316085162270564, guid: 11776e8f9ab4e434aaa6f3500b170719, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613316085162270564, guid: 11776e8f9ab4e434aaa6f3500b170719, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613316085162270564, guid: 11776e8f9ab4e434aaa6f3500b170719, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613316085162270564, guid: 11776e8f9ab4e434aaa6f3500b170719, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6613316085162270564, guid: 11776e8f9ab4e434aaa6f3500b170719, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 11776e8f9ab4e434aaa6f3500b170719, type: 3}
 --- !u!1 &3152075433882973387
 GameObject:
   m_ObjectHideFlags: 0
@@ -14848,3 +14928,4 @@ SceneRoots:
   - {fileID: 1318186275}
   - {fileID: 326850083}
   - {fileID: 1036320252}
+  - {fileID: 2765580747594220961}

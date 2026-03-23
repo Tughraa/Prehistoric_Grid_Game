@@ -14,6 +14,10 @@ public class PlayerGeneral : MonoBehaviour
     public EntityGeneral playerEntity;
     public Inventory playerInventory;
     public GameObject playerCam;
+
+    float heldDownTime = 0f;
+
+    public bool canUseItems = true;
     
     public Canvas playerCanvas;
 
@@ -27,9 +31,7 @@ public class PlayerGeneral : MonoBehaviour
     public Transform heldItemAnchor;
     private SpriteRenderer heldItemSprite;
 
-    float heldDownTime = 0f;
-
-    public bool canUseItems = true;
+    
 
     public ItemSlotUI[] inventorySlotImages;
     public Image selectedSlotImage;
@@ -74,6 +76,11 @@ public class PlayerGeneral : MonoBehaviour
         {
             Time.timeScale = 1;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            //Stopping the game
+            //For the love of god make a seperate UI class
         }
         if (this.transform.position.y < -180f)
         {
@@ -147,6 +154,8 @@ public class PlayerGeneral : MonoBehaviour
                 return "u blew up.";
             case "enemy":
                 return "You got too exposed to that red circle.";
+            case "poking":
+                return "How did you get poked to death??";
             default:
                 return "You died because of a bug? I don't know why you died...";
         }
@@ -264,7 +273,7 @@ public class PlayerGeneral : MonoBehaviour
     //Interactions
     public void CheckInteractions()
     {
-        CheckInteractions(this.transform.position,playerEntity.entityReach); //dynamically adjust for that 1
+        CheckInteractables(this.transform.position,playerEntity.entityReach); //dynamically adjust for that 1
         if (Input.GetKeyDown(KeyCode.E))
         {
             //CheckItems
@@ -283,7 +292,7 @@ public class PlayerGeneral : MonoBehaviour
             }
         }
     }
-    public void CheckInteractions(Vector2 where, float searchRadius)
+    public void CheckInteractables(Vector2 where, float searchRadius)
     {
         Collider2D[] results = Physics2D.OverlapCircleAll(where,searchRadius);
         

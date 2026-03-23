@@ -14,6 +14,7 @@ public class Inventory : MonoBehaviour
     public AllSystems allSystems;
     public ItemSystem itemSystem;
     
+    public bool dropOnDeath = true;
     public bool giveDevKit = false;
     
     void Start()
@@ -126,6 +127,38 @@ public class Inventory : MonoBehaviour
             }
         }
         return 0;
+    }
+
+    //Item Dropping
+    public void ItemDrop(int slot, Vector3 pos) //Add knockback to the item
+    {
+        if (SlotHasItem(slot) == false)
+        {
+            return;
+        }
+        GameObject dropped = itemSystem.SummonItemWithState(pos,GetSlotItem(slot),invEntity.entityName);
+        //dropped.GetComponent<EntityGeneral>().Knockback...
+        ClearItemSlot(slot);
+    }
+    public void DropAllItems()
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (SlotHasItem(i))
+            {
+                Vector3 dropPos = this.transform.position + new Vector3(Mathf.Cos(i*12f),Mathf.Sin(i*12f),0f)*invEntity.entityReach;
+                ItemDrop(i,dropPos);
+            }
+        }
+    }
+    void OnEnable() {invEntity.EntityDamaged += GetHurt;} //Death check, maybe if it's high enough you drop an item just maybe
+    void OnDisable() {invEntity.EntityDamaged -= GetHurt;}
+    public void GetHurt(EntityGeneral entity, float amount, string damageType)
+    {
+        if (entity.health <= 0f && dropOnDeath) //Dead
+        {
+            DropAllItems();
+        }
     }
 
     //Item Interaction

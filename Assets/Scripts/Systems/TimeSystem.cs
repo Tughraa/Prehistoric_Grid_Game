@@ -7,7 +7,7 @@ public class TimeSystem : MonoBehaviour
     public float timeScale = 1f;
     void Start()
     {
-        ChangeTimeScale(0.9f);
+        ChangeTimeScale(1f);
     }
 
     

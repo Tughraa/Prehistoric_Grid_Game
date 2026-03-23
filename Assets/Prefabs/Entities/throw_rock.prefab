@@ -9,15 +9,16 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8551117057051978466}
-  - component: {fileID: 2244174041553813588}
   - component: {fileID: 7843963636847513941}
   - component: {fileID: 8520115304121133413}
   - component: {fileID: 8481909636893906490}
   - component: {fileID: 3899066519568894640}
   - component: {fileID: 4446433044133282049}
+  - component: {fileID: 9187606292637822878}
   - component: {fileID: -2244126151555616060}
-  m_Layer: 0
-  m_Name: block_bomb
+  - component: {fileID: 5323032875843163272}
+  m_Layer: 3
+  m_Name: throw_rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38,21 +39,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2244174041553813588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3252551647932495181}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63491c4a5dff40e47ba049a9a25e5a02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lifeTime: 10
-  owner: {fileID: 0}
-  containedBlock: {fileID: 11400000, guid: e4a9106569c60014484294f450532156, type: 2}
 --- !u!212 &7843963636847513941
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -94,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6b3ac47b2dc449e41a0782f2411b07bd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a4ab576ae195c94469a6c95cb76801d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -130,16 +116,18 @@ MonoBehaviour:
   mapManager: {fileID: 0}
   allSystems: {fileID: 0}
   playerGeneral: {fileID: 0}
-  entityType: block_bomb
+  entityName: Rock
+  entityType: throw_rock
   onGround: 0
   airTime: 0
   flammable: 1
   burning: 0
   immortal: 0
-  maxHealth: 2
-  health: 2
+  maxHealth: 80
+  health: 80
   dead: 0
   iFrameTime: 0.05
+  entityReach: 0.52
   entityStopDecel: 0
   tags: []
   damageImmunities: []
@@ -231,9 +219,26 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.0016565323}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.38086522
+  m_Radius: 0.25
+--- !u!114 &9187606292637822878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3252551647932495181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0821c4ef99de5f4b85e47cfbab0ea44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 8520115304121133413}
+  impulseThresh: 4
+  damage: 0.19
+  blockDamage: 0.15
+  ignoreColAt: 2
 --- !u!114 &-2244126151555616060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,3 +252,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemEntity: 0
+--- !u!114 &5323032875843163272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3252551647932495181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d75d73777e94684ebf891e9885f24e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityGeneral: {fileID: 0}

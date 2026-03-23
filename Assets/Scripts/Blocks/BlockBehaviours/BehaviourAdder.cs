@@ -46,8 +46,8 @@ public class BehaviourAdder : MonoBehaviour
                 state.AddBehaviour(new ConsumableItemBehaviour());
                 break;
             case "stick":
-                state.AddBehaviour(new PusherItemBehaviour(1f,600f,1f));
-                state.AddBehaviour(new DurabilityBehaviour(2.3f));
+                state.AddBehaviour(new PusherItemBehaviour(1f,600f,1f,1.6f));
+                state.AddBehaviour(new DurabilityBehaviour(4.3f));
                 break;
             case "antidote":
                 state.AddBehaviour(new AntidoteBehaviour());

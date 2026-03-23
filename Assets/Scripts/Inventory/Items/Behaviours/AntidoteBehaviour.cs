@@ -11,6 +11,10 @@ public class AntidoteBehaviour : IItemBehaviour
     {
         Debug.Log("use has been called for antidote");
         owner.GetComponent<EntityStatusEffects>().RemoveAllEffects();
+        if (owner.entityType == "player")
+        {
+            owner.GetComponent<PlayerGeneral>().Announce("All your effects have been cleared!",2f,new Color(0.9f,0.8f,0.8f,0.8f));
+        }
         state.GetBehaviour<ConsumableItemBehaviour>().ItemUsed(owner,state,inventory,slot);
     }
     public void RightClick(EntityGeneral owner, ItemState state, Vector3 mousePos, float heldFor, Inventory inventory, int slot)

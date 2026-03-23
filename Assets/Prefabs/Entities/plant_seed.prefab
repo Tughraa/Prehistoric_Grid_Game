@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &44248418448615536
+--- !u!1 &6196675968737880937
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,95 +8,44 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7787859644037707753}
-  - component: {fileID: 8259055945588927124}
-  - component: {fileID: 321741549821573540}
-  - component: {fileID: 2375974943251613022}
-  - component: {fileID: 7712176296141813670}
-  - component: {fileID: 7596476353185232312}
-  - component: {fileID: 192647857909149312}
-  - component: {fileID: 5249059410200945775}
-  - component: {fileID: 7808929672893356300}
+  - component: {fileID: 6307293975564854270}
+  - component: {fileID: 2795734587119275800}
+  - component: {fileID: 8108935908592773378}
+  - component: {fileID: 4004716715210189063}
+  - component: {fileID: 4737845041656596789}
+  - component: {fileID: 4545365135608583030}
+  - component: {fileID: 7692980803937650948}
+  - component: {fileID: 3323136063763017394}
+  - component: {fileID: -9168336438297757081}
   m_Layer: 3
-  m_Name: EntityShooterEnemy
+  m_Name: plant_seed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7787859644037707753
+--- !u!4 &6307293975564854270
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 44248418448615536}
+  m_GameObject: {fileID: 6196675968737880937}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.68, y: -2.76, z: 0}
-  m_LocalScale: {x: 0.9, y: 0.9, z: 1}
+  m_LocalPosition: {x: -1.6263638, y: 2.4934363, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8259055945588927124
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 44248418448615536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8920d98e93c39c44b990cf33397a130, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  entityGeneral: {fileID: 7596476353185232312}
-  meleeHitter: 0
-  meleeRange: 2.5
-  meleeDamage: 0.1
---- !u!114 &321741549821573540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 44248418448615536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05f422d964f445240b0ac0b985c0c4e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletFab: {fileID: 1317525243506023985, guid: 8dc69e211cf04a849bd8fc9ab9223538, type: 3}
-  tempPlayer: {fileID: 0}
-  entityGeneral: {fileID: 0}
-  bulletVel: 13
-  tryShootPeriod: 1.2
---- !u!114 &2375974943251613022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 44248418448615536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9d8f0a3c967be948976506a34b4982a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  heldItemIndex: 0
-  invEntity: {fileID: 7596476353185232312}
-  canUseItem: 1
-  allSystems: {fileID: 0}
-  itemSystem: {fileID: 0}
-  giveDevKit: 0
---- !u!212 &7712176296141813670
+--- !u!212 &2795734587119275800
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 44248418448615536}
+  m_GameObject: {fileID: 6196675968737880937}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -131,24 +80,24 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.6901961, g: 0.35686275, b: 0.17254902, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 637c576682dc93545a804036252b1af0, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 0.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7596476353185232312
+--- !u!114 &8108935908592773378
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 44248418448615536}
+  m_GameObject: {fileID: 6196675968737880937}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be1560fde94b12646a26e919443c954e, type: 3}
@@ -156,48 +105,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundLayer:
     serializedVersion: 2
-    m_Bits: 4294967295
-  detectBoxSize: {x: 0.85, y: 0.05}
-  detectBoxDist: 0.5
-  defaultMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  hurtMaterial: {fileID: 2100000, guid: 9875a245ac49007498213638a307faa1, type: 2}
-  rigid: {fileID: 0}
-  entityStatusEffects: {fileID: 0}
+    m_Bits: 0
+  detectBoxSize: {x: 0.5, y: 0.05}
+  detectBoxDist: 0.02
+  defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  hurtMaterial: {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
+  interactMaterial: {fileID: 2100000, guid: b6f1211aafc8aee4badcade864a9fd75, type: 2}
+  rigid: {fileID: 4737845041656596789}
+  entityStatusEffects: {fileID: 4004716715210189063}
   mapManager: {fileID: 0}
   allSystems: {fileID: 0}
   playerGeneral: {fileID: 0}
-  entityType: shooter_enemy
+  entityName: Plant Seed
+  entityType: plant_seed
   onGround: 0
   airTime: 0
   flammable: 1
   burning: 0
   immortal: 0
-  maxHealth: 4
-  health: 4
+  maxHealth: 2
+  health: 2
   dead: 0
   iFrameTime: 0.05
+  entityReach: 1
   entityStopDecel: 0
   tags: []
   damageImmunities: []
   currentIFrames: 0
   destroyOnDead: 0
   interactable: 0
---- !u!114 &192647857909149312
+  currentInteract: 0
+--- !u!114 &4004716715210189063
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 44248418448615536}
+  m_GameObject: {fileID: 6196675968737880937}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8856aef7874b6a44181246acaff7e4d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   generalEffectParticle: {fileID: 6164170727952307744, guid: 842471f0d4b8b4f44a6d5a40422a059e, type: 3}
-  particleTimePeriod: 0.1
+  particleTimePeriod: 0.5
   burnEffectParticle: {fileID: 2653880219158662100, guid: 2aaaebcd0f26e9c43bbc3c72efbdf62a, type: 3}
-  entityGeneral: {fileID: 0}
+  entityGeneral: {fileID: 8108935908592773378}
   rigid: {fileID: 0}
   speedBase: 1
   speedMults: []
@@ -207,19 +160,19 @@ MonoBehaviour:
   kbSensMults: []
   gravityScaleBase: 1
   gravityScaleMults: []
---- !u!50 &5249059410200945775
+--- !u!50 &4737845041656596789
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 44248418448615536}
+  m_GameObject: {fileID: 6196675968737880937}
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.6
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1.5
@@ -232,15 +185,15 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 4
---- !u!58 &7808929672893356300
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!58 &4545365135608583030
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 44248418448615536}
+  m_GameObject: {fileID: 6196675968737880937}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -268,4 +221,47 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.25
+--- !u!114 &7692980803937650948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6196675968737880937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71191b78a9129e54a83bf1de7d5e43aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemEntity: 0
+--- !u!114 &3323136063763017394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6196675968737880937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d20ea881f8fbc684e863e661a2e58648, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  growth: 6
+  plantBlock: {fileID: 11400000, guid: 20e8b6ed788f54c4ea0a7c1bff13422c, type: 2}
+  allSystems: {fileID: 0}
+  stepSize: 0.5
+  impulseThresh: 0.1
+--- !u!114 &-9168336438297757081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6196675968737880937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d75d73777e94684ebf891e9885f24e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityGeneral: {fileID: 0}

@@ -5,7 +5,6 @@ using System.Linq;
 
 public class WorldMaker : MonoBehaviour
 {
-    public int AmountOfShooters = 0;
     public MapManager mapManager;
     public AllSystems allSystems;
     public RandomSystem randomSystem;
@@ -19,6 +18,15 @@ public class WorldMaker : MonoBehaviour
     public float perlinConst = 100f;
 
     [SerializeField] BlockData tempFlamGas;
+
+    [Header("Generation Counts")]
+    [SerializeField] int vineCount = 125;
+    [SerializeField] int explosiveCount = 40;
+    [SerializeField] int chestCount = 75;
+    [SerializeField] int shooterCount = 0;
+    [SerializeField] int stalagmiteCount = 50;
+    [SerializeField] int flamGasCount = 12;
+
     void Start()
     {
         randomSystem = allSystems.randomSystem;
@@ -48,7 +56,7 @@ public class WorldMaker : MonoBehaviour
                 float yRatio = (float)iy/(float)thickness;
                 bool over = (upperPerlin > yRatio) ? true : false;
                 bool under = (lowerPerlin < yRatio) ? true : false;
-                Debug.Log("ratio is: "+yRatio+"\nperlin is: "+upperPerlin+over);
+                //Debug.Log("ratio is: "+yRatio+"\nperlin is: "+upperPerlin+over);
                 if (over && under && mapManager.HasBlock(checkPos) == false)
                 {
                     if (middlePerlin < yRatio)
@@ -106,12 +114,12 @@ public class WorldMaker : MonoBehaviour
     //Placing other other things
     void PlaceMapThings()
     {
-        PlaceVines(125); //normally 75
-        PlaceBlocksRandomly("explosive",40);
-        PlaceEntitiesRandomly("chest",50,1); //it was 50 before
-        PlaceEntitiesRandomly("shooter_enemy",AmountOfShooters,1);
-        PlaceEntitiesRandomly("stalagmite",50,-1); //adjust
-        PlaceBlockClumpsRandomly(12); //normally 7
+        PlaceVines(vineCount); //normally 75
+        PlaceBlocksRandomly("explosive",explosiveCount);
+        PlaceEntitiesRandomly("chest",chestCount,1); //it was 50 before
+        PlaceEntitiesRandomly("shooter_enemy",shooterCount,1);
+        PlaceEntitiesRandomly("stalagmite",stalagmiteCount,-1); //adjust
+        PlaceBlockClumpsRandomly(flamGasCount); //normally 7
         allSystems.explosionSystem.ExplodeSimple(new Vector2(-46,-3),6f,2f,null);
     }
     public void PlaceEntitiesRandomly(string entityName, int howMany, int dir)

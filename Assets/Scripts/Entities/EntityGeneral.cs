@@ -20,6 +20,7 @@ public class EntityGeneral : MonoBehaviour
     public PlayerGeneral playerGeneral;
 
     [Header("EntityData")]
+    public string entityName = "undef";
     public string entityType = "undef";
 
     public bool onGround;
@@ -103,11 +104,10 @@ public class EntityGeneral : MonoBehaviour
         currentIFrames = iFrameTime;
         health -= amount;
         EntityDamaged?.Invoke(this, amount, damageType);
-        /*if (entityType == "player")
-        {playerGeneral.GetHurt(damageType);}*/
         if (health <= 0f)
         {
             Death();
+            Debug.Log(entityName+" dies now");
         }
     }
     public void Death()
