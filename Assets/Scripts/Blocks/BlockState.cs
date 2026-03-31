@@ -18,6 +18,7 @@ public class BlockState
         blockData = inBlockData;
         blockPos = inBlockPos;
         brokenMax = inBlockData.toughness;
+
         tickBehave = inBlockData.tickingBlock;
         
         behaviourAdder = inBehaviourAdder;
@@ -26,7 +27,7 @@ public class BlockState
     }
     public bool BlockBreak(float amount, MapManager mapManager)
     {
-        brokenLevel += amount;//Do change too
+        brokenLevel += amount;
         if (brokenLevel/brokenMax >= 1f)
         {
             mapManager.RemoveBlock(blockPos,true);

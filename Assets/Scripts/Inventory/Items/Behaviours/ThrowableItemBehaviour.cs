@@ -29,6 +29,7 @@ public class ThrowableItemBehaviour : IItemBehaviour
         EntityGeneral sumonEnt = summoned.GetComponent<EntityGeneral>();
         sumonEnt.rigid.velocity = owner.rigid.velocity;
         sumonEnt.Knockback(throwDir,currentThrowForce);
+        owner.Knockback(-throwDir,currentThrowForce/2f);
 
         if (sumonEnt.GetComponent<ItemPickUp>())
         {

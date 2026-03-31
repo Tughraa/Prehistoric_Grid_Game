@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 2853496102738992032}
-  invCanvas: {fileID: 8649023702009574056, guid: 2c664667e57e01045b043fcea76fb6ba, type: 3}
+  invCanvas: {fileID: 7929731362848968592, guid: c51744939499c7f47906f59a63980e77, type: 3}
   containerEntity: {fileID: 2518074783655538088}
   UIoffset: {x: 1, y: -2.25, z: -7}
   slotParent: {fileID: 0}

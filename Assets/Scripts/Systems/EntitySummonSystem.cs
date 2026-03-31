@@ -30,6 +30,20 @@ public class EntitySummonSystem : MonoBehaviour
         return summonedEnt;
     }
 
+    public GameObject BlockToRigidblock(Vector3Int pos)
+    {
+        if (allSystems.mapManager.HasBlock(pos))
+        {
+            BlockState state = allSystems.mapManager.GetBlock(pos);
+            Sprite tileSprite = allSystems.mapManager.blockLayer.GetSprite(pos);//also get the color
+            allSystems.mapManager.RemoveBlock(pos,false);
+            GameObject rigidBlockObj = SummonEntityFabOnName("rigidblock",pos);
+            rigidBlockObj.GetComponent<Rigidblock>().Construct(state,tileSprite);
+            return rigidBlockObj;
+        }
+        return null;
+    }
+
     public void AssignSystemsToSummon(GameObject summon)
     {
         summon.GetComponent<EntityGeneral>().allSystems = allSystems;

@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 //Maybe seperate playerUI in a different class
 public class PlayerGeneral : MonoBehaviour
 {
+    public GameObject enemyObj;
     public AllSystems allSystems;
     
     public PlayerMovement playerMovement;
@@ -42,6 +43,7 @@ public class PlayerGeneral : MonoBehaviour
 
     public EntityGeneral currentInteractable;
     public Container currentOpenContainer = null;
+    public Transform containerUIParent;
 
     [SerializeField] GameObject playerItemThrowBar; //turn on when clicking chargable item
     [SerializeField] Image playerItemCharge;        //update based on item throwstuffs
@@ -71,6 +73,11 @@ public class PlayerGeneral : MonoBehaviour
         {
             MouseHoldingItem();
         }
+        if (Input.GetKeyDown(KeyCode.G) && !enemyObj.activeSelf)
+        {
+            Announce("The Red Circle Is Out To Get You!",4.5f,new Color(0.84f,0.05f,0.08f,0.95f));
+            enemyObj.SetActive(true);
+        }
         //Restart
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -81,6 +88,12 @@ public class PlayerGeneral : MonoBehaviour
         {
             //Stopping the game
             //For the love of god make a seperate UI class
+            //..no
+        }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            Vector3Int blockAbove = allSystems.mapManager.FloatToGridPos(this.transform.position+new Vector3(0f,1f,0f));
+            allSystems.entitySummonSystem.BlockToRigidblock(blockAbove);
         }
         if (this.transform.position.y < -180f)
         {

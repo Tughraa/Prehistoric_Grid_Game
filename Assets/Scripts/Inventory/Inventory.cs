@@ -221,6 +221,8 @@ public class Inventory : MonoBehaviour
                         if (GiveItem(itemObj.storedItem))
                         {
                             itemObj.GetPickedUp();
+                            invEntity.Knockback(col.transform.position-this.transform.position,100f);
+                            //Maybe even let them know??
                         }
                     }
                 }

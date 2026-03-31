@@ -34,6 +34,9 @@ public class PlantGrow : MonoBehaviour
             if (allSystems.mapManager.HasBlock(placeAt) == false) //if no block there already
             {
                 allSystems.mapManager.PlaceBlock(placeAt,plantBlock); //place the block
+                //Push Entities
+                if (i<totalSteps-1)
+                {PushFromPos(placeAt,1f,150f,direction);}
             }
             //Do some waiting
             yield return new WaitForSeconds(totalTime/totalSteps);
@@ -42,17 +45,21 @@ public class PlantGrow : MonoBehaviour
         
         Destroy(this.gameObject);
     } 
-
-
-    /*void LifeTimeManag()
+    void PushFromPos(Vector3 origin, float radius, float pushForce, Vector3 direction)
     {
-        currentLife += Time.deltaTime;
-        if (currentLife > lifeTime)
-        {   
-            //Maybe particle?
-            Destroy(this.gameObject);
+        Collider2D[] results = Physics2D.OverlapCircleAll(origin,radius);
+        if (results.Length > 0)
+        {
+            foreach (var col in results)
+            {  
+                if (col.GetComponent<EntityGeneral>())
+                {
+                    //col.GetComponent<EntityGeneral>().Knockback(direction,pushForce);
+                    col.gameObject.transform.position = origin+direction.normalized/2f;
+                }
+            }
         }
-    }*/
+    }
     
     void OnCollisionEnter2D(Collision2D col)
     {

@@ -131,7 +131,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void ExecuteJump()
     {
-        //rigid.velocity = new Vector2(rigid.velocity.x,0f); //removes the corner-jump
+        rigid.velocity = new Vector2(rigid.velocity.x,0f); //removes the corner-jump
         rigid.AddForce(new Vector2(0f,jumpForce*entityGeneral.entityStatusEffects.GetEntityJumpBoost()));
     }
     void FallAsist()

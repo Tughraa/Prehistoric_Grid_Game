@@ -100,20 +100,21 @@ public class Container : MonoBehaviour
 
     public GameObject OpenInvCanvas(PlayerGeneral whoOpenedIt) //maybe return the said canvas
     {
-        GameObject canv = Instantiate(invCanvas,this.transform.position+UIoffset,Quaternion.identity);
+        GameObject canv = Instantiate(invCanvas,whoOpenedIt.containerUIParent.position,Quaternion.identity,whoOpenedIt.containerUIParent);
         currentOpener = whoOpenedIt.gameObject;
         //Resize It's Backdrop
         canv.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector3(containSize.x,containSize.y,1f)*1.15f;
-        canv.transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition += new Vector2(-0.43f,-0.43f); 
+        //canv.transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition += new Vector2(-0.43f,-0.43f); 
         
         //Assign Camera
-        canv.GetComponent<Canvas>().worldCamera = whoOpenedIt.playerCam.transform.GetChild(0).GetComponent<Camera>();
+        //canv.GetComponent<Canvas>().worldCamera = whoOpenedIt.playerCam.transform.GetChild(0).GetComponent<Camera>();
         
         //Make Player Unable To Use Items
         whoOpenedIt.canUseItems = false;
 
         //Introduce Yourself To The Player As Their Current Container
         whoOpenedIt.currentOpenContainer = this;
+        whoOpenedIt.containerUIParent.parent.gameObject.SetActive(true); //Open their ability to see you
 
         //Make slots
         slotParent = canv.transform.GetChild(1).gameObject; //this is where the inventory parent is
@@ -147,6 +148,7 @@ public class Container : MonoBehaviour
         currentlyOpen = false;
         openerPlayer.canUseItems = true;
         openerPlayer.currentOpenContainer = null;
+        openerPlayer.containerUIParent.parent.gameObject.SetActive(false);
         currentOpener = null;
         Destroy(currentUICanv);
     }
