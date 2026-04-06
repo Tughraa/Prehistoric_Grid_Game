@@ -57,27 +57,29 @@ public class Container : MonoBehaviour
             bool pressedESC = Input.GetKeyDown("escape");
             bool pressedTab = Input.GetKeyDown(KeyCode.Tab);
             bool pressedInteract = Input.GetKeyDown(KeyCode.E);
-            if (pressedTab) //Universalize this more, this is very case specific rn
+            if (pressedTab)
             {
-                if (inventory.HasItems() == false)
-                {
-                    return; //No Items to Take, maybe make a sound effect
-                }
                 Inventory currentOpenerInv = currentOpener.GetComponent<Inventory>();
-                //check if the player has enough slots here!! 
-                if (currentOpenerInv.IsFull())
-                {
-                    return; //The player's already full
-                }
-                int fullSlot = inventory.GetFirstFullSlot();
-                currentOpenerInv.GiveItem(inventory.GetSlotItem(fullSlot));
-                inventory.ClearItemSlot(fullSlot);
+                TransferItem(inventory,currentOpenerInv,inventory.GetFirstFullSlot());
             }
-            if (distanceTooMuch || pressedESC)// || pressedInteract)
+            if (distanceTooMuch || pressedESC)
             {
                 CloseInvCanvas();
             }
         }
+    }
+    public void TransferItem(Inventory from, Inventory to, int slot)
+    {
+        if (from.HasItems() == false)
+        {
+            return; //No Items to Take, maybe make a sound effect
+        }
+        if (to.IsFull())
+        {
+            return; //The player's already full
+        }
+        to.GiveItem(from.GetSlotItem(slot));
+        from.ClearItemSlot(slot);
     }
 
     public void InteractedWith(PlayerGeneral byWhom)
@@ -105,9 +107,6 @@ public class Container : MonoBehaviour
         //Resize It's Backdrop
         canv.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector3(containSize.x,containSize.y,1f)*1.15f;
         //canv.transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition += new Vector2(-0.43f,-0.43f); 
-        
-        //Assign Camera
-        //canv.GetComponent<Canvas>().worldCamera = whoOpenedIt.playerCam.transform.GetChild(0).GetComponent<Camera>();
         
         //Make Player Unable To Use Items
         whoOpenedIt.canUseItems = false;

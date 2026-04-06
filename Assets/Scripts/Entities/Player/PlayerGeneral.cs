@@ -36,7 +36,14 @@ public class PlayerGeneral : MonoBehaviour
 
     public ItemSlotUI[] inventorySlotImages;
     public Image selectedSlotImage;
+    
+    private float interactCooldown = 0f;
 
+    public Image mouseReplace;
+    public string mouseMode = "world"; //inventory, dragging, cross, hide, world, consume(make transparent for now)
+    [SerializeField] Sprite crossSprite;
+    [SerializeField] Sprite inventoryMouseSprite;
+    [SerializeField] Sprite draggingMouseSprite;
     private ItemState mouseItem;
     [SerializeField] Image mouseItemImage;
     private ItemSlotUI mouseItemOrigin;
@@ -60,6 +67,7 @@ public class PlayerGeneral : MonoBehaviour
         playerInventory = this.GetComponent<Inventory>();
         playerItemThrowBar.SetActive(false);
         heldItemSprite = heldItemAnchor.GetChild(0).GetComponent<SpriteRenderer>();
+        Cursor.visible = false;
     }
     void Update()
     {
@@ -114,6 +122,10 @@ public class PlayerGeneral : MonoBehaviour
                 }
             }
         }
+    }
+    void FixedUpdate()
+    {
+        MouseIconReplace();
     }
     
     //Health
@@ -206,6 +218,8 @@ public class PlayerGeneral : MonoBehaviour
             ResetItemThrowBar();
             return;
         }
+        if (GetMouseItem() != null) //Currently dragging an item
+        {return;}
         if (Input.GetMouseButton(0) && canUseItems)   //Wait until player lets go
         {
             heldDownTime += Time.deltaTime;
@@ -254,16 +268,49 @@ public class PlayerGeneral : MonoBehaviour
             inventorySlotImages[i].UpdateVisual();
         }
     }
-    public void HeldItemSpecifier()
+    void MouseIconReplace() //On FixedUpdate
     {
-        if (playerInventory.HeldItem() != null)
+        mouseReplace.transform.position = FindMousePos()+new Vector3(0f,0f,0.5f);
+        //Change the icon maybe here, maybe at helditemspecifier
+        UpdateMouseMode();
+        switch (mouseMode)
         {
+            case "hide":
+                mouseReplace.enabled = false;
+                break;
+            case "consume":
+                mouseReplace.enabled = false;
+                break;
+            case "cross":
+                mouseReplace.enabled = true;
+                mouseReplace.sprite = crossSprite;
+                break;
+            case "inventory":
+                mouseReplace.enabled = true;
+                mouseReplace.sprite = inventoryMouseSprite;
+                break;
+            case "dragging":
+                mouseReplace.enabled = true;
+                mouseReplace.sprite = draggingMouseSprite;
+                break;
+            default:
+                mouseReplace.enabled = true;
+                mouseReplace.sprite = crossSprite; //We made default into crossSprite for now
+                break;
+        }
+    }
+    public void HeldItemSpecifier() //The diegetic play holding showcase
+    {
+        if (playerInventory.HeldItem() != null) //if we're indeed holding something
+        {
+            //Write its name on the hotbar 
             itemNameUI.enabled = true;
             itemNameUI.text = playerInventory.HeldItem().itemData.itemName;
             
+            //Put it diegetically on the player character
             heldItemSprite.enabled = true;
             heldItemSprite.sprite = playerInventory.HeldItem().itemData.sprite;
-            if (playerInventory.HeldItem().itemData.tags.Contains("mouse_follow"))
+            if (playerInventory.HeldItem().itemData.tags.Contains("mouse_follow")) //Make it follow the player
             {
                 Vector3 mouseDirVec = -(FindMousePos()-heldItemAnchor.position).normalized;
                 float mouseDirAngle = Mathf.Atan2(-mouseDirVec.x,mouseDirVec.y)* Mathf.Rad2Deg-90f;
@@ -286,25 +333,62 @@ public class PlayerGeneral : MonoBehaviour
     //Interactions
     public void CheckInteractions()
     {
-        CheckInteractables(this.transform.position,playerEntity.entityReach); //dynamically adjust for that 1
+        if (interactCooldown > 0f)
+        {
+            interactCooldown -= Time.deltaTime;
+        }
+        CheckInteractables(this.transform.position,playerEntity.entityReach);
         if (Input.GetKeyDown(KeyCode.E))
         {
-            //CheckItems
-            playerInventory.TryItemPickUp(this.transform.position,playerEntity.entityReach,true); //dynamicaly adjust for playerSize
             if (currentOpenContainer != null)
             {
-                currentOpenContainer.CloseInvCanvas();
+                currentOpenContainer.CloseInvCanvas(); //Closes the canvas if it's open
+                interactCooldown = 0.2f;
             }
-            if (currentInteractable != null)
+            if (currentInteractable != null && interactCooldown <= 0f)
             {
                 if (currentInteractable.GetComponent<Container>())
                 {
                     Container interactCont = currentInteractable.GetComponent<Container>();
                     interactCont.InteractedWith(this);
                 }
+                if (currentInteractable.GetComponent<ItemPickUp>())
+                {
+                    Debug.Log("item should be picked up");
+                    ItemPickUp itemObj = currentInteractable.GetComponent<ItemPickUp>();
+                    playerInventory.PickUpThisItem(itemObj);
+                }
             }
         }
     }
+    public void CheckInteractables(Vector2 where, float searchRadius)
+    {
+        Collider2D[] results = Physics2D.OverlapCircleAll(where,searchRadius);
+        Debug.DrawLine(where- new Vector2(0f,searchRadius), where+ new Vector2(0f,searchRadius), Color.green,2f);
+        Debug.DrawLine(where- new Vector2(searchRadius,0f), where+ new Vector2(searchRadius,0f), Color.green,2f);
+
+        Collider2D closest = FindClosestInteractable(where, results); 
+        if (closest == null)
+        {
+            DisableCurrentInteract();
+            return; //No interactable nearby
+        }
+        if (closest.gameObject.GetComponent<EntityGeneral>() == false)
+        {
+            DisableCurrentInteract();
+            return; //Not an entity somehow???
+        }
+        if (closest.gameObject.GetComponent<EntityGeneral>().interactable == false)
+        {
+            DisableCurrentInteract();
+            return; //Not an interactable somehow???
+        }
+        DisableCurrentInteract();
+        currentInteractable = closest.GetComponent<EntityGeneral>();
+        currentInteractable.currentInteract = true;
+        currentInteractable.ChangeMaterial(false);
+
+    }/*
     public void CheckInteractables(Vector2 where, float searchRadius)
     {
         Collider2D[] results = Physics2D.OverlapCircleAll(where,searchRadius);
@@ -346,7 +430,7 @@ public class PlayerGeneral : MonoBehaviour
         {
             DisableCurrentInteract();
         }
-    }
+    }*/ //Old form
     void DisableCurrentInteract()
     {
         if (currentInteractable != null)
@@ -358,20 +442,30 @@ public class PlayerGeneral : MonoBehaviour
     }
     public Collider2D FindClosestInteractable(Vector2 origin, Collider2D[] colliders)
     {
-        Collider2D colliderIte = colliders[0];
+        Collider2D colliderIte = null;
         foreach (var col in colliders)
         {    
             if (col.gameObject.GetComponent<EntityGeneral>() == false)
             {
                 continue;
             }
-            float currentDist = Vector2.Distance(origin,(Vector2)colliderIte.transform.position);
-            float iteDist = Vector2.Distance(origin,(Vector2)col.transform.position);
-            bool currentIsInteractable = colliderIte.gameObject.GetComponent<EntityGeneral>().interactable;
-            bool iteIsInteractable = col.gameObject.GetComponent<EntityGeneral>().interactable;
-            if (((iteDist < currentDist) || !currentIsInteractable) && iteIsInteractable)
+            if (col.gameObject.GetComponent<EntityGeneral>().interactable == false)
+            {
+                continue;
+            }
+            //Anything that goes further is an interactable entity
+            if (colliderIte == null) //if this is the first one
             {
                 colliderIte = col;
+            }
+            else
+            {
+                float currentDist = Vector2.Distance(origin,(Vector2)colliderIte.transform.position);
+                float iteDist = Vector2.Distance(origin,(Vector2)col.transform.position);
+                if ((iteDist < currentDist)) //if this one is closer than the current one
+                {
+                    colliderIte = col;
+                }
             }
         }
         return colliderIte;
@@ -393,6 +487,27 @@ public class PlayerGeneral : MonoBehaviour
         mouseItem = null;
         mouseItemImage.enabled = false;
         mouseItemOrigin = null;
+
+        UpdateMouseMode();
+    }
+    void UpdateMouseMode()
+    {
+        if (GetMouseItem() != null) //Item Dragging something
+        {
+            mouseMode = "dragging";
+        }
+        else if (currentOpenContainer != null) //Player in container
+        {
+            mouseMode = "inventory";
+        }
+        else if (playerInventory.HeldItem() == null) //Player not holding anything
+        {
+            mouseMode = "hide";
+        }
+        else //Player holding an item and not in a container and not dragging item
+        {
+            mouseMode = playerInventory.HeldItem().itemData.mouseMode;
+        }
     }
     public ItemState GetMouseItem()
     {

@@ -9,4 +9,6 @@ public class ItemData : ScriptableObject
     public string itemName = "Undefined Item";
     public Sprite sprite;
     public List<string> tags;
+
+    public string mouseMode = "cross";
 }

@@ -56,6 +56,7 @@ public class Inventory : MonoBehaviour
     }
     public bool GiveItem(ItemState item)
     {
+        Debug.Log("item should be given");
         if (IsFull())
         {
             //Summon an item entity instead
@@ -202,7 +203,7 @@ public class Inventory : MonoBehaviour
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         itemSystem.RightClickItem(invEntity,HeldItem(),applyPos,heldDownTime,this,heldItemIndex);
     }
-    public void TryItemPickUp(Vector2 where, float searchRadius, bool playerIsTrying)
+    public void TryItemPickUp(Vector2 where, float searchRadius)
     {
         Collider2D[] results = Physics2D.OverlapCircleAll(where,searchRadius);
         
@@ -216,17 +217,18 @@ public class Inventory : MonoBehaviour
                 if (col.gameObject.GetComponent<ItemPickUp>())
                 {
                     ItemPickUp itemObj = col.gameObject.GetComponent<ItemPickUp>();
-                    if (itemObj.itemEntity || playerIsTrying)
-                    {
-                        if (GiveItem(itemObj.storedItem))
-                        {
-                            itemObj.GetPickedUp();
-                            invEntity.Knockback(col.transform.position-this.transform.position,100f);
-                            //Maybe even let them know??
-                        }
-                    }
+                    PickUpThisItem(itemObj);
                 }
             }
+        }
+    }
+    public void PickUpThisItem(ItemPickUp itemObj)
+    {
+        if (GiveItem(itemObj.storedItem)) //if the item was able to be given
+        {
+            itemObj.GetPickedUp();
+            invEntity.Knockback(itemObj.transform.position-this.transform.position,100f);
+            //Maybe even let them know??
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -13,16 +14,37 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     [SerializeField] GameObject durabilityUI;
     [SerializeField] Color hoverColor = new Color(0.8f,0.8f,0.8f,1f);
     GameObject durabilityBar;
+    [SerializeField] GameObject itemDescFab;
+    Transform currentItemDesc;
+    float doubleClickTimer = 0f;
+    public float doubleClickWindow = 0.3f;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         isMouseOver = true;
         this.GetComponent<Image>().color = hoverColor;
+        //Create an item description if theres an item
+        if (myInventory.SlotHasItem(invPosition))
+        {
+            //myInventory.items[invPosition]
+            GameObject descFab = Instantiate(itemDescFab,this.transform.position+new Vector3(0f,1.5f,1f),Quaternion.identity,this.transform.parent);
+            currentItemDesc = descFab.transform;
+            //Change the things within the item description
+            currentItemDesc.GetChild(0).GetComponent<TMP_Text>().text = myInventory.items[invPosition].itemData.itemName;
+            //If description is added, add it here or at least symbolize it through images given here.
+            //currentItemDesc.GetChild(1).GetComponent<TMP_Text>().text = myInventory.items[invPosition].itemData.itemDesc;
+        }
     }
     public void OnPointerExit(PointerEventData eventData)
     {
         isMouseOver = false;
         this.GetComponent<Image>().color = Color.white;
+        //Delete the item description if theres one
+        if (currentItemDesc != null)
+        {
+            Destroy(currentItemDesc.gameObject);
+            currentItemDesc = null;
+        }
     }
 
     public void AssignAttributes(Container cont, Inventory inv, int pos)
@@ -67,11 +89,20 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             StoppedClickingOn();
         }
-        UpdateVisual(); //May not be the best solution, but will work for now.
+        UpdateVisual(); //May not be the best solution to put this at update, but will work for now.
+        if (doubleClickTimer > 0f)
+        {
+            doubleClickTimer -= Time.deltaTime;
+        }
     }
     public void ClickedOn()
     {
         //if empty do nothing, else make player pick up the item
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            TransferCurrentItem();
+        }
+        DetectDoubleClick();
         if (myInventory.SlotHasItem(invPosition) == false)
         {
             Debug.Log("slot "+(invPosition+1)+" was clicked.");
@@ -82,6 +113,43 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             RemoveItemThisSlot(); //Taking and removing may not be right, think about the way we moved blocks instead
         }
         UpdateVisual();
+    }
+    void DetectDoubleClick()
+    {
+        if (doubleClickTimer > 0f)
+        {
+            TransferCurrentItem();
+            doubleClickTimer = 0f;
+        }
+        else
+        {
+            doubleClickTimer = doubleClickWindow;
+        }
+    }
+    void TransferCurrentItem()
+    {
+        if (myInventory.SlotHasItem(invPosition) == false)
+        {
+            return; //No item to transfer
+        }
+        if (myInventory.GetComponent<Container>()) //if it's a container
+        {
+            Container myContainer = myInventory.GetComponent<Container>();
+            myContainer.TransferItem(myInventory,myContainer.currentOpener.GetComponent<Inventory>(),invPosition);
+        }
+        else if (myInventory.GetComponent<PlayerGeneral>()) //if it's a player
+        {
+            PlayerGeneral slotsPlayer = myInventory.GetComponent<PlayerGeneral>();
+            if (slotsPlayer.currentOpenContainer == null)
+            {
+                //Might be best not to do anythin, but could also make a sound effect
+            }
+            else
+            {
+                Container openContainer = slotsPlayer.currentOpenContainer;
+                openContainer.TransferItem(myInventory,openContainer.GetComponent<Inventory>(),invPosition);
+            }
+        }
     }
     public void StoppedClickingOn()
     {

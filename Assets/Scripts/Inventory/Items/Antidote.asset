@@ -17,3 +17,4 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: 81f51dd8e770d0542ba8b559d330df41, type: 3}
   tags:
   - consumable
+  mouseMode: consume
