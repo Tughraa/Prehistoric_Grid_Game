@@ -181,6 +181,8 @@ public class PlayerGeneral : MonoBehaviour
                 return "You got too exposed to that red circle.";
             case "poking":
                 return "How did you get poked to death??";
+            case "fall":
+                return "You found out I added fall damage to this game.";
             default:
                 return "You died because of a bug? I don't know why you died...";
         }

@@ -38,12 +38,14 @@ public class JumpBoostEffect : IStatusEffect
     public void OnApply(EntityGeneral entity)
     {
         entity.entityStatusEffects.jumpForceMults.Add(effectStrength);
+        entity.damageImmunities.Add("fall");
     }
     public void OnRemove(EntityGeneral entity)
     {
         entity.entityStatusEffects.jumpForceMults.Remove(effectStrength);
         //entity.rigid.velocity = new Vector2(entity.rigid.velocity.x/2f,entity.rigid.velocity.y);
         effectDuration = -2f;
+        entity.damageImmunities.Remove("fall");
     }
     public void Tick(EntityGeneral entity, float deltaTime)
     {

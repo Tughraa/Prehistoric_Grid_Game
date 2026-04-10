@@ -25,6 +25,7 @@ public class EntityGeneral : MonoBehaviour
 
     public bool onGround;
     public float airTime = 0f;
+    public float lastFallVel = 0f;
     public bool flammable = true;
     public bool burning = false;
     
@@ -60,7 +61,7 @@ public class EntityGeneral : MonoBehaviour
     
     //[Header("New")]
     
-    
+    bool currentlyFalling = false;
     void Start()
     {
         rigid = this.GetComponent<Rigidbody2D>();
@@ -72,6 +73,7 @@ public class EntityGeneral : MonoBehaviour
     {
         onGround = OnGround();
         AirTimeCalc();
+        FallDamage(1.5f,2f);
         //Vector3 vel3 = rigid.velocity; //this is to see the velocity of each entity visually
         //Debug.DrawLine(this.transform.position, this.transform.position+vel3, Color.green, 0.5f);
         if (entityStopDecel > 0f)
@@ -159,7 +161,7 @@ public class EntityGeneral : MonoBehaviour
     }
     void AirTimeCalc()
     {
-        //Debug.Log("airTime: "+airTime);
+        //if (entityType == "player"){Debug.Log("airTime: "+airTime);}
         if (!onGround)
         {
             airTime += Time.deltaTime;
@@ -167,6 +169,25 @@ public class EntityGeneral : MonoBehaviour
         else
         {
             airTime = 0f;
+        }
+    }
+    void FallDamage(float damageAmount, float damageCutoff)
+    {
+        //if (entityType == "player"){Debug.Log("fallTime: "+lastFallVel);}
+        if (rigid.velocity.y < 0f)
+        {
+            lastFallVel = -rigid.velocity.y/10f;
+            currentlyFalling = true;
+        }
+        else if (currentlyFalling)
+        {
+            float damageCalc = (lastFallVel*damageAmount);
+            if (damageCalc > damageCutoff)
+            {
+                Damage(damageCalc,"fall");
+            }
+            currentlyFalling = false;
+            lastFallVel = 0f;
         }
     }
     private void OnDrawGizmos()

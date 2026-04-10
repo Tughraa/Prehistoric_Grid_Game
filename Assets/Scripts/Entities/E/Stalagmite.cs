@@ -13,13 +13,8 @@ public class Stalagmite : MonoBehaviour
         entity = this.GetComponent<EntityGeneral>();
         mapManager = entity.allSystems.mapManager;
         tiedBlock = mapManager.FloatToGridPos(this.transform.position+new Vector3(0f,1f,0f));
-        entity.EntityDamaged += GetHurt; //Subscribe and start to listen
+        entity.EntityDamaged += GetHurt; //Subscribed on the start
         mapManager.BlockRemoved += CheckBlock;
-    }
-
-    void Update()
-    {
-        
     }
     void OnEnable()
     {
@@ -43,10 +38,7 @@ public class Stalagmite : MonoBehaviour
     }
     public void GetHurt(EntityGeneral ent, float amount, string type)
     {
-        if (type == "smashing")// && amount > 0.2f)
-        {
-            MakeUnstil();
-        }
+        MakeUnstil();//Not interested in type or amount
     }
     public void MakeUnstil()
     {

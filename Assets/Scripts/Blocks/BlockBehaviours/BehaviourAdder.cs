@@ -57,7 +57,7 @@ public class BehaviourAdder : MonoBehaviour
                 break;
         }
     }
-    public void AddBlockBehaviours(BlockState state)
+    public void AddBlockBehaviours(BlockState state) //Make this work with tags, not ids
     {
         switch (state.blockData.id)
         {
@@ -80,6 +80,11 @@ public class BehaviourAdder : MonoBehaviour
                 List<IStatusEffect> bombEffects = new List<IStatusEffect>();
                 bombEffects.Add(new BurnEffect(duration: 5.0f,strength: 0.5f,period: 0.3f));
                 state.AddBehaviour(new ExplosiveBehaviour(7f,bombEffects));
+                break;
+            case "water":
+                state.AddBehaviour(new FlowBehaviour(0.4f,4));
+                //state.AddBehaviour(new LiquidBehaviour(new FlyEffect(duration: 0.3f,strength: 0.2f)));
+                state.AddBehaviour(new LiquidBehaviour(new PoisonEffect(duration: 0.2f,strength: 0.125f,period: 0.30f)));
                 break;
             default:
                 break;

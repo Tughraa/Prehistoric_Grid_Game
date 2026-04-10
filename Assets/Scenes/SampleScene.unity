@@ -1319,6 +1319,7 @@ MonoBehaviour:
   entityType: randomBox
   onGround: 0
   airTime: 0
+  lastFallVel: 0
   flammable: 1
   burning: 0
   immortal: 0
@@ -2031,6 +2032,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9e46831cbfa275f4788bb98ec2a5e183, type: 2}
   - {fileID: 11400000, guid: 20e8b6ed788f54c4ea0a7c1bff13422c, type: 2}
   - {fileID: 11400000, guid: 7a11d8f5ac3612d4cb0bc8f7e0978acc, type: 2}
+  - {fileID: 11400000, guid: 8aadc24092c635348b6c27d921e19184, type: 2}
   blockPref: 0
   blockNameIndic: {fileID: 1462751791}
 --- !u!4 &850553507
@@ -12012,6 +12014,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 81857982bd5f8d847b035344da666e2c, type: 2}
   - {fileID: 11400000, guid: 28d8fb24f83280d4f8b3345ab439113d, type: 2}
   - {fileID: 11400000, guid: 7a11d8f5ac3612d4cb0bc8f7e0978acc, type: 2}
+  - {fileID: 11400000, guid: 8aadc24092c635348b6c27d921e19184, type: 2}
 --- !u!1 &1459836064
 GameObject:
   m_ObjectHideFlags: 0
@@ -12724,6 +12727,7 @@ MonoBehaviour:
   entityType: player
   onGround: 0
   airTime: 0
+  lastFallVel: 0
   flammable: 1
   burning: 0
   immortal: 0
@@ -12829,7 +12833,7 @@ MonoBehaviour:
   allSystems: {fileID: 476240912}
   itemSystem: {fileID: 174710268}
   dropOnDeath: 0
-  giveDevKit: 0
+  giveDevKit: 1
 --- !u!1 &1740796566
 GameObject:
   m_ObjectHideFlags: 0
@@ -13902,6 +13906,7 @@ MonoBehaviour:
   entityType: testEnemy
   onGround: 0
   airTime: 0
+  lastFallVel: 0
   flammable: 1
   burning: 0
   immortal: 0
@@ -15202,7 +15207,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3482975376620363349, guid: e3ba26f6cba91ce44901d2a4f9e6ba14, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5854898678806023904, guid: e3ba26f6cba91ce44901d2a4f9e6ba14, type: 3}
       propertyPath: allSystems
