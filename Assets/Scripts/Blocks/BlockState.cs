@@ -30,6 +30,7 @@ public class BlockState
         brokenLevel += amount;
         if (brokenLevel/brokenMax >= 1f)
         {
+            //
             mapManager.RemoveBlock(blockPos,true);
             return true;
         }

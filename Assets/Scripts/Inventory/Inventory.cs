@@ -24,8 +24,12 @@ public class Inventory : MonoBehaviour
         itemSystem = allSystems.itemSystem;
         if (giveDevKit)
         {
-            ReplaceItem(4,new ItemState(itemSystem.allItems["gods_hands"],invEntity,allSystems,true));
+            GiveDevKit();
         }
+    }
+    public void GiveDevKit()
+    {
+        ReplaceItem(4,new ItemState(itemSystem.allItems["gods_hands"],invEntity,allSystems,true));
     }
     void Update()
     {

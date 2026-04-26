@@ -82,9 +82,11 @@ public class BehaviourAdder : MonoBehaviour
                 state.AddBehaviour(new ExplosiveBehaviour(7f,bombEffects));
                 break;
             case "water":
-                state.AddBehaviour(new FlowBehaviour(0.4f,4));
+                state.AddBehaviour(new FlowBehaviour(0.4f,2));
+                //state.AddBehaviour(new LiquidBehaviour(null));
                 //state.AddBehaviour(new LiquidBehaviour(new FlyEffect(duration: 0.3f,strength: 0.2f)));
-                state.AddBehaviour(new LiquidBehaviour(new PoisonEffect(duration: 0.2f,strength: 0.125f,period: 0.30f)));
+                //state.AddBehaviour(new LiquidBehaviour(new PoisonEffect(duration: 0.2f,strength: 0.125f,period: 0.30f)));
+                AddLiquidEffect(state);
                 break;
             default:
                 break;
@@ -94,7 +96,10 @@ public class BehaviourAdder : MonoBehaviour
 
         }*/
     }
-    
+    void AddLiquidEffect(BlockState state)
+    {
+        state.AddBehaviour(new LiquidBehaviour(RandomEffect(1.5f,false)));
+    }
     void AddGasEffect(BlockState state)
     {
         switch (state.blockData.tags[0])

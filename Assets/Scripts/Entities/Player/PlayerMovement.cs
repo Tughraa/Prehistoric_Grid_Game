@@ -7,10 +7,12 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody2D rigid;
     public EntityGeneral entityGeneral;
     private float inputHVec;
+    private float inputVVec;
 
     public bool canHmove = true;
     public bool canJump = true;
     public bool canLadder = true;
+    public bool canSwim = true;
     public float fallAssistStr = 2f;
     public float airControl = 0.5f;
     public float coyoteTime = 0.1f;
@@ -37,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         inputHVec = Input.GetAxisRaw("Horizontal");
+        inputVVec = Input.GetAxisRaw("Vertical");
         FallAsist();
         if (canJump && !flying)
         {
@@ -50,6 +53,10 @@ public class PlayerMovement : MonoBehaviour
         {
             LadderDetection();
             LadderClimbing();
+        }
+        if (canSwim)
+        {
+            Swimming();
         }
         if (bufferTimer > 0f)
         {
@@ -87,9 +94,8 @@ public class PlayerMovement : MonoBehaviour
     }
     void Flying() //A bit of repeated code, we might change this.
     {
+        //Has no normalization too
         float speedMulter = entityGeneral.entityStatusEffects.GetEntitySpeed();
-        //rigid.gravityScale = 0f; // DO NOT KEEP THIS!!
-        float inputVVec = Input.GetAxisRaw("Vertical");
         //Acceleration
         if ((inputVVec > 0f && rigid.velocity.y < (inputVVec*maxSpeed*speedMulter)) || (inputVVec < 0f && rigid.velocity.y > (inputVVec*maxSpeed*speedMulter)))
         {
@@ -141,7 +147,26 @@ public class PlayerMovement : MonoBehaviour
             rigid.AddForce(new Vector3(0f,-fallAssistStr,0f));
         }
     }
-    void LadderDetection()
+    //Swimming
+    void Swimming()
+    {
+        if (entityGeneral.swimming)
+        {
+            float speedMulter = entityGeneral.entityStatusEffects.GetEntitySpeed();
+            float buoyancySpeed = 5f;
+            float accelTime = 0.2f;
+            float buoyancyForce = rigid.mass*(buoyancySpeed*inputVVec*speedMulter/(accelTime));
+            if (rigid.velocity.y < buoyancySpeed || rigid.velocity.y > buoyancySpeed)
+            {
+                
+                Debug.Log("buoyancyForce: "+buoyancyForce);
+                rigid.AddForce(new Vector2(0f,buoyancyForce));
+            }
+        }
+    }
+
+    //Climbing Movement
+    void LadderDetection() //Might make ladders non-blocks
     {
         Vector3Int myIntPos = entityGeneral.GetGridPos();
         if (entityGeneral.mapManager.HasBlock(myIntPos))

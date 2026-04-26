@@ -134,7 +134,10 @@ MonoBehaviour:
   entityName: Stalagmite
   entityType: stalagmite
   onGround: 0
+  swimming: 0
+  floatsOnWater: 1
   airTime: 0
+  lastFallVel: 0
   flammable: 1
   burning: 0
   immortal: 0
@@ -252,9 +255,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.03}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.47
 --- !u!1 &3567585316429909896
 GameObject:
   m_ObjectHideFlags: 0

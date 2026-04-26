@@ -24,6 +24,8 @@ public class EntityGeneral : MonoBehaviour
     public string entityType = "undef";
 
     public bool onGround;
+    public bool swimming = false;
+    public bool floatsOnWater = true;
     public float airTime = 0f;
     public float lastFallVel = 0f;
     public bool flammable = true;
@@ -54,7 +56,7 @@ public class EntityGeneral : MonoBehaviour
 
     public bool destroyOnDead = false;
     public bool interactable = false;
-    public bool currentInteract = false; //implement it's usage
+    public bool currentInteract = false;
 
     public event Action<EntityGeneral,float,string> EntityDamaged;
     public event Action<EntityGeneral,float> EntityHealed;
@@ -73,9 +75,15 @@ public class EntityGeneral : MonoBehaviour
     {
         onGround = OnGround();
         AirTimeCalc();
-        FallDamage(1.5f,2f);
+        //FallDamage(1.5f,2f);
+        SwimmingDetection();
+        SwimFloat();
         //Vector3 vel3 = rigid.velocity; //this is to see the velocity of each entity visually
         //Debug.DrawLine(this.transform.position, this.transform.position+vel3, Color.green, 0.5f);
+        if (Input.GetKeyDown(KeyCode.N) && entityType == "player")
+        {
+            this.GetComponent<Inventory>().GiveDevKit();
+        }
         if (entityStopDecel > 0f)
         {
             entityStopDecel -= Time.deltaTime;
@@ -143,6 +151,67 @@ public class EntityGeneral : MonoBehaviour
 
         rigid.velocity = new Vector2(rigid.velocity.x,0f); //Cut the player y velocity
         rigid.AddForceAtPosition(knockVec.normalized*(knockAmount*entityStatusEffects.GetEntityKBSensitivty()),knockPos);
+    }
+
+    //Swimming
+    void SwimmingDetection()
+    {
+        Vector3Int myIntPos = GetGridPos();
+        if (mapManager.HasBlock(myIntPos))
+        {
+            if (mapManager.GetBlock(myIntPos).blockData.tags.Contains("liquid"))
+            {
+                if (!swimming)
+                {
+                    StartSwimming();
+                }
+            }
+            else if (swimming)
+            {
+                StopSwimming();
+            }
+        }
+        else if (swimming)
+        {
+            StopSwimming();
+        }
+    }
+    void StartSwimming()
+    {
+        Debug.Log("started swimming");
+        entityStatusEffects.gravityScaleMults.Add(0f);
+        entityStatusEffects.speedMults.Add(0.5f);
+        swimming = true;
+    }
+    void StopSwimming()
+    {
+        Debug.Log("stopped swimming");
+        entityStatusEffects.gravityScaleMults.Remove(0f);
+        entityStatusEffects.speedMults.Remove(0.5f);
+        swimming = false;
+    }
+    void SwimFloat() //Might move such things into the block???
+    {
+        if (swimming && floatsOnWater)
+        {
+            float buoyancySpeed = 1f;
+            float accelTime = 2f;
+            float buoyancyForce = rigid.mass*(buoyancySpeed/(accelTime));
+            if (rigid.velocity.y < buoyancySpeed)
+            {
+                rigid.AddForce(new Vector2(0f,buoyancyForce));
+            }
+        }
+        else if (!floatsOnWater)
+        {
+            float buoyancySpeed = 1f;
+            float accelTime = -0.3f;
+            float buoyancyForce = rigid.mass*(buoyancySpeed/(accelTime));
+            if (rigid.velocity.y < buoyancySpeed)
+            {
+                rigid.AddForce(new Vector2(0f,buoyancyForce));
+            }
+        }
     }
 
     //OnGround

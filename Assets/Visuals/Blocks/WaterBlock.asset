@@ -19,4 +19,5 @@ MonoBehaviour:
   toughness: 1
   tags:
   - liquid
+  - fire_interact
   tickingBlock: 1

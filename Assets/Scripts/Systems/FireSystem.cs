@@ -95,7 +95,7 @@ public class FireSystem : MonoBehaviour
         }
         if (blockData.id == "water")
         {
-            mapManager.GetBlock(pos).GetBehaviour<LiquidBehaviour>().Evaporate(mapManager,pos);
+            mapManager.GetBlock(pos).GetBehaviour<LiquidBehaviour>().Evaporate(mapManager,pos,true);
             return;
         }
         if (blockData.tags.Contains("flammable"))

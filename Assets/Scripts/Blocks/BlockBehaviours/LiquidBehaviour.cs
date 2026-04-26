@@ -11,7 +11,10 @@ public class LiquidBehaviour : IBlockBehaviour
     public LiquidBehaviour(IStatusEffect effect)
     {
         currentEffect = effect;
-        currentColor = effect.GetColor;
+        if (effect != null)
+        {currentColor = effect.GetColor;}
+        else
+        {currentColor = new Color(0.1f,0.7f,0.95f,0.3f);}
     }
     public void OnPlaced(MapManager map, Vector3Int pos, BlockState state)
     {
@@ -20,15 +23,26 @@ public class LiquidBehaviour : IBlockBehaviour
     }
     public void OnRemoved(MapManager map, Vector3Int pos, BlockState state)
     {
-
+        //Evaporate(map, pos, false); //OnRemoved is having a problem rn
+        /*if (map.HasBlock(pos))
+        {
+            if (map.GetBlock(pos) == state)
+            {
+                Evaporate(map, pos, false);
+            }
+        }*/
+        Debug.Log("water removed at:"+pos);
     }
     public void OnBreak(MapManager map, Vector3Int pos, BlockState state)
     {
-
+        Evaporate(map, pos, true);
     }
     public void Tick(MapManager map, Vector3Int pos, BlockState state, float dt)
     {
-        ApplyLiquidEffect(pos); //For the gas to apply it's effect to entities on contanct
+        if (currentEffect != null)
+        {
+            ApplyLiquidEffect(pos); //For the gas to apply it's effect to entities on contanct
+        }
     }
     public void ApplyLiquidEffect(Vector3Int pos)
     {
@@ -54,14 +68,19 @@ public class LiquidBehaviour : IBlockBehaviour
         }
     }
 
-    public void Evaporate(MapManager map, Vector3Int pos)
+    public void Evaporate(MapManager map, Vector3Int pos, bool removeBlock)
     {
-        IStatusEffect effectCopy = currentEffect.Clone();
         BlockState evaporGas = new BlockState(map.allSystems.blockLibrary.allBlocks["effect_gas"],pos,map.allSystems.behaviourAdder,false);
-        evaporGas.AddBehaviour(new GasDiffusionBehaviour(22f,0.6f));
-        evaporGas.AddBehaviour(new EffectGasBehaviour(effectCopy));//constructing this ourselves may not be the best idea
-
-        map.RemoveBlock(pos,true);
+        if (currentEffect != null)
+        {
+            IStatusEffect effectCopy = currentEffect.Clone();
+            evaporGas.AddBehaviour(new GasDiffusionBehaviour(22f,0.6f));
+            evaporGas.AddBehaviour(new EffectGasBehaviour(effectCopy));//constructing this gas ourselves may not be the best idea
+        }
+        if (removeBlock && map.HasBlock(pos))
+        {
+            map.RemoveBlock(pos,true);
+        }
         map.PlaceBlockWithState(pos,evaporGas);
     }
 }

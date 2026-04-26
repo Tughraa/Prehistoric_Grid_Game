@@ -114,6 +114,8 @@ public class WorldMaker : MonoBehaviour
     //Placing other other things
     void PlaceMapThings()
     {
+        PlaceLiquidsRandomly();
+        PlaceTreesRandomly(20);
         PlaceVines(vineCount); //normally 75
         PlaceBlocksRandomly("explosive",explosiveCount);
         PlaceEntitiesRandomly("chest",chestCount,1); //it was 50 before
@@ -121,6 +123,28 @@ public class WorldMaker : MonoBehaviour
         PlaceEntitiesRandomly("stalagmite",stalagmiteCount,-1); //adjust
         PlaceBlockClumpsRandomly(flamGasCount); //normally 7
         allSystems.explosionSystem.ExplodeSimple(new Vector2(-46,-3),6f,2f,null);
+    }
+    public void PlaceLiquidsRandomly()
+    {
+        for (int ix = xLimit.x; ix <= xLimit.y; ix++)
+        {
+            for (int iy = yLimit.x; iy <= yLimit.y; iy++)
+            {
+                float perlinVal = Mathf.PerlinNoise(ix*perlinMultX+perlinConst,iy*perlinMultY+perlinConst);
+                //liquid threshold = -2;
+                if (perlinVal < 0.1f)
+                {
+                    PlaceBlockByName("water",new Vector3Int(ix,iy,0));
+                }
+            }
+        }
+    }
+    public void PlaceTreesRandomly(int howMany)
+    {
+        for (int i = 0; i < howMany; i++)
+        {
+            PlaceTree(RandomAvailablePos(+1),3);
+        }
     }
     public void PlaceEntitiesRandomly(string entityName, int howMany, int dir)
     {
@@ -154,9 +178,10 @@ public class WorldMaker : MonoBehaviour
             allSystems.explosionSystem.BlockPlaceExplosion(pos,6,flamGas);
         }
     }
-    public void PlaceEntityByName(string entityName, Vector3 position)
+    public GameObject PlaceEntityByName(string entityName, Vector3 position)
     {
         GameObject placeFab = allSystems.entitySummonSystem.SummonEntityFabOnName(entityName,position);
+        return placeFab;
     }
     public void PlaceBlockByName(string blockName, Vector3Int position)
     {
@@ -178,6 +203,27 @@ public class WorldMaker : MonoBehaviour
         }
         //PlaceBlockByName("ladder",randomPos);
         return randomPos;
+    }
+    public void PlaceTree(Vector3Int root, int height)
+    {
+        Vector3Int currentBlock = root;
+        for (int i = 0; i < height; i++)
+        {
+            Vector3Int currentPos = root + new Vector3Int(0,i,0);
+            PlaceBlockByName("savanah_tree",currentPos);
+            
+            int randomVal = randomSystem.worldPlacementRNG.Next(3, 6);
+            if (randomVal == 4 || randomVal == 6)
+            {
+                GameObject branch = PlaceEntityByName("tree_stick",currentPos+new Vector3(0.8f,0f,0f));
+                branch.transform.eulerAngles = new Vector3(0f,0f,-14f);
+            }
+            if (randomVal == 5 || randomVal == 6)
+            {
+                GameObject branch = PlaceEntityByName("tree_stick",currentPos+new Vector3(-0.8f,0f,0f));
+                branch.transform.eulerAngles = new Vector3(0f,0f,116f);
+            }
+        }
     }
     public void VineHangFrom(Vector3Int startPos,int length)//check positions
     {

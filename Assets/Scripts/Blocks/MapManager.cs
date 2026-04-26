@@ -40,12 +40,9 @@ public class MapManager : MonoBehaviour
     
     public bool HasBlock(Vector3Int pos)
     {
-        foreach (var key in allBlocks.Keys) //this is too much computation for a common function.
+        if (allBlocks.ContainsKey(pos))
         {
-            if (key == pos)
-            {
-                return true;
-            }
+            return true;
         }
         if (blockLayer.HasTile(pos))
         {
@@ -61,7 +58,7 @@ public class MapManager : MonoBehaviour
     }
     public void PlaceBlockWithState(Vector3Int pos,BlockState blockState)
     {
-        if (HasBlock(pos))
+        if (HasBlock(pos)) 
         {
             RemoveBlock(pos,false);
         }
@@ -80,13 +77,12 @@ public class MapManager : MonoBehaviour
     {
         if (HasBlock(pos))
         {
-            blockLayer.SetTile(pos, null); //Remove from tiles
-            breakLayer.SetTile(pos, null); //Remove the break thing
             BlockRemoved?.Invoke(pos, allBlocks[pos].blockData); //notify the listeners
-
+            blockLayer.SetTile(pos, null);      //Remove from tiles
+            breakLayer.SetTile(pos, null);      //Remove the break thing
             
+            allBlocks[pos].OnRemoved(this,pos);  //Report to the BlockState
             blocksToTick.Remove(allBlocks[pos]); //Remove from blocksToTick
-            allBlocks[pos].OnRemoved(this,pos); //Report to the BlockState
             allBlocks.Remove(pos);              //Remove from the dictionary
         }
         else

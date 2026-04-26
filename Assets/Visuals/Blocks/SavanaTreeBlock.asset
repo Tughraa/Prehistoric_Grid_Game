@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff469183194e61a40a15460137cf04c9, type: 3}
-  m_Name: FlamGasBlock
+  m_Name: SavanaTreeBlock
   m_EditorClassIdentifier: 
-  blockTile: {fileID: 11400000, guid: ccfbc50fc59cbeb4bb56b6f29cced663, type: 2}
-  id: flammable_gas
-  blockName: Flammable Gas
-  hasCollision: 0
+  blockTile: {fileID: 11400000, guid: f9a5d36b2a4518d4b968663412099e3d, type: 2}
+  id: savanah_tree
+  blockName: Savannah Tree
+  hasCollision: 1
   toughness: 1
   tags:
-  - gas
-  - fire_interact
-  tickingBlock: 1
+  - flammable
+  - climable
+  tickingBlock: 0

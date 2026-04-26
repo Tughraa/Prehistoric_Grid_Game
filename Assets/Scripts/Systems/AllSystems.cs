@@ -9,7 +9,9 @@ public class AllSystems : MonoBehaviour
     public GodsHands godsHands;
     public WorldMaker worldMaker;
     public BehaviourAdder behaviourAdder;
+    public ParticlesSystem particlesSystem;
     public FireSystem fireSystem;
+    public LiquidSystem liquidSystem;
     public ItemSystem itemSystem;
     public EntitySummonSystem entitySummonSystem;
     public BlockLibrary blockLibrary;
