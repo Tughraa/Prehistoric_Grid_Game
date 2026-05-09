@@ -27,7 +27,7 @@ public class JumpBoostEffect : IStatusEffect
 
     public void RefreshFrom(IStatusEffect other)
     {
-        if (other is not SpeedEffect incoming)
+        if (other is not JumpBoostEffect incoming)
         {    
             return;
         }

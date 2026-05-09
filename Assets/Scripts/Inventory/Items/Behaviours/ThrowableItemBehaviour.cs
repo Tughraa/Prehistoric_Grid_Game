@@ -9,6 +9,7 @@ public class ThrowableItemBehaviour : IItemBehaviour
     public float throwForce;
 
     public BlockData blockBombBlock;
+    public bool throwOnUse = true;
 
     public ThrowableItemBehaviour(GameObject throwObject,float inThrowDist, float inThrowForce)
     {
@@ -19,8 +20,22 @@ public class ThrowableItemBehaviour : IItemBehaviour
 
     public void Use(EntityGeneral owner, ItemState state, Vector3 mousePos, float heldFor, Inventory inventory, int slot)
     {
-        float currentThrowForce = throwForce/2f + throwForce*(Mathf.Clamp(heldFor,0f,0.9f)); //make that 0.9 changable plz
-        
+        if (throwOnUse)
+        {
+            ThrowItem(owner, mousePos, heldFor, state);
+            if (state.HasBehaviour<ConsumableItemBehaviour>())
+            {
+                state.GetBehaviour<ConsumableItemBehaviour>().ItemUsed(owner,state,inventory,slot);
+            }
+        }
+        else
+        {
+            Debug.Log("not throw on use");
+        }
+    }
+    public GameObject ThrowItem(EntityGeneral owner, Vector3 mousePos, float heldFor, ItemState state)
+    {
+        float currentThrowForce = throwForce/2f + throwForce*(Mathf.Clamp(heldFor,0f,0.9f));
         Vector3 throwOrigin = owner.transform.position+(mousePos-owner.transform.position).normalized*throwDist;
         GameObject summoned = state.allSystems.entitySummonSystem.SummonEntityFab(fabToThrow,throwOrigin);
         AssignToThrownObj(owner,summoned);
@@ -35,7 +50,7 @@ public class ThrowableItemBehaviour : IItemBehaviour
         {
             sumonEnt.GetComponent<ItemPickUp>().storedItem = state.Clone(owner);
         }
-        state.GetBehaviour<ConsumableItemBehaviour>().ItemUsed(owner,state,inventory,slot);
+        return summoned;
     }
     public void RightClick(EntityGeneral owner, ItemState state, Vector3 mousePos, float heldFor, Inventory inventory, int slot)
     {
@@ -59,6 +74,10 @@ public class ThrowableItemBehaviour : IItemBehaviour
         if (obj.GetComponent<ThrowRock>())
         {
             obj.GetComponent<ThrowRock>().owner = owner;
+        }
+        if (obj.GetComponent<RopeCore>())
+        {
+            obj.GetComponent<RopeCore>().owner = owner;
         }
         if (obj.GetComponent<BlockBomb>())
         {

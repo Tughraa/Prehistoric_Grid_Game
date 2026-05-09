@@ -18,6 +18,9 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     Transform currentItemDesc;
     float doubleClickTimer = 0f;
     public float doubleClickWindow = 0.3f;
+    public Material normalMat;
+    public Material palleteSwapMat;
+    Material palleteMaterial;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -58,7 +61,9 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             itemImage.enabled = true;
             itemImage.sprite = myInventory.items[invPosition].itemData.sprite;
-            if (myInventory.items[invPosition].HasBehaviour<DurabilityBehaviour>()) //if it's an item w/ durability
+            
+             //if it's an item with durability
+            if (myInventory.items[invPosition].HasBehaviour<DurabilityBehaviour>())
             {
                 DurabilityBehaviour durab = myInventory.items[invPosition].GetBehaviour<DurabilityBehaviour>();
                 if (durab.DurabilityFraction() < 1f && durabilityBar == null)
@@ -70,12 +75,36 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                     durabilityBar.transform.GetChild(1).GetComponent<Image>().fillAmount = durab.DurabilityFraction();
                 }
             }
+             //if it's an item with pallete swap
+            if (myInventory.items[invPosition].HasBehaviour<PotionBehaviour>())
+            {
+                if (palleteMaterial == null)
+                {   //Assign the material for pallete swap
+                    palleteMaterial = new Material(palleteSwapMat);
+                    itemImage.material = palleteMaterial;
+                }
+                //Change it's color
+                PotionBehaviour pot = myInventory.items[invPosition].GetBehaviour<PotionBehaviour>();
+                palleteMaterial.SetColor("_ToColor", pot.currentColor);
+            }
         }
         else
         {
             //remove sprites
+            itemImage.material = normalMat;
+            if (palleteMaterial != null)
+            {
+                Destroy(palleteMaterial);
+            }
             itemImage.enabled = false;
             Destroy(durabilityBar);
+        }
+    }
+    void OnDestroy()
+    {
+        if (palleteMaterial != null)
+        {
+            Destroy(palleteMaterial);
         }
     }
     void Update()

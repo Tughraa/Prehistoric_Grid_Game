@@ -7,9 +7,10 @@ public class LiquidSystem : MonoBehaviour
     public AllSystems allSystems;
     public MapManager mapManager;
     
-    private HashSet<Vector3Int> activeLiquids = new HashSet<Vector3Int>();
-    private HashSet<Vector3Int> settledLiquids = new HashSet<Vector3Int>();
-    private HashSet<Vector3Int> dirtyPositions = new HashSet<Vector3Int>();
+    HashSet<Vector3Int> activeLiquids = new HashSet<Vector3Int>();
+    HashSet<Vector3Int> settledLiquids = new HashSet<Vector3Int>();
+    HashSet<Vector3Int> dirtyPositions = new HashSet<Vector3Int>();
+    //Su akar yolunu bulur -ayyüce
 
     private void Start()
     {
@@ -45,20 +46,16 @@ public class LiquidSystem : MonoBehaviour
             settledLiquids.Remove(pos);
             WakeNeighbors(pos);
         }
-        else
+        else //A non-liquid block was placed, wake liquid neighbors
         {
-            // A non-liquid block was placed, wake liquid neighbors
-            // since their flow paths may now be blocked
             WakeNeighbors(pos);
         }
     }
 
-    void OnBlockRemoved(Vector3Int pos, BlockData data)
+    void OnBlockRemoved(Vector3Int pos, BlockData data) // A block was removed, wake liquid neighbors
     {
         activeLiquids.Remove(pos);
         settledLiquids.Remove(pos);
-        // A block was removed, wake liquid neighbors
-        // since new flow paths may have opened up
         WakeNeighbors(pos);
     }
 
@@ -76,7 +73,7 @@ public class LiquidSystem : MonoBehaviour
         }
         dirtyPositions.Clear();
 
-        // Sort bottom-up so lower blocks move first
+        //Sort bottom-up so lower blocks move first
         List<Vector3Int> toProcess = new List<Vector3Int>(activeLiquids);
         toProcess.Sort((a, b) => a.y.CompareTo(b.y));
 
@@ -84,7 +81,7 @@ public class LiquidSystem : MonoBehaviour
         {
             if (!mapManager.HasBlock(pos))
             {
-                // Block no longer exists, clean up
+                //Block no longer exists, clean up
                 activeLiquids.Remove(pos);
                 continue;
             }
@@ -106,7 +103,7 @@ public class LiquidSystem : MonoBehaviour
 
             if (!moved)
             {
-                // Didn't move, mark as settled
+                //Didn't move, mark as settled
                 activeLiquids.Remove(pos);
                 settledLiquids.Add(pos);
             }
@@ -165,7 +162,6 @@ public class LiquidSystem : MonoBehaviour
     void MoveLiquid(Vector3Int from, Vector3Int to)
     {
         mapManager.MoveBlock(from, to);
-        //'to' is now active, 'from' is now empty
         activeLiquids.Remove(from);
         settledLiquids.Remove(from);
         activeLiquids.Add(to);

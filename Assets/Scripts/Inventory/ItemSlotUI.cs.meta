@@ -3,7 +3,13 @@ guid: e17259c7a9d154740b46b9a67787b5f7
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - myInventory: {instanceID: 0}
+  - itemImage: {instanceID: 0}
+  - durabilityUI: {instanceID: 0}
+  - itemDescFab: {instanceID: 0}
+  - normalMat: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - palleteSwapMat: {fileID: -876546973899608171, guid: 0aad163a83a606b439dca623333fdd96, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

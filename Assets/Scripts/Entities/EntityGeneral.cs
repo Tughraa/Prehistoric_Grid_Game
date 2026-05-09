@@ -178,14 +178,14 @@ public class EntityGeneral : MonoBehaviour
     }
     void StartSwimming()
     {
-        Debug.Log("started swimming");
+        //Debug.Log("started swimming");
         entityStatusEffects.gravityScaleMults.Add(0f);
         entityStatusEffects.speedMults.Add(0.5f);
         swimming = true;
     }
     void StopSwimming()
     {
-        Debug.Log("stopped swimming");
+        //Debug.Log("stopped swimming");
         entityStatusEffects.gravityScaleMults.Remove(0f);
         entityStatusEffects.speedMults.Remove(0.5f);
         swimming = false;

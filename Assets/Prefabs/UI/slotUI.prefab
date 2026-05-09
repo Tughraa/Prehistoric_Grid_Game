@@ -170,3 +170,6 @@ MonoBehaviour:
   durabilityUI: {fileID: 4342867919824168870, guid: a040dcb912786e64ea51deda72bb039d, type: 3}
   hoverColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
   itemDescFab: {fileID: 4711708388759434989, guid: ad98987367c6c304b8732fb70a1ae40b, type: 3}
+  doubleClickWindow: 0.3
+  normalMat: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  palleteSwapMat: {fileID: -876546973899608171, guid: 0aad163a83a606b439dca623333fdd96, type: 3}

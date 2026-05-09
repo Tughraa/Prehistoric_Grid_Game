@@ -24,9 +24,14 @@ public class BehaviourAdder : MonoBehaviour
                 break;
             case "block_bomb":
                 GameObject throwBlockBombFab = allSystems.entitySummonSystem.entityFabs["block_bomb"];
-                
                 state.AddBehaviour(new ThrowableItemBehaviour(throwObject: throwBlockBombFab,inThrowDist: 1f,inThrowForce: 300f));
                 state.AddBehaviour(new ConsumableItemBehaviour());
+                break;
+            case "rope":
+                GameObject ropeCoreFab = allSystems.entitySummonSystem.entityFabs["rope_core"];
+                state.AddBehaviour(new ThrowableItemBehaviour(throwObject: ropeCoreFab,inThrowDist: 1f,inThrowForce: 350f));
+                state.AddBehaviour(new RopeItemBehaviour(state));
+                //state.AddBehaviour(new ConsumableItemBehaviour());
                 break;
             case "gods_hands":
                 state.AddBehaviour(new GodsHandsItemBehaviour());
@@ -98,7 +103,7 @@ public class BehaviourAdder : MonoBehaviour
     }
     void AddLiquidEffect(BlockState state)
     {
-        state.AddBehaviour(new LiquidBehaviour(RandomEffect(1.5f,false)));
+        state.AddBehaviour(new LiquidBehaviour(RandomEffect(5f,false)));
     }
     void AddGasEffect(BlockState state)
     {

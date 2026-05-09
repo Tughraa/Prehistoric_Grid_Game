@@ -5,7 +5,7 @@ using UnityEngine;
 public class PotionBehaviour : IItemBehaviour
 {
     IStatusEffect currentEffect;
-    Color currentColor;
+    public Color currentColor;
     
     public PotionBehaviour(IStatusEffect effect)
     {
