@@ -21,12 +21,16 @@ public class ParticlesSystem : MonoBehaviour
     //Things needed so far: size, color, speed, lifetime
     public GameObject SummonParticle(string particleName, Vector3 summonPos)
     {
+        if (ObserverInRange(summonPos) == false)
+            {return null;}//Nobody's there to see it
         GameObject summonedP = Instantiate(allParticles[particleName],summonPos,Quaternion.identity);
         //AssignSystemsToSummon(summonedP);
         return summonedP;
     }
     public GameObject SummonParticle(string particleName, Vector3 summonPos, float size, short count, Color color, float speed, float lifetime)
     {
+        if (ObserverInRange(summonPos) == false)
+            {return null;}//Nobody's there to see it
         GameObject summonedP = Instantiate(allParticles[particleName],summonPos,Quaternion.identity);
         ParticleSystem ps = summonedP.GetComponent<ParticleSystem>();
         var pMain = ps.main;
@@ -45,5 +49,11 @@ public class ParticlesSystem : MonoBehaviour
 
 
         return summonedP;
+    }
+    public bool ObserverInRange(Vector3 pos) //FOR MULTIPLAYER: foreach over all active cameras
+    {
+        Camera cam = Camera.main;
+        Vector3 viewportPos = cam.WorldToViewportPoint(pos);
+        return viewportPos.x >= 0 && viewportPos.x <= 1 && viewportPos.y >= 0 && viewportPos.y <= 1;
     }
 }

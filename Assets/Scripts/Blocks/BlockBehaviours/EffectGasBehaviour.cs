@@ -7,6 +7,10 @@ public class EffectGasBehaviour : IBlockBehaviour
     IStatusEffect currentEffect;
     Color currentColor;
     Vector2 originPos;
+    
+    ParticlesSystem particlesSystem;
+    float particleTimer = 0f;
+    float particlePeriod = 0.2f;
    
     public EffectGasBehaviour(IStatusEffect effect)
     {
@@ -16,6 +20,7 @@ public class EffectGasBehaviour : IBlockBehaviour
     public void OnPlaced(MapManager map, Vector3Int pos, BlockState state)
     {
         map.blockLayer.SetColor(pos,currentColor);
+        particlesSystem = map.allSystems.particlesSystem;
     }
     public void OnRemoved(MapManager map, Vector3Int pos, BlockState state)
     {
@@ -28,6 +33,16 @@ public class EffectGasBehaviour : IBlockBehaviour
     public void Tick(MapManager map, Vector3Int pos, BlockState state, float dt)
     {
         ApplyGasEffect(pos); //For the gas to apply it's effect to entities on contanct
+        CastParticles(dt,pos);
+    }
+    void CastParticles(float dt,Vector3 pos)
+    {
+        particleTimer += dt;
+        if (particleTimer > particlePeriod)
+        {
+            particlesSystem.SummonParticle("effect_gas",pos,0.4f,1,currentColor,0.3f,1f);
+            particleTimer = 0f;
+        }
     }
     public void ApplyGasEffect(Vector3Int pos)
     {

@@ -161,6 +161,7 @@ public class EntityStatusEffects : MonoBehaviour
     }
     void EffectFX()
     {
+        ParticlesSystem particlesSystem = entityGeneral.allSystems.particlesSystem;
         particleTimer += Time.deltaTime;
         if (particleTimer > particleTimePeriod)
         {
@@ -170,13 +171,16 @@ public class EntityStatusEffects : MonoBehaviour
             {
                 if (HasEffect(effecti.GetType()) && effecti.hasParticles)
                 {
-                    particleInstance = Instantiate(generalEffectParticle, this.transform.position,Quaternion.identity);
-                    var mainPS = particleInstance.GetComponent<ParticleSystem>().main;
-                    mainPS.startColor = effecti.GetColor;
+                    particleInstance = particlesSystem.SummonParticle("effect",this.transform.position);
+                    if (particleInstance != null)
+                    {
+                        var mainPS = particleInstance.GetComponent<ParticleSystem>().main;
+                        mainPS.startColor = effecti.GetColor;
+                    }
                 }
                 if (entityGeneral.burning && effecti.GetType() == typeof(BurnEffect))
                 {
-                    Instantiate(burnEffectParticle, this.transform.position,Quaternion.identity);
+                    particlesSystem.SummonParticle("burn",this.transform.position);
                 }
             }
         }

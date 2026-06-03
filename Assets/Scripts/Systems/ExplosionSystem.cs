@@ -34,10 +34,13 @@ public class ExplosionSystem : MonoBehaviour
             particlesSystem.SummonParticle("big_explode",originPos); //Maybe take color from effectsToAdd too
 
             GameObject particleInst = particlesSystem.SummonParticle("poof_smoke",originPos); //Maybe take color from effectsToAdd too
-            ParticleSystem ps = particleInst.GetComponent<ParticleSystem>();
-            ParticleSystem.MainModule ma = ps.main;
-            ma.startSpeed = explodeDist*4f;
-            ma.startLifetime = explodeDist/20f;
+            if (particleInst != null)
+            {
+                ParticleSystem ps = particleInst.GetComponent<ParticleSystem>();
+                ParticleSystem.MainModule ma = ps.main;
+                ma.startSpeed = explodeDist*4f;
+                ma.startLifetime = explodeDist/20f;
+            }
         }
 
 

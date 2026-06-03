@@ -125,7 +125,7 @@ MonoBehaviour:
   lastFallVel: 0
   flammable: 1
   burning: 0
-  immortal: 0
+  immortal: 1
   maxHealth: 10
   health: 10
   dead: 0
@@ -243,7 +243,7 @@ DistanceJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 0
-  m_Distance: 3
+  m_Distance: 50
   m_MaxDistanceOnly: 1
 --- !u!114 &6865901403812785395
 MonoBehaviour:
@@ -259,7 +259,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
   joint: {fileID: 0}
+  initThrow: {x: 0, y: 0}
   ropeDist: 1.8
+  connected: 0
+  activeEntityJoint: {fileID: 0}
 --- !u!120 &5427461694846620537
 LineRenderer:
   serializedVersion: 2

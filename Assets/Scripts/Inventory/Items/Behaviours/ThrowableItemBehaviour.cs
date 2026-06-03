@@ -22,6 +22,12 @@ public class ThrowableItemBehaviour : IItemBehaviour
     {
         if (throwOnUse)
         {
+            Vector3 originCheckPos = owner.transform.position+(mousePos-owner.transform.position).normalized*throwDist;
+            if (PointHasCollision(originCheckPos) && state.HasBehaviour<RockBreakBehaviour>())
+            {
+                state.GetBehaviour<RockBreakBehaviour>().CantThrow(owner,originCheckPos);
+                return;
+            }
             ThrowItem(owner, mousePos, heldFor, state);
             if (state.HasBehaviour<ConsumableItemBehaviour>())
             {
@@ -36,11 +42,12 @@ public class ThrowableItemBehaviour : IItemBehaviour
     public GameObject ThrowItem(EntityGeneral owner, Vector3 mousePos, float heldFor, ItemState state)
     {
         float currentThrowForce = throwForce/2f + throwForce*(Mathf.Clamp(heldFor,0f,0.9f));
-        Vector3 throwOrigin = owner.transform.position+(mousePos-owner.transform.position).normalized*throwDist;
+        Vector3 throwOrigin = owner.transform.position+(mousePos-owner.transform.position).normalized*throwDist;    
         GameObject summoned = state.allSystems.entitySummonSystem.SummonEntityFab(fabToThrow,throwOrigin);
-        AssignToThrownObj(owner,summoned);
-
+        
         Vector2 throwDir = (mousePos-throwOrigin).normalized;
+        AssignToThrownObj(owner,summoned,throwDir*currentThrowForce);
+
         EntityGeneral sumonEnt = summoned.GetComponent<EntityGeneral>();
         sumonEnt.rigid.velocity = owner.rigid.velocity;
         sumonEnt.Knockback(throwDir,currentThrowForce);
@@ -69,7 +76,7 @@ public class ThrowableItemBehaviour : IItemBehaviour
         
         //Debug.Log("stopped holding: "+state.itemData.id);
     }
-    void AssignToThrownObj(EntityGeneral owner, GameObject obj)
+    void AssignToThrownObj(EntityGeneral owner, GameObject obj, Vector2 throwVec)
     {
         if (obj.GetComponent<ThrowRock>())
         {
@@ -78,6 +85,7 @@ public class ThrowableItemBehaviour : IItemBehaviour
         if (obj.GetComponent<RopeCore>())
         {
             obj.GetComponent<RopeCore>().owner = owner;
+            obj.GetComponent<RopeCore>().initThrow = throwVec;
         }
         if (obj.GetComponent<BlockBomb>())
         {
@@ -86,5 +94,9 @@ public class ThrowableItemBehaviour : IItemBehaviour
             {obj.GetComponent<BlockBomb>().containedBlock = blockBombBlock;}
             //and also the gas!
         }
+    }
+    bool PointHasCollision(Vector2 position)
+    {
+        return Physics2D.OverlapPoint(position) != null;
     }
 }

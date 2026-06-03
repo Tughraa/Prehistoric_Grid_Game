@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
   m_Name: LightDirtTile
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: -1199107396, guid: d2f0c7d0d6f6327468e85ce05c702737, type: 3}
+  m_DefaultSprite: {fileID: -1323840300, guid: 634367545cf4fcf43926990df4754f91, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules:

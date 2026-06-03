@@ -8,6 +8,7 @@ public class PusherItemBehaviour : IItemBehaviour
     float pushForce;
     float blockDamage;
     float entityDamage;
+    float pushLimit = 550f;
     public PusherItemBehaviour(float inReachDist, float inPushForce, float inBlockDamage, float inEntityDamage)
     {
         reachDist = inReachDist;
@@ -34,9 +35,10 @@ public class PusherItemBehaviour : IItemBehaviour
         if (hit.collider.GetComponent<EntityGeneral>()) //entity pushed
         {
             EntityGeneral hitEntity = hit.collider.GetComponent<EntityGeneral>();
-            float totalMass = hitEntity.rigid.mass + owner.rigid.mass;
-            owner.Knockback(-pushDir,currentPushForce*(hitEntity.rigid.mass/totalMass)*1.6f);
-            hitEntity.Knockback(pushDir,currentPushForce*(owner.rigid.mass/totalMass)*1.6f);
+            //float totalMass = hitEntity.rigid.mass + owner.rigid.mass;
+            
+            PushOwner(owner,(-pushDir.normalized)*currentPushForce);
+            hitEntity.Knockback(pushDir,currentPushForce);
             hitEntity.Damage(entityDamage*chargeMult,"poking");
         }
         else //non-entity pushed, see if block
@@ -49,9 +51,20 @@ public class PusherItemBehaviour : IItemBehaviour
                 BlockState hitBlock = map.GetBlock(checkPosGrid);
                 hitBlock.BlockBreak(blockDamage*chargeMult,map);
             }
-            owner.Knockback(-pushDir,currentPushForce);
+            PushOwner(owner,(-pushDir.normalized)*currentPushForce);
         }
         state.GetBehaviour<DurabilityBehaviour>().ItemUsed(owner,state,inventory,slot,chargeMult);
+    }
+    public void PushOwner(EntityGeneral owner, Vector2 pushVec)
+    {
+        float pushForce = pushVec.magnitude;
+        Vector2 finalVel = owner.rigid.velocity + pushVec;
+        Debug.Log("stick magnitude: "+finalVel.magnitude);
+        if (finalVel.magnitude > pushLimit)
+        {
+            pushForce = pushLimit;
+        }
+        owner.Knockback(pushVec,pushForce);
     }
     public void RightClick(EntityGeneral owner, ItemState state, Vector3 mousePos, float heldFor, Inventory inventory, int slot)
     {

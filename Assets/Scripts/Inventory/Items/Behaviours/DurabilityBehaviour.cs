@@ -19,9 +19,7 @@ public class DurabilityBehaviour : IItemBehaviour
 
     public void ItemUsed(EntityGeneral owner, ItemState state, Inventory inventory, int slot, float amount) //Also handle effects and maybe a showcase
     {
-        Debug.Log("durability was: "+currentDurability);
         currentDurability -= amount;
-        Debug.Log("durability is: "+currentDurability);
         if (currentDurability <= 0f)
         {
             inventory.ClearItemSlot(slot); //Do Some Effects Here l8er

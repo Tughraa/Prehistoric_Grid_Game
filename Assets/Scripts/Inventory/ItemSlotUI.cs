@@ -161,6 +161,11 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             return; //No item to transfer
         }
+        //Let the item know its no longer being held, if this slot was being held
+        if (myInventory.heldItemIndex == invPosition)
+        {
+            myInventory.GetSlotItem(invPosition).ItemStopHolding(myInventory.GetComponent<EntityGeneral>(),myInventory,invPosition);
+        }
         if (myInventory.GetComponent<Container>()) //if it's a container
         {
             Container myContainer = myInventory.GetComponent<Container>();

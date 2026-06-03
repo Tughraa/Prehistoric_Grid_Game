@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConsumableItemBehaviour : IItemBehaviour //A problem with this approach is that it doesn't understand if the item's actually used
+public class ConsumableItemBehaviour : IItemBehaviour
 {
     public ConsumableItemBehaviour() //Right now nothing but maybe sound effects or anim in the futures
     {

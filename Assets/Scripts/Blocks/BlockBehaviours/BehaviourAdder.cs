@@ -20,6 +20,7 @@ public class BehaviourAdder : MonoBehaviour
             case "throw_rock":
                 GameObject throwRockFab = allSystems.entitySummonSystem.entityFabs["throw_rock"];
                 state.AddBehaviour(new ThrowableItemBehaviour(throwObject: throwRockFab,inThrowDist: 1f,inThrowForce: 350f));
+                state.AddBehaviour(new RockBreakBehaviour());
                 state.AddBehaviour(new ConsumableItemBehaviour());
                 break;
             case "block_bomb":
@@ -31,7 +32,6 @@ public class BehaviourAdder : MonoBehaviour
                 GameObject ropeCoreFab = allSystems.entitySummonSystem.entityFabs["rope_core"];
                 state.AddBehaviour(new ThrowableItemBehaviour(throwObject: ropeCoreFab,inThrowDist: 1f,inThrowForce: 350f));
                 state.AddBehaviour(new RopeItemBehaviour(state));
-                //state.AddBehaviour(new ConsumableItemBehaviour());
                 break;
             case "gods_hands":
                 state.AddBehaviour(new GodsHandsItemBehaviour());

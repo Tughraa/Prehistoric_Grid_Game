@@ -31,6 +31,10 @@ public class PlayerGeneral : MonoBehaviour
     public TMP_Text itemNameUI;
     public Transform heldItemAnchor;
     private SpriteRenderer heldItemSprite;
+    
+    public Material heldItemNormalMat;
+    public Material heldItemPalleteMat;
+    Material palleteMaterial;
 
     
 
@@ -324,11 +328,36 @@ public class PlayerGeneral : MonoBehaviour
                 float itemHoldAngle = -5.27f;
                 heldItemAnchor.eulerAngles = new Vector3(0f,0f,itemHoldAngle);
             }
+             //if it's an item with pallete swap
+            if (playerInventory.HeldItem().HasBehaviour<PotionBehaviour>())
+            {
+                if (palleteMaterial == null)
+                {   //Assign the material for pallete swap
+                    palleteMaterial = new Material(heldItemPalleteMat);
+                    heldItemSprite.material = palleteMaterial;
+                }
+                //Change it's color
+                PotionBehaviour pot = playerInventory.HeldItem().GetBehaviour<PotionBehaviour>();
+                palleteMaterial.SetColor("_ToColor", pot.currentColor);
+            }
+            else
+            {
+                heldItemSprite.material = heldItemNormalMat;
+                if (palleteMaterial != null)
+                {
+                    Destroy(palleteMaterial);
+                }
+            }
         }
         else
         {
             itemNameUI.enabled = false;
             heldItemSprite.enabled = false;
+            heldItemSprite.material = heldItemNormalMat;
+            if (palleteMaterial != null)
+            {
+                Destroy(palleteMaterial);
+            }
         }
     }
 
@@ -521,8 +550,16 @@ public class PlayerGeneral : MonoBehaviour
     }
     public Vector3 FindMousePos()
     {
+        Vector2 mousePos = Input.mousePosition;
+        if (!float.IsFinite(mousePos.x) || !float.IsFinite(mousePos.y))
+            {return Vector3.zero;}
+
         Vector2 pos;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(playerCanvas.transform as RectTransform, Input.mousePosition, playerCanvas.worldCamera, out pos);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            playerCanvas.transform as RectTransform,
+            mousePos,
+            playerCanvas.worldCamera,
+            out pos);
         return playerCanvas.transform.TransformPoint(pos);
     }
     public void MouseHoldingItem()

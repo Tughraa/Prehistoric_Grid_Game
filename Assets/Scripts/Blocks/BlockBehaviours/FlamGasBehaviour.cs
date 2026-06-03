@@ -5,6 +5,9 @@ using UnityEngine;
 public class FlamGasBehaviour : IBlockBehaviour
 {
     FireSystem fireSystem;
+    ParticlesSystem particlesSystem;
+    float particleTimer = 0f;
+    float particlePeriod = 0.2f;
    
     public FlamGasBehaviour()
     {
@@ -13,6 +16,7 @@ public class FlamGasBehaviour : IBlockBehaviour
     public void OnPlaced(MapManager map, Vector3Int pos, BlockState state)
     {
         fireSystem = map.allSystems.fireSystem;
+        particlesSystem = map.allSystems.particlesSystem;
     }
     public void OnRemoved(MapManager map, Vector3Int pos, BlockState state)
     {
@@ -31,6 +35,11 @@ public class FlamGasBehaviour : IBlockBehaviour
     }
     public void Tick(MapManager map, Vector3Int pos, BlockState state, float dt)
     {
-        
+        particleTimer += dt;
+        if (particleTimer > particlePeriod)
+        {
+            particlesSystem.SummonParticle("flam_gas",pos);
+            particleTimer = 0f;
+        }
     }
 }

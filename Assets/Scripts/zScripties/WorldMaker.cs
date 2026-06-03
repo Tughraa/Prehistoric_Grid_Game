@@ -13,15 +13,19 @@ public class WorldMaker : MonoBehaviour
     public Vector2Int xLimit;
     public Vector2Int yLimit;
     public float perlinThreshold = 0.4f;
-    public float perlinMultX = 0.1f;
-    public float perlinMultY = 0.2f;
+    public float perlinMaskThreshold = 0.6f;
+    public Vector2 perlinMult = new Vector2(0.1f,0.4f);
     public float perlinConst = 100f;
+    public float perlinMaskConst = 9999f;
+    public Vector2 perlinMaskSize = new Vector2(0.05f,0.05f);
+    public Vector2 perlinMaskStrength = new Vector2(0.5f,0.5f);
 
     [SerializeField] BlockData tempFlamGas;
 
     [Header("Generation Counts")]
     [SerializeField] int vineCount = 125;
     [SerializeField] int explosiveCount = 40;
+    [SerializeField] int stoneCount = 60;
     [SerializeField] int chestCount = 75;
     [SerializeField] int shooterCount = 0;
     [SerializeField] int stalagmiteCount = 50;
@@ -31,6 +35,7 @@ public class WorldMaker : MonoBehaviour
     {
         randomSystem = allSystems.randomSystem;
         perlinConst *= (float)randomSystem.terrainGenRNG.NextDouble()*2036f;
+        perlinMaskConst *= (float)randomSystem.terrainMaskRNG.NextDouble()*167f;
         //MapClear();
         mapManager.ReadMapBlocks();
         PutBlocks(xLimit,yLimit);
@@ -92,20 +97,54 @@ public class WorldMaker : MonoBehaviour
                     }
                 }
             }
-        }
+        }//float perlinVal = Mathf.PerlinNoise(xP*perlinMult.x+perlinConst,yP*perlinMult.y+perlinConst);
     }
     bool PerlinEval(float xP, float yP,float threshold)
     {
-        float perlinVal = Mathf.PerlinNoise(xP*perlinMultX+perlinConst,yP*perlinMultY+perlinConst);
-        //Debug.Log(perlinVal);
-        if (perlinVal >= threshold)
+        float magnifyMask = Mathf.Clamp(Mathf.PerlinNoise(xP*perlinMaskSize.x+perlinMaskConst,yP*perlinMaskSize.y+perlinMaskConst),0.0001f,1f);
+        
+        //float perlinVal = Mathf.PerlinNoise(xP*perlinMult.x*(magnifyMask*perlinMaskStrength)+perlinConst,yP*perlinMult.y*(magnifyMask*perlinMaskStrength)+perlinConst);
+        float perlinVal = Mathf.PerlinNoise(xP*perlinMult.x+perlinConst, yP*perlinMult.y+perlinConst);
+        float adjustedThreshold = threshold;
+        if (magnifyMask > perlinMaskThreshold)
+        {adjustedThreshold = threshold * ((magnifyMask * perlinMaskStrength.x)-perlinMaskThreshold);}
+        
+        if (magnifyMask > perlinMaskThreshold) //Visualize the mask for debugging
         {
-            return true;
+            Vector3 st = new Vector3(xP, yP, 0f);
+            if (magnifyMask > 0.85)
+            {
+                Debug.DrawLine(st+ new Vector3(0.5f, -0.5f, 0f),st- new Vector3(0.5f, -0.5f, 0f), Color.red, 10f);
+            }
+            Debug.DrawLine(st+ new Vector3(0.5f, 0.5f, 0f),st- new Vector3(0.5f, 0.5f, 0f), Color.blue/2f, 10f);
         }
-        else
+
+        return (perlinVal >= adjustedThreshold);
+        /*
+    {
+        // Sample low-frequency mask
+        float magnifyMask = Mathf.PerlinNoise(
+        xP * perlinMaskSize.x + perlinMaskConst, 
+        yP * perlinMaskSize.y + perlinMaskConst);
+        if (magnifyMask > 0.5f)
         {
-            return false;
+            Vector3 st = new Vector3(xP, yP, 0f);
+            
+            Debug.DrawLine(st+ new Vector3(0.5f, 0.5f, 0f),st- new Vector3(0.5f, 0.5f, 0f), Color.blue, 10f);
         }
+
+        // Warp the sample coordinates based on mask
+        // High mask = pull coordinates toward nearest feature center
+        // Low mask = push coordinates away
+        float warpStrength = (magnifyMask - 0.5f) * perlinMaskStrength.x;
+        float warpedX = xP + warpStrength / (perlinMult.x + 0.0001f);
+        float warpedY = yP + warpStrength / (perlinMult.y + 0.0001f);
+
+        float perlinVal = Mathf.PerlinNoise(
+        warpedX * perlinMult.x + perlinConst, 
+        warpedY * perlinMult.y + perlinConst);
+        }
+        return (perlinVal >= threshold);*/
     }
     float OneDimPerlinEval(float xPos, float constant, float strech)
     {
@@ -114,9 +153,11 @@ public class WorldMaker : MonoBehaviour
     //Placing other other things
     void PlaceMapThings()
     {
-        PlaceLiquidsRandomly();
+        PlacePoolsRandomly(28);
+        //PlaceLiquidsRandomly();
         PlaceTreesRandomly(20);
         PlaceVines(vineCount); //normally 75
+        //PlaceBlocksRandomly("stone",stoneCount);
         PlaceBlocksRandomly("explosive",explosiveCount);
         PlaceEntitiesRandomly("chest",chestCount,1); //it was 50 before
         PlaceEntitiesRandomly("shooter_enemy",shooterCount,1);
@@ -130,7 +171,7 @@ public class WorldMaker : MonoBehaviour
         {
             for (int iy = yLimit.x; iy <= yLimit.y; iy++)
             {
-                float perlinVal = Mathf.PerlinNoise(ix*perlinMultX+perlinConst,iy*perlinMultY+perlinConst);
+                float perlinVal = Mathf.PerlinNoise(ix*perlinMult.x+perlinConst,iy*perlinMult.y+perlinConst);
                 //liquid threshold = -2;
                 if (perlinVal < 0.1f)
                 {
@@ -176,6 +217,48 @@ public class WorldMaker : MonoBehaviour
             BlockState flamGas = new BlockState(tempFlamGas,pos,allSystems.behaviourAdder,false);
             flamGas.AddBehaviour(new FlamGasBehaviour());
             allSystems.explosionSystem.BlockPlaceExplosion(pos,6,flamGas);
+        }
+    }
+    public void PlacePoolsRandomly(int howMany)
+    {
+        for (int i = 0; i < howMany; i++)
+        {
+            PlacePool(RandomPosition(),0,allSystems.behaviourAdder.RandomEffect(5f,false));
+        }
+    }
+    public void PlacePool(Vector3Int position, int recursionCount, IStatusEffect poolEffect)
+    {
+        if (mapManager.HasBlock(position))
+        {
+            return;
+        }
+        int totalRecurse = 13;
+        if (recursionCount > totalRecurse)
+        {
+            PlaceBlockByName("stone",position);
+            return;
+        }
+
+        BlockData waterData = allSystems.blockLibrary.allBlocks["water"];
+        BlockState waterState = new BlockState(waterData,position,allSystems.behaviourAdder,false);
+        waterState.AddBehaviour(new FlowBehaviour(0.4f,2));
+        waterState.AddBehaviour(new LiquidBehaviour(poolEffect));
+        mapManager.PlaceBlockWithState(position,waterState);
+        
+        Vector3Int leftPos = position + new Vector3Int(1,0,0);
+        Vector3Int rightPos = position + new Vector3Int(-1,0,0);
+        Vector3Int bottomPos = position + new Vector3Int(0,-1,0);
+        if (!mapManager.HasBlock(leftPos))
+        {
+            PlacePool(leftPos,recursionCount+1,poolEffect);
+        }
+        if (!mapManager.HasBlock(rightPos))
+        {
+            PlacePool(rightPos,recursionCount+1,poolEffect);
+        }
+        if (!mapManager.HasBlock(bottomPos))
+        {
+            PlacePool(bottomPos,recursionCount+1,poolEffect);
         }
     }
     public GameObject PlaceEntityByName(string entityName, Vector3 position)
@@ -244,7 +327,7 @@ public class WorldMaker : MonoBehaviour
     {
         int xPos = randomSystem.worldPlacementRNG.Next(xLimit.x,xLimit.y+1);
         int yPos = randomSystem.worldPlacementRNG.Next(yLimit.x,yLimit.y+1);
-        return (new Vector3Int(xPos,yPos,-1));
+        return (new Vector3Int(xPos,yPos,0));
     }
     public Vector3Int RandomBlockPosition()
     {

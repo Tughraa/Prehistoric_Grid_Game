@@ -10,6 +10,7 @@ public class RandomSystem : MonoBehaviour
     public AllSystems allSystems;
     int worldSeed = 123456;
     public System.Random terrainGenRNG;
+    public System.Random terrainMaskRNG;
     public System.Random lootRNG;
     public System.Random blockSpreadRNG;
     public System.Random worldPlacementRNG;
@@ -25,6 +26,7 @@ public class RandomSystem : MonoBehaviour
         tempPlayer.Announce("Current Seed: "+ seed,8f,new Color(0.6f,0.76f,0.84f,0.9f));
         worldSeed = SeedFromString(seed);
         terrainGenRNG = new System.Random(worldSeed);
+        terrainMaskRNG = new System.Random(worldSeed*46363);
         lootRNG = new System.Random(worldSeed);// * 23384); //make some multiplications
         blockSpreadRNG = new System.Random(worldSeed);
         worldPlacementRNG = new System.Random(worldSeed);
