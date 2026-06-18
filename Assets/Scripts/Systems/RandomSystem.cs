@@ -19,9 +19,18 @@ public class RandomSystem : MonoBehaviour
     public PlayerGeneral tempPlayer;
     void Awake()
     {
+        randomizeSeedOnStart = !PlayerPrefs.HasKey("givenSeedKey");
         if (randomizeSeedOnStart)
         {
             seed = RandomString(7);
+        }
+        else
+        {
+            seed = PlayerPrefs.GetString("givenSeedKey");
+            if (seed == "")
+            {
+                seed = RandomString(7);
+            }
         }
         tempPlayer.Announce("Current Seed: "+ seed,8f,new Color(0.6f,0.76f,0.84f,0.9f));
         worldSeed = SeedFromString(seed);

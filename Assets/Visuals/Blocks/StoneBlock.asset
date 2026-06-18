@@ -16,6 +16,6 @@ MonoBehaviour:
   id: stone
   blockName: Stone
   hasCollision: 1
-  toughness: 6
+  toughness: 2
   tags: []
   tickingBlock: 0

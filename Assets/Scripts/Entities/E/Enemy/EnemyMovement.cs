@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
+using System;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -11,9 +12,8 @@ public class EnemyMovement : MonoBehaviour
     public AllSystems allSystems;
 
     public bool flying = false;
+    public bool moving = false;
 
-    public GameObject targetObj;
-    public Vector2 targetPos;
     public float minPathLength = 1.5f;
 
     public Seeker seeker;
@@ -21,7 +21,9 @@ public class EnemyMovement : MonoBehaviour
     public float pathPeriod = 0.5f;
     Path path;
     int currentWaypoint = 0;
-
+    public event Action<EnemyMovement,Vector2> GoalGiven;
+    public event Action<EnemyMovement> GoalReached;
+    
     void Start()
     {
         seeker = this.GetComponent<Seeker>();
@@ -35,36 +37,55 @@ public class EnemyMovement : MonoBehaviour
         path = p;
         currentWaypoint = 0;
     }
-    public void CalculatePath()
+    public void GoToPoint(Vector2 point)
     {
-        seeker.StartPath(this.transform.position, targetPos, OnPathComplete);
+        seeker.StartPath(this.transform.position, point, OnPathComplete);
+        GoalGiven?.Invoke(this,point);
+        moving = true;
     }
 
     void Update()
     {
-        timer += Time.deltaTime;
-        if (timer >= pathPeriod)
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (Input.GetKeyDown(KeyCode.X))
         {
-            targetPos = targetObj.transform.position;
-            CalculatePath();
-            timer = 0f;
+            GoToPoint(mousePos);
         }
-        FollowPath();
+        if (moving || true)
+        {
+            FollowPath();
+        }
+    }
+    public void PathsFinished()
+    {
+        if (!moving)
+        {return;}
+        
+        moving = false;
+        GoalReached?.Invoke(this);
+    }
+    public bool IsPathNull()
+    {
+        return (path == null) || (currentWaypoint >= path.vectorPath.Count) || (path.GetTotalLength() < minPathLength);
+    }
+    public Vector2 GetDirection()
+    {
+        return ((Vector2)path.vectorPath[currentWaypoint] - (Vector2)transform.position).normalized;
     }
     void FollowPath()
     {
         if (path == null) //no path to follow
-        {return;}
+        {PathsFinished();return;}
         if (path.GetTotalLength() < minPathLength) //path is too short to bother
-        {return;}
+        {PathsFinished();return;}
         if (currentWaypoint >= path.vectorPath.Count) //already at destination
-        {return;}
+        {PathsFinished();return;}
         if (enemyGeneral.entityGeneral.entityStopDecel > 0f) //stunned
         {return;}
         if (enemyGeneral.entityGeneral.dead) //dead
         {return;}
 
-        Vector2 dir = ((Vector2)path.vectorPath[currentWaypoint] - (Vector2)transform.position).normalized;
+        Vector2 dir = GetDirection();
         GetComponent<Rigidbody2D>().velocity = dir * speed*enemyGeneral.entityGeneral.entityStatusEffects.GetEntitySpeed();
 
         float dist = Vector2.Distance(transform.position, path.vectorPath[currentWaypoint]);

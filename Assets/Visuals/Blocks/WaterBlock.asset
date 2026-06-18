@@ -16,7 +16,7 @@ MonoBehaviour:
   id: water
   blockName: Water
   hasCollision: 0
-  toughness: 1
+  toughness: 500
   tags:
   - liquid
   - fire_interact

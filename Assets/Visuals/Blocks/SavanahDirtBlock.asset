@@ -17,5 +17,6 @@ MonoBehaviour:
   blockName: Savannah Dirt
   hasCollision: 1
   toughness: 4
-  tags: []
+  tags:
+  - worldDef
   tickingBlock: 0

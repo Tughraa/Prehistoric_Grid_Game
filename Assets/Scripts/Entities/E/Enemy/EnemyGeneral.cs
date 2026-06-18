@@ -10,6 +10,7 @@ public class EnemyGeneral : MonoBehaviour
     public float meleeRange = 2.5f;
     public float meleeDamage = 0.1f;
     [SerializeField] Image enemyHealthBar;
+    [SerializeField] SpriteRenderer damageRange;
     
     void Start()
     {
@@ -20,7 +21,12 @@ public class EnemyGeneral : MonoBehaviour
         if (meleeHitter && !entityGeneral.dead)
         {
             MeleeAttackDetection(); //this is all very simple, next up lets use items to keep it systemic
+            damageRange.enabled = true;
         }        
+        else
+        {
+            damageRange.enabled = false;
+        }
     }
 
     //Health
@@ -43,6 +49,7 @@ public class EnemyGeneral : MonoBehaviour
         enemyHealthBar.fillAmount = entityGeneral.health/entityGeneral.maxHealth;
     }
 
+    //Update this to be outside of this script
     //Melee attacks
     private void MeleeAttackDetection()
     {
@@ -52,8 +59,8 @@ public class EnemyGeneral : MonoBehaviour
         Collider2D[] results = Physics2D.OverlapCircleAll(origin, meleeRange);
 
         // Debug visualization
-        Debug.DrawLine(origin - new Vector2(0f, meleeRange), origin + new Vector2(0f, meleeRange), Color.red, 2f);
-        Debug.DrawLine(origin - new Vector2(meleeRange, 0f), origin + new Vector2(meleeRange, 0f), Color.red, 2f);
+        //Debug.DrawLine(origin - new Vector2(0f, meleeRange), origin + new Vector2(0f, meleeRange), Color.red, 2f);
+        //Debug.DrawLine(origin - new Vector2(meleeRange, 0f), origin + new Vector2(meleeRange, 0f), Color.red, 2f);
 
         foreach (var col in results)
         {

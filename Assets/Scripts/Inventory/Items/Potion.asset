@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Potion
   m_EditorClassIdentifier: 
   id: potion
-  itemName: Surprise Potion
+  itemName: Potion
   sprite: {fileID: 21300000, guid: 0abd5f2981cf2cb459af2cbb52989ff7, type: 3}
   tags:
   - consumable

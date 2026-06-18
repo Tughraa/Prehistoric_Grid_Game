@@ -12,6 +12,7 @@ public class BehaviourAdder : MonoBehaviour
 {
     public AllSystems allSystems;
     public NameAndIcon[] statusIcons;
+    int effectOrder = 0;
 
     public void AddItemBehaviours(ItemState state)
     {
@@ -92,6 +93,10 @@ public class BehaviourAdder : MonoBehaviour
                 //state.AddBehaviour(new LiquidBehaviour(new FlyEffect(duration: 0.3f,strength: 0.2f)));
                 //state.AddBehaviour(new LiquidBehaviour(new PoisonEffect(duration: 0.2f,strength: 0.125f,period: 0.30f)));
                 AddLiquidEffect(state);
+                break;
+            case "stone":
+                //state.AddBehaviour(new DropItemBehaviour("throw_rock",1));
+                //momentarily disabled due to not working out for the playtest
                 break;
             default:
                 break;
@@ -174,6 +179,35 @@ public class BehaviourAdder : MonoBehaviour
                 return (new FlyEffect(duration: givenDuration,strength: 0.2f));
             default:
                 return (new SpeedEffect(duration: 1f,strength: 3f));
+        }
+    }
+    public IStatusEffect OrderedEffectPool(float givenDuration)
+    {
+        effectOrder++;
+        if (effectOrder > 9)
+        {
+            effectOrder = 0;
+        }
+        switch (effectOrder)
+        {
+            case 0:
+                return (new PoisonEffect(duration: givenDuration,strength: 0.125f,period: 0.30f));
+            case 1:
+                return (new TremorEffect(duration: givenDuration,strength: 1.5f,period: 0.3f));
+            case 2:
+                return (new FloatEffect(duration: givenDuration,strength: 0.2f));
+            case 3:
+                return (new SpeedEffect(duration: givenDuration,strength: 3f));
+            case 4:
+                return (new JumpBoostEffect(duration: givenDuration,strength: 2f));
+            case 5:
+                return (new HealingEffect(duration: givenDuration,strength: 0.5f,period: 0.75f));
+            case 6:
+                return (new FlyEffect(duration: givenDuration,strength: 0.2f));
+            case 7:
+                return (new FreezeEffect(duration: givenDuration,strength: 1.7f));
+            default:
+                return null;
         }
     }
 }

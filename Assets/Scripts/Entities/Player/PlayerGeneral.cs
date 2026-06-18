@@ -36,6 +36,14 @@ public class PlayerGeneral : MonoBehaviour
     public Material heldItemPalleteMat;
     Material palleteMaterial;
 
+    float heldItemAnimTime = 0f;
+    float heldItemAnimTimeMax;
+    float heldItemAnimDefP;
+    float heldItemAnimDefA;
+    AnimationCurve heldItemAnimCurveP;
+    AnimationCurve heldItemAnimCurveA;
+    [SerializeField] AnimationCurve stickAnimCurveP;
+    [SerializeField] AnimationCurve stickAnimCurveA;
     
 
     public ItemSlotUI[] inventorySlotImages;
@@ -81,6 +89,7 @@ public class PlayerGeneral : MonoBehaviour
         UpdateInventoryVisual();
         HeldItemSpecifier();
         OrderStatusIcons();
+        RunHeldItemAnimation();
         if (mouseItem != null)
         {
             MouseHoldingItem();
@@ -96,16 +105,13 @@ public class PlayerGeneral : MonoBehaviour
             Time.timeScale = 1;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            //Stopping the game
-            //For the love of god make a seperate UI class
-            //..no
-        }
+        //For the love of god make a seperate UI class
+        //..no
         if (Input.GetKeyDown(KeyCode.J))
         {
             Vector3Int blockAbove = allSystems.mapManager.FloatToGridPos(this.transform.position+new Vector3(0f,1f,0f));
             allSystems.entitySummonSystem.BlockToRigidblock(blockAbove);
+            HeldItemAnimation(0.2f,stickAnimCurveP,stickAnimCurveA);
         }
         if (this.transform.position.y < -180f)
         {
@@ -238,7 +244,7 @@ public class PlayerGeneral : MonoBehaviour
         }
         if (Input.GetMouseButtonUp(0) && canUseItems) //Now interact
         {
-            
+            HeldItemAnimation(0.2f,stickAnimCurveP,stickAnimCurveA);
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             playerInventory.ItemUsing(mousePos,heldDownTime);
 
@@ -309,14 +315,21 @@ public class PlayerGeneral : MonoBehaviour
     {
         if (playerInventory.HeldItem() != null) //if we're indeed holding something
         {
+            //Save item data
+            ItemData itemData = playerInventory.HeldItem().itemData;
             //Write its name on the hotbar 
             itemNameUI.enabled = true;
-            itemNameUI.text = playerInventory.HeldItem().itemData.itemName;
+            itemNameUI.text = itemData.itemName;
+            /*if (itemData.id == "potion") //later on if we want to change potion names
+            {
+                string potionName = playerInventory.HeldItem().GetBehaviour<PotionBehaviour>().currentEffect.GetName;
+                itemNameUI.text = potionName + " Potion";
+            }*/
             
             //Put it diegetically on the player character
             heldItemSprite.enabled = true;
-            heldItemSprite.sprite = playerInventory.HeldItem().itemData.sprite;
-            if (playerInventory.HeldItem().itemData.tags.Contains("mouse_follow")) //Make it follow the player
+            heldItemSprite.sprite = itemData.sprite;
+            if (itemData.tags.Contains("mouse_follow")) //Make it follow the player
             {
                 Vector3 mouseDirVec = -(FindMousePos()-heldItemAnchor.position).normalized;
                 float mouseDirAngle = Mathf.Atan2(-mouseDirVec.x,mouseDirVec.y)* Mathf.Rad2Deg-90f;
@@ -360,6 +373,43 @@ public class PlayerGeneral : MonoBehaviour
             }
         }
     }
+    public void HeldItemAnimation(float time, AnimationCurve animCP, AnimationCurve animCA) //Initialise animations
+    {
+        if (heldItemAnimTime > 0f)
+        {
+            HeldItemAnimationSetBack();
+        }
+        heldItemAnimTime = time;
+        heldItemAnimTimeMax = time;
+        heldItemAnimDefP = heldItemSprite.transform.localPosition.x;
+        heldItemAnimDefA = heldItemSprite.transform.eulerAngles.z;
+        heldItemAnimCurveP = animCP;
+        heldItemAnimCurveA = animCA;
+    }
+    void RunHeldItemAnimation()
+    {
+        if (heldItemAnimTime > 0f) //Run on update
+        {
+            heldItemAnimTime -= Time.deltaTime;
+            float distanceVal = heldItemAnimCurveP.Evaluate((heldItemAnimTime/heldItemAnimTimeMax));
+            Vector3 farness = new Vector3(heldItemAnimDefP+distanceVal,heldItemSprite.transform.localPosition.y,heldItemSprite.transform.localPosition.z);
+            heldItemSprite.transform.localPosition = farness;
+            
+            float rotateVal = heldItemAnimCurveA.Evaluate((heldItemAnimTime/heldItemAnimTimeMax))*-50f;
+            heldItemSprite.transform.eulerAngles = new Vector3(0f,0f,heldItemAnimDefA+rotateVal);
+        }
+        if (heldItemAnimTime < 0f)
+        {
+            //set it all back
+            HeldItemAnimationSetBack();
+        }
+    }
+    void HeldItemAnimationSetBack()
+    {
+        heldItemSprite.transform.eulerAngles = new Vector3(0f,0f,heldItemAnimDefA);
+        heldItemSprite.transform.localPosition = new Vector3(heldItemAnimDefP,heldItemSprite.transform.localPosition.y,heldItemSprite.transform.localPosition.z);
+        heldItemAnimTime = 0f;
+    }
 
     //Interactions
     public void CheckInteractions()
@@ -395,8 +445,8 @@ public class PlayerGeneral : MonoBehaviour
     public void CheckInteractables(Vector2 where, float searchRadius)
     {
         Collider2D[] results = Physics2D.OverlapCircleAll(where,searchRadius);
-        Debug.DrawLine(where- new Vector2(0f,searchRadius), where+ new Vector2(0f,searchRadius), Color.green,2f);
-        Debug.DrawLine(where- new Vector2(searchRadius,0f), where+ new Vector2(searchRadius,0f), Color.green,2f);
+        //Debug.DrawLine(where- new Vector2(0f,searchRadius), where+ new Vector2(0f,searchRadius), Color.green,2f);
+        //Debug.DrawLine(where- new Vector2(searchRadius,0f), where+ new Vector2(searchRadius,0f), Color.green,2f);
 
         Collider2D closest = FindClosestInteractable(where, results); 
         if (closest == null)
@@ -548,7 +598,7 @@ public class PlayerGeneral : MonoBehaviour
     {
         return mouseItemOrigin;
     }
-    public Vector3 FindMousePos()
+    public Vector3 FindMousePos() //Get the general mouse position to the Canvas Mouse Position
     {
         Vector2 mousePos = Input.mousePosition;
         if (!float.IsFinite(mousePos.x) || !float.IsFinite(mousePos.y))

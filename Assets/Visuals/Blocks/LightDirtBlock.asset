@@ -17,5 +17,6 @@ MonoBehaviour:
   blockName: Light Dirt
   hasCollision: 1
   toughness: 3
-  tags: []
+  tags:
+  - worldDef
   tickingBlock: 0

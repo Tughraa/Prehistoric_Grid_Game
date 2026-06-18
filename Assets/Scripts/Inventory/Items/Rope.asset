@@ -15,5 +15,6 @@ MonoBehaviour:
   id: rope
   itemName: Rope
   sprite: {fileID: 21300000, guid: 946a9cb4ae5594346802f68e3c06dfca, type: 3}
-  tags: []
+  tags:
+  - mouse_follow
   mouseMode: cross

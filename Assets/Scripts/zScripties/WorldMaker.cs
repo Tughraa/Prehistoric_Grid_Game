@@ -20,12 +20,14 @@ public class WorldMaker : MonoBehaviour
     public Vector2 perlinMaskSize = new Vector2(0.05f,0.05f);
     public Vector2 perlinMaskStrength = new Vector2(0.5f,0.5f);
 
-    [SerializeField] BlockData tempFlamGas;
+    List<Vector3Int> maskMiddles = new List<Vector3Int>();
 
     [Header("Generation Counts")]
+    [SerializeField] int poolCount = 20;
+    [SerializeField] int treeCount = 28;
     [SerializeField] int vineCount = 125;
     [SerializeField] int explosiveCount = 40;
-    [SerializeField] int stoneCount = 60;
+    //[SerializeField] int stoneCount = 60;
     [SerializeField] int chestCount = 75;
     [SerializeField] int shooterCount = 0;
     [SerializeField] int stalagmiteCount = 50;
@@ -112,11 +114,15 @@ public class WorldMaker : MonoBehaviour
         if (magnifyMask > perlinMaskThreshold) //Visualize the mask for debugging
         {
             Vector3 st = new Vector3(xP, yP, 0f);
-            if (magnifyMask > 0.85)
+            if (magnifyMask > 0.89f)
             {
                 Debug.DrawLine(st+ new Vector3(0.5f, -0.5f, 0f),st- new Vector3(0.5f, -0.5f, 0f), Color.red, 10f);
             }
             Debug.DrawLine(st+ new Vector3(0.5f, 0.5f, 0f),st- new Vector3(0.5f, 0.5f, 0f), Color.blue/2f, 10f);
+        }
+        if (magnifyMask > 0.92f) //Add the centres of holes to a list to use as generation candidates
+        {
+            maskMiddles.Add(new Vector3Int((int)xP, (int)yP, 0));
         }
 
         return (perlinVal >= adjustedThreshold);
@@ -153,17 +159,18 @@ public class WorldMaker : MonoBehaviour
     //Placing other other things
     void PlaceMapThings()
     {
-        PlacePoolsRandomly(28);
-        //PlaceLiquidsRandomly();
-        PlaceTreesRandomly(20);
+        PlacePoolsRandomly(poolCount);
+        PlaceTreesRandomly(treeCount);
         PlaceVines(vineCount); //normally 75
-        //PlaceBlocksRandomly("stone",stoneCount);
         PlaceBlocksRandomly("explosive",explosiveCount);
-        PlaceEntitiesRandomly("chest",chestCount,1); //it was 50 before
+        PlaceEntitiesRandomly("chest",chestCount,1);
         PlaceEntitiesRandomly("shooter_enemy",shooterCount,1);
         PlaceEntitiesRandomly("stalagmite",stalagmiteCount,-1); //adjust
-        PlaceBlockClumpsRandomly(flamGasCount); //normally 7
+        PlaceEffectGasClumpsRandomly(8,new PoisonEffect(duration: 6f,strength: 0.125f,period: 0.30f),5);
+        PlaceEffectGasClumpsRandomly(5,new FlyEffect(duration: 0.1f,strength: 0.2f),10);
+        PlaceBlockClumpsRandomly(flamGasCount,"flammable_gas",new FlamGasBehaviour(),6);
         allSystems.explosionSystem.ExplodeSimple(new Vector2(-46,-3),6f,2f,null);
+        allSystems.explosionSystem.ExplodeSimple(new Vector2(201,7),6f,2f,null);
     }
     public void PlaceLiquidsRandomly()
     {
@@ -209,31 +216,48 @@ public class WorldMaker : MonoBehaviour
             VineHangFrom(RandomAvailablePos(-1),randomVal);
         }
     }
-    public void PlaceBlockClumpsRandomly(int howMany) //Upgrade to include blockType in the future
+    BlockState EffectGasInstantiate(Vector3Int pos, IStatusEffect effect)
+    {
+        BlockState effectGas = new BlockState(allSystems.blockLibrary.allBlocks["effect_gas"],pos,allSystems.behaviourAdder,false);
+        effectGas.AddBehaviour(new EffectGasBehaviour(effect.Clone())); //We clone the instance to avoid same behaviour
+        return effectGas;
+    }
+    public void PlaceEffectGasClumpsRandomly(int howMany, IStatusEffect effect, int clumpSize)
     {
         for (int i = 0; i < howMany; i++)
         {
             Vector3Int pos = RandomAvailablePos(1);
-            BlockState flamGas = new BlockState(tempFlamGas,pos,allSystems.behaviourAdder,false);
-            flamGas.AddBehaviour(new FlamGasBehaviour());
-            allSystems.explosionSystem.BlockPlaceExplosion(pos,6,flamGas);
+            BlockState blockState = EffectGasInstantiate(pos,effect);
+            allSystems.explosionSystem.BlockPlaceExplosion(pos,clumpSize,blockState);
+        }
+    }
+    public void PlaceBlockClumpsRandomly(int howMany, string blockName, IBlockBehaviour behaviourToAdd, int clumpSize) //Make behaviourMultiple
+    {
+        for (int i = 0; i < howMany; i++)
+        {
+            Vector3Int pos = RandomAvailablePos(1);
+            BlockState blockState = new BlockState(allSystems.blockLibrary.allBlocks[blockName],pos,allSystems.behaviourAdder,false);
+            blockState.AddBehaviour(behaviourToAdd);
+            allSystems.explosionSystem.BlockPlaceExplosion(pos,clumpSize,blockState);
         }
     }
     public void PlacePoolsRandomly(int howMany)
     {
         for (int i = 0; i < howMany; i++)
         {
-            PlacePool(RandomPosition(),0,allSystems.behaviourAdder.RandomEffect(5f,false));
+            int poolSize = randomSystem.worldPlacementRNG.Next(3,8);
+            Vector3Int originPos = RandomPosition();
+            PlacePool(originPos,originPos,0,allSystems.behaviourAdder.OrderedEffectPool(5f),poolSize);
         }
     }
-    public void PlacePool(Vector3Int position, int recursionCount, IStatusEffect poolEffect)
+    public void PlacePool(Vector3Int originPos, Vector3Int position, int recursionCount, IStatusEffect poolEffect, float size)
     {
         if (mapManager.HasBlock(position))
         {
             return;
         }
-        int totalRecurse = 13;
-        if (recursionCount > totalRecurse)
+        int totalRecurse = 100;
+        if (recursionCount > totalRecurse || Vector3.Distance(originPos,position) > size)
         {
             PlaceBlockByName("stone",position);
             return;
@@ -243,22 +267,22 @@ public class WorldMaker : MonoBehaviour
         BlockState waterState = new BlockState(waterData,position,allSystems.behaviourAdder,false);
         waterState.AddBehaviour(new FlowBehaviour(0.4f,2));
         waterState.AddBehaviour(new LiquidBehaviour(poolEffect));
-        mapManager.PlaceBlockWithState(position,waterState);
+        mapManager.PlaceBlockWithState(position,waterState); 
         
         Vector3Int leftPos = position + new Vector3Int(1,0,0);
         Vector3Int rightPos = position + new Vector3Int(-1,0,0);
         Vector3Int bottomPos = position + new Vector3Int(0,-1,0);
         if (!mapManager.HasBlock(leftPos))
         {
-            PlacePool(leftPos,recursionCount+1,poolEffect);
+            PlacePool(originPos,leftPos,recursionCount+1,poolEffect,size);
         }
         if (!mapManager.HasBlock(rightPos))
         {
-            PlacePool(rightPos,recursionCount+1,poolEffect);
+            PlacePool(originPos,rightPos,recursionCount+1,poolEffect,size);
         }
         if (!mapManager.HasBlock(bottomPos))
         {
-            PlacePool(bottomPos,recursionCount+1,poolEffect);
+            PlacePool(originPos,bottomPos,recursionCount+1,poolEffect,size);
         }
     }
     public GameObject PlaceEntityByName(string entityName, Vector3 position)
@@ -278,6 +302,10 @@ public class WorldMaker : MonoBehaviour
         while (mapManager.HasBlock(randomPos) && attempts < 15)
         {   //until we find a block that isn't taken and and supported
             attempts++;
+            if (!mapManager.GetBlock(randomPos).blockData.tags.Contains("worldDef"))
+            {
+                continue;
+            }
             randomPos += new Vector3Int(0,yInc,0);
             if (randomPos.y > yLimit.y || randomPos.y < yLimit.x)
             {
@@ -290,7 +318,7 @@ public class WorldMaker : MonoBehaviour
     public void PlaceTree(Vector3Int root, int height)
     {
         Vector3Int currentBlock = root;
-        for (int i = 0; i < height; i++)
+        for (int i = 0; i < height; i++) //The body
         {
             Vector3Int currentPos = root + new Vector3Int(0,i,0);
             PlaceBlockByName("savanah_tree",currentPos);
@@ -307,6 +335,11 @@ public class WorldMaker : MonoBehaviour
                 branch.transform.eulerAngles = new Vector3(0f,0f,116f);
             }
         }
+        //The head
+        Vector3Int leafPoint = new Vector3Int(root.x,root.y+height,0);
+        mapManager.RemoveBlock(leafPoint,false);
+        BlockState leavesState = new BlockState(allSystems.blockLibrary.allBlocks["savanah_leaves"],leafPoint,allSystems.behaviourAdder,true);
+        allSystems.explosionSystem.BlockPlaceExplosion(leafPoint,randomSystem.worldPlacementRNG.Next(5, 8),leavesState);
     }
     public void VineHangFrom(Vector3Int startPos,int length)//check positions
     {
@@ -314,6 +347,13 @@ public class WorldMaker : MonoBehaviour
         int attempts = 0;
         while (attempts < length)
         {
+            if (mapManager.HasBlock(pos))
+            {
+                if (!mapManager.GetBlock(pos).blockData.tags.Contains("worldDef"))
+                {
+                    break;
+                }
+            }
             PlaceBlockByName("vine",pos);
             pos += new Vector3Int(0,-1,0);
             if (pos.y > yLimit.y || pos.y < yLimit.x)

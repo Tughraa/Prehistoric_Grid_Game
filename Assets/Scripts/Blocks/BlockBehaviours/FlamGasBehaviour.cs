@@ -7,7 +7,7 @@ public class FlamGasBehaviour : IBlockBehaviour
     FireSystem fireSystem;
     ParticlesSystem particlesSystem;
     float particleTimer = 0f;
-    float particlePeriod = 0.2f;
+    float particlePeriod = 0.4f;
    
     public FlamGasBehaviour()
     {

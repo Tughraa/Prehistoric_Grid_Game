@@ -31,7 +31,7 @@ public class LiquidBehaviour : IBlockBehaviour
                 Evaporate(map, pos, false);
             }
         }*/
-        Debug.Log("water removed at:"+pos);
+        //Debug.Log("water removed at:"+pos);
     }
     public void OnBreak(MapManager map, Vector3Int pos, BlockState state)
     {

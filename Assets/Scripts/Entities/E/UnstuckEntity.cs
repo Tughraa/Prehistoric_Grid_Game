@@ -30,12 +30,12 @@ public class UnstuckEntity : MonoBehaviour
         Vector3Int closestInt = mapManager.FloatToGridPos(closest);
         if (HasCollision(closestInt) == false)
         {
-            Debug.Log(closestInt+" was empty");
+            //Debug.Log(closestInt+" was empty");
             return closestInt;
         }
         else
         {
-            Debug.Log(closestInt+" wasnt empty");
+            //Debug.Log(closestInt+" wasnt empty");
         }
         return startPos+new Vector3(0f,0.5f,0f);
     }   
